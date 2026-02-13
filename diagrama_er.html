@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama Entidad-Relación - Integridad desde la Raíz</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #0f172a;
+            margin-bottom: 30px;
+        }
+        .diagram-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Diagrama Entidad-Relación (E-R)</h1>
+    <p>Este diagrama muestra las tablas y relaciones de la base de datos.</p>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+            erDiagram
+                STATES ||--o{ VIDEOS : "1:N (tiene)"
+                STATES ||--o{ EVENTS : "1:N (tiene)"
+                STATES ||--o{ RESOURCES : "1:N (tiene)"
+                
+                EVENTS ||--o{ EVENT_IMAGES : "1:N (contiene)"
+                EVENTS ||--o{ EVENT_TAGS : "1:N (tiene)"
+                EVENTS ||--o{ EVENT_PILLARS : "1:N (promueve)"
+
+                STATES {
+                    int id PK
+                    string name "Nombre (Puebla)"
+                    string slug "Identificador (puebla)"
+                    string code "Código (PUE)"
+                }
+
+                VIDEOS {
+                    int id PK
+                    string title "Título"
+                    string description "Descripción"
+                    string youtube_id "ID Video"
+                    int state_id FK
+                    string hashtag
+                }
+
+                EVENTS {
+                    int id PK
+                    string slug "Slug (puebla-2025)"
+                    string title "Título"
+                    date event_date "Fecha"
+                    string location "Ubicación"
+                    int state_id FK
+                    string impact_text "Impacto"
+                }
+
+                EVENT_IMAGES {
+                    int id PK
+                    int event_id FK
+                    string url "URL Imagen"
+                    enum type "GALLERY/BANNER"
+                }
+
+                EVENT_TAGS {
+                    int id PK
+                    int event_id FK
+                    string name "Nombre Tag"
+                }
+
+                EVENT_PILLARS {
+                    int id PK
+                    int event_id FK
+                    string name "Nombre Pilar"
+                }
+
+                RESOURCES {
+                    int id PK
+                    string title "Título"
+                    string file_type "Tipo (PDF)"
+                    int state_id FK
+                    string category "Categoría"
+                }
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            er: {
+                useMaxWidth: false
+            }
+        });
+    </script>
+
+</body>
+</html>

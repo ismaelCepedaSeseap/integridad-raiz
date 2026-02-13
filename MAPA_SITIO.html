@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa del Sitio y Diagrama - Integridad desde la Raíz</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        p {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Mapa del Sitio (Arquitectura)</h1>
+        <p>Diagrama de flujo de la navegación y archivos de datos.</p>
+        <div class="mermaid">
+graph TD
+    Index[index.html (Inicio)] --> Header[Slider Dinámico]
+    Index --> States[Barra Estados]
+    Index --> Arbol[Sección Interactiva Árbol]
+    Index --> CineSec[Sección Cine (Vista Previa)]
+    Index --> UltimoEvento[Sección Último Evento]
+    Index --> Muro[Muro de Compromisos]
+    
+    Index --> PageCine[cine.html (Catálogo Completo)]
+    Index --> PageEventos[eventos.html (Listado Eventos)]
+    Index --> PageMaterial[material.html (Recursos)]
+    
+    PageEventos --> PageDetalle[detalle_evento.html?id=&lt;evento_id&gt;]
+    
+    subgraph "Lógica y Datos (JS)"
+        Header -.-> |Lee| slider-data.js
+        States -.-> |Lee| states-data.js
+        CineSec -.-> |Lee| cine-data.js
+        UltimoEvento -.-> |Lee| event-data.js
+        PageCine -.-> |Lee| cine-page-data.js
+        PageEventos -.-> |Lee| events-page-data.js
+        PageMaterial -.-> |Lee| material-data.js
+        PageDetalle -.-> |Lee| events-page-data.js
+        PageDetalle -.-> |Renderiza| event-detail-logic.js
+    end
+    
+    style Index fill:#e0f2fe,stroke:#0ea5e9,stroke-width:2px
+    style PageCine fill:#f0fdf4,stroke:#22c55e,stroke-width:2px
+    style PageEventos fill:#f0fdf4,stroke:#22c55e,stroke-width:2px
+    style PageMaterial fill:#f0fdf4,stroke:#22c55e,stroke-width:2px
+    style PageDetalle fill:#fef9c3,stroke:#eab308,stroke-width:2px
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Esquema de Base de Datos</h1>
+        <p>Estructura relacional propuesta para el sistema.</p>
+        <div class="mermaid">
+erDiagram
+    ESTADOS ||--o{ REDES_SOCIALES : tiene
+    ESTADOS ||--o{ EVENTOS : organiza
+    ESTADOS ||--o{ MATERIALES : publica
+    ESTADOS ||--o{ VIDEOS_CINE : produce
+
+    EVENTOS ||--o{ GALERIA_EVENTOS : contiene
+    EVENTOS ||--o{ MOMENTOS_EVENTOS : destaca
+
+    ESTADOS {
+        int id PK
+        string nombre
+        string url_logo
+    }
+
+    EVENTOS {
+        int id PK
+        string titulo
+        string slug
+        boolean visible_inicio
+        string badge_inicio
+        date fecha
+        string ubicacion
+        int estado_id FK
+        string imagen_principal
+        string url_video
+        string texto_impacto
+        string texto_pilares_count
+        string decoracion_top_left
+        string decoracion_bottom_right
+    }
+
+    MATERIALES {
+        int id PK
+        string titulo
+        string tipo_archivo
+        int estado_id FK
+    }
+
+    VIDEOS_CINE {
+        int id PK
+        int estado_id FK
+        string tipo_fuente
+        string titulo
+        string youtube_id
+        string url_video
+        string url_poster
+        string cta_url
+        string hashtag
+    }
+
+    GALERIA_EVENTOS {
+        int id PK
+        int evento_id FK
+        string url_imagen
+        string tipo
+    }
+
+    MOMENTOS_EVENTOS {
+        int id PK
+        int evento_id FK
+        string url_imagen
+        string titulo
+        string anio_texto
+        boolean margin_top
+    }
+    
+    SLIDERS {
+        int id PK
+        string titulo
+        string tipo
+        boolean activo
+    }
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+</html>

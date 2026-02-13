@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integridad desde la Raíz - SEA Puebla</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .bg-forest {
+            background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .card-game {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .card-game:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(22, 163, 74, 0.2);
+        }
+
+        .seed-btn {
+            animation: pulse-seed 2s infinite;
+        }
+        @keyframes pulse-seed {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #facc15); }
+            50% { transform: scale(1.2); filter: drop-shadow(0 0 10px #facc15); }
+        }
+
+        .character-pop {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .game-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Estilo para los botones de la sopa de letras */
+        .grid-cell {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+        .grid-cell.selected { background: #22c55e; color: white; }
+
+        .w-32 {
+            width: 15rem !important;
+        }
+        .h-32 {
+            height: 13rem !important;
+        }
+        .-top-4 {
+            top: -3rem !important;
+        }
+        .-right-4 {
+            right: -10rem !important;
+        }
+        .bg-forest {
+    /* Fondo base: el cielo degradado de la imagen */
+    background: linear-gradient(to bottom, #a5d8ff 0%, #f0f9ff 40%, #ffffff 100%);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* Creamos los árboles y el efecto de bosque usando un pseudo-elemento */
+.bg-forest::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    
+    /* Imagen de árboles estilizados (puedes usar una similar o este patrón) */
+    /* Aquí simulamos la neblina y la profundidad */
+    background-image: 
+        radial-gradient(circle at 20% 40%, rgba(34, 139, 34, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(34, 139, 34, 0.1) 0%, transparent 40%);
+    
+    /* Si tienes una imagen de siluetas de árboles, reemplaza el color sólido aquí */
+    background-color: transparent; 
+}
+
+/* El suelo curvo amarillo de la imagen */
+.bg-forest::after {
+    content: "";
+    position: absolute;
+    bottom: -10%; /* Ajusta para que se vea más o menos curva */
+    left: -10%;
+    right: -10%;
+    height: 60%;
+    background: #ffcc00; /* El amarillo vibrante de la imagen */
+    border-radius: 100% 100% 0 0;
+    z-index: -1;
+    box-shadow: inset 0 20px 40px rgba(0,0,0,0.05);
+}
+
+/* Ajuste para que el texto resalte sobre el fondo */
+#inicio h1, #inicio p {
+    position: relative;
+    z-index: 10;
+}
+
+
+video {
+    display: unset!important;
+    vertical-align: unset;
+}
+
+
+
+   /* --- Mejora de los reproductores de video --- */
+        .video-mobile-frame {
+            max-width: 280px; /* Tamaño ideal para videos verticales en web */
+            margin: 0 auto;
+            border-radius: 45px;
+            overflow: hidden;
+            border: 10px solid #1e293b; /* Color oscuro tipo marco de celular */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: #000;
+            aspect-ratio: 9 / 16;
+            position: relative;
+        }
+
+        .video-mobile-frame video {
+            width: 100%;
+            height: 100%;
+            /*object-fit: cover; /* Asegura que el video llene el marco vertical */
+        }
+
+        .video-label {
+            background: white;
+            padding: 1rem;
+            border-radius: 20px;
+            margin-top: 1.5rem;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            display: inline-block;
+        }
+        /* ------------------------------------------- */
+
+        .game-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .w-32 { width: 15rem !important; }
+        .h-32 { height: 13rem !important; }
+        .-top-4 { top: -3rem !important; }
+        .-right-4 { right: -10rem !important; }
+
+        .border-green-600, .border-green-500 {
+            --tw-border-opacity: 1;
+            border-color: rgb(5 97 39)!important;
+        }
+       
+        
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-green-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-4">
+                    <img src="images/logo.png" alt="Logo" class="w-12 h-12 rounded-full border-2 border-green-500">
+                    <span class="font-bold text-2xl text-green-900">Integridad desde la Raíz</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="text-slate-600 hover:text-green-600 font-bold">Inicio</a>
+                    <a href="#arbol" class="text-slate-600 hover:text-green-600 font-bold">El Árbol</a>
+                    <a href="#juegos" class="text-slate-600 hover:text-green-600 font-bold">Juegos</a>
+                    <a href="#muro" class="text-slate-600 hover:text-green-600 font-bold">Muro</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Basado en la Portada Original) -->
+    <header id="inicio" class="bg-forest pt-16 pb-24 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2">
+                    <span class="inline-block px-4 py-1 rounded-full bg-green-200 text-green-800 text-[10px] font-black mb-6 uppercase tracking-[0.2em]" aria-hidden="true">
+                        SEA Puebla presenta
+                    </span>
+                    <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 leading-[1.1]">
+                        Sembremos hoy la <span class="text-green-600">honestidad</span> del mañana.
+                    </h1>
+                    <p class="text-xl text-slate-600 mb-10 max-w-lg leading-relaxed">
+                        Acompaña a nuestras raíces en un viaje lleno de valores, donde cada acción cuenta para construir un Puebla más transparente y justo.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#actividades" class="px-8 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 transition-all flex items-center gap-2">
+                            <i data-lucide="play-circle" aria-hidden="true"></i> Empezar a jugar
+                        </a>
+                        <a href="#valores" class="px-8 py-4 bg-white text-green-700 border-2 border-slate-100 rounded-2xl font-bold hover:bg-slate-50 transition-all shadow-sm">
+                            Conocer más
+                        </a>
+                    </div>
+            </div>
+       
+
+        <div class="md:w-1/2 flex justify-center relative">
+            <div class="relative w-full max-w-lg aspect-square flex items-center justify-center">
+                
+                <div class="absolute w-[85%] h-[85%] bg-white rounded-full shadow-2xl border-8 border-green-500/20"></div>
+
+                <div class="absolute -top-4 -right-4 w-32 h-32 z-30">
+                    <img src="images/golfoitsmo.png" class="w-full h-full object-contain">
+                </div>
+
+                <div class="relative z-20 transform scale-110 translate-y-[-15px]">
+                    <img src="images/logo.png" alt="Personajes Integridad" class="w-full h-auto drop-shadow-[0_20px_20px_rgba(0,0,0,0.25)]">
+                </div>
+                
+                <!-- <div class="absolute bottom-12 left-0 right-0 z-20 flex flex-col justify-end text-center">
+                    <h2 class="text-white font-black text-2xl uppercase italic drop-shadow-lg">
+                        ¡Puebla Honesta!
+                    </h2>
+                </div>-->
+                
+            </div>
+        </div>
+
+    </div>
+</header>
+
+    <section id="actividades" class="py-24 bg-green-900 text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2">
+                <h2 class="text-4xl font-bold mb-6">El Árbol de la Integridad</h2>
+                <p class="text-green-100 text-lg mb-10">
+                    Haz clic en los frutos dorados para descubrir consejos y pequeñas acciones que puedes hacer hoy para ayudar a Puebla.
+                </p>
+                
+                <div id="tip-display" class="bg-white/10 backdrop-blur-md p-10 rounded-[40px] border border-white/20 min-h-[200px] flex items-center justify-center text-center italic text-xl" aria-live="polite">
+                    "¡Selecciona una semilla del árbol para comenzar!"
+                </div>
+            </div>
+            
+            <div class="lg:w-1/2 flex justify-center">
+                <div class="relative w-full max-w-sm aspect-square">
+                    <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-2xl" id="interactive-tree">
+                        <path d="M100 180 Q100 140 100 100" stroke="#523015" stroke-width="12" stroke-linecap="round" />
+                        <circle cx="100" cy="80" r="50" fill="#15803d" />
+                        <circle cx="70" cy="100" r="40" fill="#166534" />
+                        <circle cx="130" cy="100" r="40" fill="#166534" />
+                        
+                        <circle onclick="showTip('honestidad')" cx="80" cy="75" r="8" fill="#facc15" class="seed-pulse" role="button" aria-label="Semilla de Honestidad" />
+                        <circle onclick="showTip('respeto')" cx="120" cy="85" r="8" fill="#facc15" class="seed-pulse" role="button" aria-label="Semilla de Respeto" />
+                        <circle onclick="showTip('justicia')" cx="100" cy="110" r="8" fill="#facc15" class="seed-pulse" role="button" aria-label="Semilla de Justicia" />
+                        <circle onclick="showTip('responsabilidad')" cx="100" cy="55" r="8" fill="#facc15" class="seed-pulse" role="button" aria-label="Semilla de Responsabilidad" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+ <!-- NUEVA SECCIÓN: Cine de la Integridad -->
+ <section id="cine" class="py-24 bg-slate-50" style="padding-top: 2rem;padding-bottom: 3rem;">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-block p-3 bg-yellow-100 rounded-2xl text-yellow-600 mb-4">
+                    <i data-lucide="film" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 italic uppercase">Cine de la Integridad</h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto">Nuestros guardianes tienen un mensaje especial para ti. ¡Dale play!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
+                <!-- Video de Honestio -->
+                <div class="text-center">
+                    <div class="video-mobile-frame border-green-600" style="height:80%;">
+                        <video controls poster="images/18.jpg">
+                            <source src="images/Honestio.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
+                    </div>
+                    <div class="video-label border-b-4 border-green-500">
+                        <h3 class="text-2xl font-black text-green-900 italic">Honestio</h3>
+                        <p class="text-green-600 font-bold text-xs uppercase tracking-widest mt-1">"La honestidad nos une"</p>
+                    </div>
+                </div>
+
+                <!-- Video de Lic. Trampitas -->
+                <div class="text-center">
+                    <div class="video-mobile-frame border-slate-700" style="height:80%;">
+                        <video controls poster="images/06.jpg">
+                            <source src="images/trampitas.mp4" type="video/mp4">
+                            Tu navegador no soporta video.
+                        </video>
+                    </div>
+                    <div class="video-label border-b-4 border-slate-400">
+                        <h3 class="text-2xl font-black text-slate-900 italic">Lic. Trampitas</h3>
+                        <p class="text-slate-500 font-bold text-xs uppercase tracking-widest mt-1">"¡No hagas trampas!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Rally de Juegos (Didáctico) -->
+    <section id="juegos" class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-yellow-400 font-bold tracking-[0.3em] uppercase">Rally Anticorrupción</span>
+                <h2 class="text-5xl font-black mt-4">Zona de Juegos Didácticos</h2>
+                <p class="text-slate-400 mt-4 text-lg">Demuestra que eres un experto en valores y derrota al Maletín Sombrío.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Juego 1: Ahorcados -->
+                <div onclick="openGame('ahorcados')" class="card-game bg-slate-800 p-8 rounded-[40px] border border-slate-700 group" style="text-align: center;">
+                    <img src="images/ahorcados copia.jpg" alt="Ahorcados" class="w-40 h-40 mx-auto mb-6 rounded-3xl object-contain bg-green-900 p-4">
+                    <h3 class="text-2xl font-bold text-center group-hover:text-green-400 transition-colors">¡Ahorcados!</h3>
+                    <p class="text-slate-400 text-center mt-2">Adivina la palabra mágica antes de que el tiempo se agote.</p>
+                    <div class="mt-6 flex justify-center"><button class="bg-green-600 px-6 py-2 rounded-full font-bold">JUGAR</button></div>
+                </div>
+
+                <!-- Juego 2: Diferencias -->
+                <div onclick="openGame('diferencias')" class="card-game bg-slate-800 p-8 rounded-[40px] border border-slate-700 group" style="text-align: center;">
+                    <img src="images/diferencias_01.jpg" alt="Diferencias" class="w-40 h-40 mx-auto mb-6 rounded-3xl object-contain bg-orange-900 p-4">
+                    <h3 class="text-2xl font-bold text-center group-hover:text-orange-400 transition-colors">Encuentra las Diferencias</h3>
+                    <p class="text-slate-400 text-center mt-2">Usa tu lupa de detective para encontrar los 5 cambios.</p>
+                    <div class="mt-6 flex justify-center"><button class="bg-orange-600 px-6 py-2 rounded-full font-bold">RETO LUPA</button></div>
+                </div>
+
+                <!-- Juego 3: Sopa de Letras -->
+                <div onclick="openGame('sopa')" class="card-game bg-slate-800 p-8 rounded-[40px] border border-slate-700 group" style="text-align: center;">
+                    <img src="images/sopa letras_02.jpg" alt="Sopa de Letras" class="w-40 h-40 mx-auto mb-6 rounded-3xl object-contain bg-yellow-900 p-4">
+                    <h3 class="text-2xl font-bold text-center group-hover:text-yellow-400 transition-colors">Sopa Anticorrupción</h3>
+                    <p class="text-slate-400 text-center mt-2">Encuentra palabras como "Ética" y "Rendición".</p>
+                    <div class="mt-6 flex justify-center"><button class="bg-yellow-600 px-6 py-2 rounded-full font-bold text-slate-900">BUSCAR</button></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+        <!-- Sección de Guardianes (Los Muñecos individuales) -->
+        <section id="guardianes" class="py-24 bg-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h2 class="text-4xl font-black text-slate-900 mb-4 italic">Tus Aliados de la Integridad</h2>
+                <p class="text-slate-500 mb-16 max-w-2xl mx-auto">Cada uno de nuestros amigos tiene una misión especial para enseñarte sobre los valores.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <!-- Sabueso -->
+                    <article class="group">
+                        <div class="relative mb-6 mx-auto w-48 h-48 bg-blue-50 rounded-full border-4 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-transform">
+                            <img src="images/sabueso.png" alt="Detective Sabueso" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 uppercase">Detective Sabueso</h3>
+                        <p class="text-sm text-blue-600 font-bold tracking-widest">EXPERTO EN VERDAD</p>
+                    </article>
+
+                    <!-- Armadillo -->
+                    <article class="group">
+                        <div class="relative mb-6 mx-auto w-48 h-48 bg-emerald-50 rounded-full border-4 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-transform">
+                            <img src="images/armadillo.png" alt="Explorador Raíz" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 uppercase">Explorador Raíz</h3>
+                        <p class="text-sm text-emerald-600 font-bold tracking-widest">PROTECTOR DE VALORES</p>
+                    </article>
+
+                    <!-- Oficial Cono -->
+                    <article class="group">
+                        <div class="relative mb-6 mx-auto w-48 h-48 bg-orange-50 rounded-full border-4 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-transform">
+                            <img src="images/cono.png" alt="Oficial Cono" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 uppercase">Oficial Cono</h3>
+                        <p class="text-sm text-orange-600 font-bold tracking-widest">REGLAS CLARAS</p>
+                    </article>
+
+                    <!-- Chef Corazón -->
+                    <article class="group">
+                        <div class="relative mb-6 mx-auto w-48 h-48 bg-rose-50 rounded-full border-4 border-white shadow-xl overflow-hidden group-hover:scale-105 transition-transform">
+                            <img src="images/honestio.png" alt="Chef Corazón" class="w-full h-full object-contain">
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 uppercase">Chef Corazón</h3>
+                        <p class="text-sm text-rose-600 font-bold tracking-widest">ACCIONES CON AMOR</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    <!-- Modales de Juegos-->
+    <div id="game-modal" class="game-modal flex items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-[50px] w-full max-w-4xl max-h-[90vh] overflow-y-auto p-10 relative">
+            <button onclick="closeGame()" class="absolute top-8 right-8 text-slate-400 hover:text-red-500">
+                <i data-lucide="x-circle" class="w-10 h-10"></i>
+            </button>
+            <div id="game-content">
+            </div>
+        </div>
+    </div> 
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-20 border-t border-green-800">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="flex justify-center items-center gap-4 mb-8">
+                <img src="images/logo.png" class="w-12 h-12 rounded-full border-2 border-white">
+                <h3 class="text-2xl font-bold">SEA PUEBLA</h3>
+            </div>
+            <p class="text-slate-400 max-w-lg mx-auto mb-10 italic">"Sembramos hoy la honestidad del mañana para que los valores de Puebla crezcan desde la raíz."</p>
+            <div class="flex justify-center gap-10">
+                <a href="#" class="hover:text-green-400"><i data-lucide="facebook"></i></a>
+                <a href="#" class="hover:text-green-400"><i data-lucide="twitter"></i></a>
+                <a href="#" class="hover:text-green-400"><i data-lucide="globe"></i></a>
+            </div>
+        </div>
+    </footer>
+<script>
+    // Inicializar iconos de Lucide
+    lucide.createIcons();
+
+    // ==========================================
+    // 1. LÓGICA DEL ÁRBOL DE INTEGRIDAD (Tips)
+    // ==========================================
+    const tips = {
+        honestidad: "Si encuentras algo que no es tuyo, busca a su dueño para regresarlo. ¡La verdad nos hace grandes!",
+        respeto: "Escucha a los demás con atención. Todas las ideas son importantes para crecer juntos.",
+        justicia: "Al jugar, sigue las reglas para que todos se diviertan por igual. ¡Sé justo siempre!",
+        responsabilidad: "Cuidar tus libros y tu escuela es tarea de todos. ¡Tus pequeñas acciones cuentan!",
+        transparencia: "La transparencia es como un cristal limpio: permite que todos vean que tus acciones son honestas."
+    };
+
+    /**
+     * Muestra el consejo en la sección del árbol
+     */
+    function showTip(type) {
+        const display = document.getElementById('tip-display');
+        if (!display) return;
+
+        display.style.opacity = '0';
+        setTimeout(() => {
+            display.innerHTML = `
+                <div class="animate-pulse">
+                    <strong class="text-green-400 block mb-2 uppercase tracking-widest text-sm">${type}</strong>
+                    <p>"${tips[type]}"</p>
+                </div>
+            `;
+            display.style.opacity = '1';
+            display.classList.add('bg-green-800/40');
+        }, 200);
+    }
+
+    // Alias para compatibilidad con nombres de funciones en diferentes versiones del HTML
+    function showSeedTip(val) { showTip(val); }
+
+
+    // ==========================================
+    // 2. CONTROL DEL MODAL DE JUEGOS
+    // ==========================================
+    function openGame(type) {
+        const modal = document.getElementById('game-modal');
+        const content = document.getElementById('game-content');
+        
+        if (!modal) {
+            console.error("Error: El contenedor 'game-modal' no existe o está comentado.");
+            return;
+        }
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        // Cargar lógica según el juego
+        if(type === 'ahorcados') {
+            setupAhorcados(content);
+        } else if(type === 'sopa') {
+            setupSopa(content);
+        } else if(type === 'diferencias') {
+            setupDiferencias(content);
+        }
+        
+        lucide.createIcons(); // Recargar iconos dentro del modal
+    }
+
+    function closeGame() {
+        const modal = document.getElementById('game-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+
+    // ==========================================
+    // 3. JUEGO: AHORCADOS
+    // ==========================================
+    let palabraOculta = "";
+    let letrasAdivinadas = [];
+    
+    function setupAhorcados(container) {
+        const palabras = ["HONESTIDAD", "JUSTICIA", "RESPETO", "ETICA", "VALORES", "PUEBLA", "INTEGRIDAD"];
+        palabraOculta = palabras[Math.floor(Math.random() * palabras.length)];
+        letrasAdivinadas = [];
+        actualizarPantallaAhorcados(container);
+    }
+
+    function actualizarPantallaAhorcados(container) {
+        const display = palabraOculta.split('').map(l => letrasAdivinadas.includes(l) ? l : "_").join(" ");
+        const gano = !display.includes("_");
+        
+        container.innerHTML = `
+            <div class="text-center py-10">
+                <h2 class="text-4xl font-black text-green-600 mb-6 italic uppercase">¡El Reto del Cocodrilo!</h2>
+                <div class="text-5xl font-mono tracking-[0.5em] mb-12 text-slate-800">${display}</div>
+                
+                <div class="grid grid-cols-7 gap-3 max-w-md mx-auto">
+                    ${"ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("").map(l => {
+                        const yaUsada = letrasAdivinadas.includes(l);
+                        return `
+                        <button onclick="guessLetter('${l}')" 
+                                ${yaUsada ? 'disabled' : ''}
+                                class="p-3 rounded-xl font-bold transition-all 
+                                ${yaUsada ? 'bg-slate-200 text-slate-400 opacity-50' : 'bg-green-100 hover:bg-green-500 hover:text-white text-green-800 shadow-sm'}">
+                            ${l}
+                        </button>`;
+                    }).join('')}
+                </div>
+
+                ${gano ? `
+                    <div class="mt-8 p-4 bg-green-100 rounded-2xl animate-bounce">
+                        <p class="text-green-700 font-bold text-2xl">¡Excelente! Has defendido la integridad.</p>
+                        <button onclick="openGame('ahorcados')" class="mt-2 text-sm underline font-bold text-green-800">Jugar de nuevo</button>
+                    </div>` : ''}
+            </div>
+        `;
+    }
+
+    // Definir en el scope global para los onclick dinámicos
+    window.guessLetter = function(l) {
+        if (!letrasAdivinadas.includes(l)) {
+            letrasAdivinadas.push(l);
+            actualizarPantallaAhorcados(document.getElementById('game-content'));
+        }
+    };
+
+
+    // ==========================================
+    // 4. JUEGO: SOPA DE LETRAS
+    // ==========================================
+    function setupSopa(container) {
+        container.innerHTML = `
+            <div class="text-center py-10">
+                <h2 class="text-4xl font-black text-yellow-600 mb-6 italic uppercase">Sopa Anticorrupción</h2>
+                <div class="flex flex-col md:flex-row gap-10 items-center justify-center">
+                    <div class="grid grid-cols-10 gap-1 bg-slate-100 p-4 rounded-3xl border-4 border-slate-200 shadow-inner" id="wordsearch-grid"></div>
+                    <div class="text-left bg-yellow-50 p-6 rounded-3xl border-2 border-yellow-200 shadow-sm">
+                        <h4 class="font-bold mb-4 text-yellow-800 uppercase flex items-center gap-2">
+                            <i data-lucide="search" class="w-4 h-4"></i> Busca estos valores:
+                        </h4>
+                        <ul class="space-y-2 text-sm font-bold text-slate-600">
+                            <li><span class="w-2 h-2 bg-yellow-400 inline-block rounded-full mr-2"></span> ÉTICA</li>
+                            <li><span class="w-2 h-2 bg-yellow-400 inline-block rounded-full mr-2"></span> DENUNCIA</li>
+                            <li><span class="w-2 h-2 bg-yellow-400 inline-block rounded-full mr-2"></span> INTEGRIDAD</li>
+                            <li><span class="w-2 h-2 bg-yellow-400 inline-block rounded-full mr-2"></span> VALORES</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>`;
+        generateSopa();
+    }
+
+    function generateSopa() {
+        const grid = document.getElementById('wordsearch-grid');
+        if (!grid) return;
+        
+        const letters = "ABCDEFGHIJKLMNO".split("");
+        for(let i=0; i<100; i++) {
+            const char = letters[Math.floor(Math.random()*letters.length)];
+            const cell = document.createElement('div');
+            // Nota: .grid-cell debe estar definido en tu CSS (clase que pusiste en el primer HTML)
+            cell.className = "w-9 h-9 flex items-center justify-center bg-white rounded-lg font-bold cursor-pointer hover:bg-yellow-100 transition-colors border border-slate-200 text-slate-700";
+            cell.innerText = char;
+            cell.onclick = function() { 
+                this.classList.toggle('bg-green-500'); 
+                this.classList.toggle('text-white');
+                this.classList.toggle('selected');
+            };
+            grid.appendChild(cell);
+        }
+    }
+
+
+    // ==========================================
+    // 5. JUEGO: DIFERENCIAS (Visual)
+    // ==========================================
+    function setupDiferencias(container) {
+        container.innerHTML = `
+            <div class="text-center py-10">
+                <h2 class="text-4xl font-black text-orange-600 mb-6 italic uppercase">Reto de la Lupa</h2>
+                <p class="text-slate-600 mb-8">El Maletín Sombrío ha alterado una de las fotos. ¡Encuentra los cambios!</p>
+                <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                    <div class="relative group">
+                        <span class="absolute -top-3 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-black z-10 shadow-lg">ORIGINAL</span>
+                        <img src="https://images.unsplash.com/photo-1549480017-d76466a4b7e8?q=80&w=400" class="rounded-3xl border-4 border-slate-200 shadow-md">
+                    </div>
+                    <div class="relative group cursor-crosshair">
+                        <span class="absolute -top-3 left-4 bg-orange-500 text-white px-3 py-1 rounded-full text-xs font-black z-10 shadow-lg">CON CAMBIOS</span>
+                        <img src="https://images.unsplash.com/photo-1549480017-d76466a4b7e8?q=80&w=400" 
+                             style="filter: hue-rotate(45deg) saturate(0.5) contrast(1.1)" 
+                             class="rounded-3xl border-4 border-orange-200 shadow-md transition-transform hover:scale-[1.02]">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-center items-center gap-2 text-slate-500 text-sm italic">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                    Pista: Revisa el color de los ojos del personaje y el tono del cielo.
+                </div>
+            </div>`;
+    }
+
+
+    // ==========================================
+    // 6. MURO DE COMPROMISOS
+    // ==========================================
+    function addPost() {
+        const nameInput = document.getElementById('c-name');
+        const textInput = document.getElementById('c-text');
+        const container = document.getElementById('posts-container');
+
+        const name = nameInput.value.trim();
+        const text = textInput.value.trim();
+
+        if (!name || !text) {
+            alert("Por favor, escribe tu nombre y tu compromiso.");
+            return;
+        }
+
+        const div = document.createElement('div');
+        div.className = "bg-white p-6 rounded-3xl border-l-8 border-green-500 shadow-sm transform transition-all hover:scale-[1.01]";
+        div.style.animation = "popIn 0.5s ease-out";
+        
+        div.innerHTML = `
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <i data-lucide="user" class="w-4 h-4 text-green-600"></i>
+                </div>
+                <p class="font-bold text-green-700">${name}</p>
+            </div>
+            <p class="text-slate-600 italic ml-10">"${text}"</p>
+        `;
+        
+        // Añadir al principio de la lista
+        container.prepend(div);
+        
+        // Limpiar inputs
+        nameInput.value = "";
+        textInput.value = "";
+        
+        // Recargar iconos de lucide para el nuevo post
+        lucide.createIcons();
+        
+        // Scroll suave al nuevo compromiso
+        div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+</script>
+</body>
+</html>

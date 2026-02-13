@@ -1,0 +1,48 @@
+ @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar-item {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .sidebar-item:hover, .sidebar-item.active {
+            background-color: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+        }
+
+        .module-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(22, 163, 74, 0.1);
+        }
+
+        /* Hide scrollbar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Badge de Estado Animado */
+        .state-badge {
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }

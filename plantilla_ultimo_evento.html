@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla Editable - Último Evento</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8fafc; margin: 0; padding: 24px; color: #0f172a; }
+        .container { max-width: 900px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; }
+        h1 { font-size: 24px; margin: 0 0 12px; }
+        p { margin: 0 0 16px; color: #475569; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; vertical-align: top; }
+        th { background: #f1f5f9; text-align: left; }
+        .editable { background: #fffbea; padding: 8px; border-radius: 8px; min-height: 28px; }
+        .tag { display: inline-block; background: #dcfce7; color: #166534; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+        .note { font-size: 12px; color: #64748b; }
+        .section-title { margin-top: 24px; font-weight: 700; }
+        .input { width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plantilla Editable — Último Evento (Index)</h1>
+        <p>Completa los campos en amarillo con la información final. Puedes copiar y pegar este contenido a tu brief interno.</p>
+
+        <div class="section-title">Campos de texto</div>
+        <div class="grid">
+            <div>
+                <label>Etiqueta superior</label>
+                <div class="editable" contenteditable="true">Último Rally</div>
+            </div>
+            <div>
+                <label>CTA</label>
+                <div class="editable" contenteditable="true">Ver Detalles del Evento</div>
+            </div>
+            <div>
+                <label>Título principal (máx 2 líneas)</label>
+                <div class="editable" contenteditable="true">Puebla en Movimiento 2025</div>
+            </div>
+            <div>
+                <label>Descripción corta (1–2 líneas)</label>
+                <div class="editable" contenteditable="true">Revivimos los mejores momentos del rally donde sembramos honestidad en cada rincón de nuestra comunidad.</div>
+            </div>
+            <div>
+                <label>Ubicación</label>
+                <div class="editable" contenteditable="true">Puebla, Centro Histórico</div>
+            </div>
+            <div>
+                <label>Fecha</label>
+                <div class="editable" contenteditable="true">Febrero 2025</div>
+            </div>
+        </div>
+
+        <div class="section-title">Especificaciones de imágenes</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Cantidad</th>
+                    <th>Proporción</th>
+                    <th>Recomendado</th>
+                    <th>Mínimo</th>
+                    <th>Peso Máx</th>
+                    <th>Notas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hero principal</td>
+                    <td>1</td>
+                    <td>16:9</td>
+                    <td>1920×1080 px</td>
+                    <td>1280×720 px</td>
+                    <td>700 KB</td>
+                    <td>Foto con foco central, sin texto incrustado</td>
+                </tr>
+                <tr>
+                    <td>Banderines decorativos</td>
+                    <td>2</td>
+                    <td>1:1</td>
+                    <td>300×300 px</td>
+                    <td>200×200 px</td>
+                    <td>150 KB</td>
+                    <td>PNG o JPG, fondo limpio</td>
+                </tr>
+                <tr>
+                    <td>Galería horizontal</td>
+                    <td>6</td>
+                    <td>5:3</td>
+                    <td>1000×720 px</td>
+                    <td>800×576 px</td>
+                    <td>300 KB</td>
+                    <td>Sin texto incrustado, buena luz</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-title">Rutas sugeridas</div>
+        <p class="note">Puedes usar este formato para el equipo de contenido:</p>
+        <div class="editable" contenteditable="true">
+            <div><span class="tag">Hero</span> images/rally/f_01.jpg</div>
+            <div><span class="tag">Banderín 1</span> images/rally/banderin_1.png</div>
+            <div><span class="tag">Banderín 2</span> images/rally/banderin_2.png</div>
+            <div><span class="tag">Galería</span> images/rally/f_02.jpg — images/rally/f_07.jpg</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álbum de Aventuras - Comunidad e Integridad</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Quicksand -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/eventos.css">
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+    <!-- Hero Header -->
+    <div class="hero-gradient text-white py-24 px-4 relative overflow-hidden mb-12">
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-400 text-yellow-900 font-bold text-sm uppercase tracking-widest mb-6 shadow-md">
+                <i data-lucide="leaf" class="w-4 h-4 text-green-800"></i>
+                Integridad desde la Raíz
+            </div>
+            <h1 class="text-5xl md:text-7xl font-kids mb-6 drop-shadow-lg tracking-tight text-white">Eventos</h1>
+            <p class="text-xl md:text-2xl text-green-50 max-w-3xl mx-auto font-semibold leading-relaxed">
+                Revive cada historia donde la <span class="text-yellow-300">honestidad</span> crece fuerte y los valores nos unen.
+            </p>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-slate-50 rounded-t-[50%] transform scale-x-150 translate-y-8"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Filtros -->
+        <div class="mb-12 flex flex-col md:flex-row items-center justify-center gap-6">
+            <div id="filters-container" class="flex flex-wrap justify-center gap-3 bg-white p-2 rounded-full shadow-sm border border-slate-100">
+                <!-- Filtros dinámicos -->
+            </div>
+        </div>
+
+        <!-- Grid de Eventos -->
+        <section class="mb-24">
+            <div class="flex justify-between items-end mb-10">
+                <h2 class="text-3xl font-kids text-slate-800 flex items-center gap-3">
+                    <i data-lucide="calendar-days" class="text-green-600 w-8 h-8"></i> Eventos
+                </h2>
+                <!-- Contador de Páginas -->
+                <div id="event-counter" class="text-right text-slate-400 text-sm font-bold hidden">
+                    Mostrando página <span id="current-page-num">1</span> de <span id="total-pages-num">1</span>
+                </div>
+            </div>
+
+            <div id="events-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-10"></div>
+            
+            <!-- Paginación -->
+            <div id="pagination" class="pagination-container hidden"></div>
+
+            <!-- Estado Vacío -->
+            <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 text-center">
+                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm">
+                    <i data-lucide="calendar-off" class="w-10 h-10 text-slate-400"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-800 italic">Próximamente</h3>
+                <p class="text-slate-500 mt-2 max-w-md mx-auto">Estamos trabajando en nuevos eventos. ¡Vuelve pronto!</p>
+            </div>
+        </section>
+
+        <!-- Momentos Inolvidables -->
+        <section class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-kids text-slate-800 mb-4 italic">"Momentos Inolvidables"</h2>
+                <p class="text-slate-600 max-w-xl mx-auto font-semibold">Instantáneas eventos que capturan la esencia de nuestra region.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="moments-gallery">
+                <!-- Galería dinámica -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal Mejorado -->
+    <div id="event-modal" class="animate-fade-in" onclick="if(event.target == this) closeModal()">
+        <div class="modal-card animate-zoom-in">
+            <!-- Botón de Cerrar Flotante -->
+            <button onclick="closeModal()" class="absolute top-8 right-8 z-[120] bg-white/20 hover:bg-white/40 text-white backdrop-blur-md p-3 rounded-full transition-all shadow-xl">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Se inyecta dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/footer.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/events-data.js"></script>
+    <script src="js/events-page-data.js"></script>
+    <script src="js/events-page-logic.js"></script>
+</body>
+</html>

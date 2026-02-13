@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Integridad desde la Raíz</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="font-quicksand">
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <div class="mobile-header__logo">
+            <img src="../images/logo.png" alt="Logo" class="logo-img">
+            <span class="logo-text">SEA Puebla</span>
+        </div>
+        <button id="btn-toggle-sidebar" class="mobile-header__toggle">
+            <i data-lucide="menu"></i>
+        </button>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- Sidebar Overlay (Mobile) -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar__inner">
+                <!-- User Profile Summary -->
+                <div class="profile-summary">
+                    <div class="profile-summary__avatar">
+                        <img src="../images/logo.png" alt="Logo SEA" class="avatar-img">
+                        <div class="avatar-status"></div>
+                    </div>
+                    <div class="profile-summary__info">
+                        <h2 id="sidebar-user-role">Administrador</h2>
+                        <p>Panel de Control</p>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="navigation">
+                    <p class="nav-section-title">Principal</p>
+                    
+                    <a href="dashboard.php" id="nav-general" class="nav-item">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>General</span>
+                    </a>
+                    
+                    <a href="usuarios.html" id="nav-users" class="nav-item active">
+                        <i data-lucide="users"></i>
+                        <span>Usuarios</span>
+                    </a>
+                    
+                    <p class="nav-section-title">Gestión</p>
+
+                    <a href="eventos.html" id="nav-events" class="nav-item">
+                        <i data-lucide="calendar-days"></i>
+                        <span>Eventos y Rally</span>
+                    </a>
+                    
+                    <a href="#" class="nav-item">
+                        <i data-lucide="message-square"></i>
+                        <span>Compromisos</span>
+                    </a>
+                    
+                    <a href="#" class="nav-item">
+                        <i data-lucide="settings"></i>
+                        <span>Configuración</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="sidebar__footer">
+                <button id="btn-logout" class="btn btn-danger btn-full">
+                    <i data-lucide="log-out"></i> Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="page-header">
+                <div class="page-header__title">
+                    <h1>Gestión de Usuarios</h1>
+                    <p>Administra los accesos y roles de los usuarios del sistema.</p>
+                </div>
+                <div class="page-header__actions">
+                    <button id="btn-add-user" class="btn btn-primary">
+                        <i data-lucide="plus"></i> Nuevo Usuario
+                    </button>
+                </div>
+            </header>
+
+            <!-- User List -->
+            <section class="content-section">
+                
+                <!-- Filters & Search -->
+                <div class="table-controls">
+                    <div class="table-search">
+                        <i data-lucide="search"></i>
+                        <input type="text" id="search-users" placeholder="Buscar usuario por nombre o correo...">
+                    </div>
+                    <div class="table-filter">
+                        <select id="filter-role">
+                            <option value="all">Todos los Roles</option>
+                            <!-- Roles cargados dinámicamente -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-container">
+                    <div class="item-table">
+                        <div class="item-table__header users-grid">
+                            <div class="col">ID</div>
+                            <div class="col">Nombre Completo</div>
+                            <div class="col">Correo</div>
+                            <div class="col">Rol</div>
+                            <div class="col">Estado</div>
+                            <div class="col">Estatus</div>
+                            <div class="col col-actions">Acciones</div>
+                        </div>
+                        <div id="users-list" class="item-table__body">
+                            <!-- JS will populate this -->
+                            <div class="loading-state">
+                                <i data-lucide="loader-2" class="animate-spin"></i>
+                                <p>Cargando usuarios...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination">
+                    <span class="pagination-info">Mostrando <span id="showing-count">0</span> de <span id="total-count">0</span> usuarios</span>
+                    <div class="pagination-controls">
+                        <button class="btn-icon" disabled><i data-lucide="chevron-left"></i></button>
+                        <button class="btn-icon" disabled><i data-lucide="chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal Form (Hidden by default) -->
+    <div id="modal-user" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Nuevo Usuario</h3>
+                <button id="btn-close-modal" class="btn-icon"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="user-form">
+                    <!-- Dynamic fields will be injected here -->
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="btn-cancel-modal" class="btn btn-secondary">Cancelar</button>
+                <button type="button" id="btn-save-user" class="btn btn-primary">Guardar Usuario</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Source -->
+    <script src="../js/users-data.js"></script>
+    <!-- Admin Logic -->
+    <script src="../js/admin/usuarios.js"></script>
+    
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

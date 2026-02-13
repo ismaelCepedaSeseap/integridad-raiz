@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rally por la Integridad - SESEA Puebla</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Fondo de Cielo y Bosque */
+        .bg-sky-recap {
+            background: linear-gradient(180deg, #e0f2fe 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Suelo amarillo curvo distintivo */
+        .yellow-floor {
+            position: absolute;
+            bottom: -5%;
+            left: -5%;
+            right: -5%;
+            height: 40%;
+            background: #ffcc00;
+            border-radius: 50% 50% 0 0;
+            z-index: 0;
+        }
+
+        /* Marcos de fotos estilo Galería */
+        .photo-frame {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 8px solid white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .photo-frame:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(22, 163, 74, 0.2);
+            z-index: 10;
+        }
+
+        /* Estilo para los Banners de Valores (Roll-ups) */
+        .banner-roll-up {
+            flex: 0 0 auto;
+            width: 260px;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 20px 13px rgb(0 0 0 / 0.15));
+        }
+        .banner-roll-up:hover {
+            transform: translateY(-15px);
+            filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.25));
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Animación de flotado para banderines */
+        .banderin-float {
+            animation: floating 4s ease-in-out infinite;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Ocultar fotos inicialmente */
+        .hidden-photo {
+            display: none;
+        }
+
+        /* Estilos del visualizador (Lightbox) */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass-nav border-b border-green-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-xl text-green-900 tracking-tight uppercase">SESEA <span class="text-green-600 font-black">Rally</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="text-slate-600 hover:text-green-600 font-bold transition">Crónica</a>
+                    <a href="#pilares" class="text-slate-600 hover:text-green-600 font-bold transition">Valores</a>
+                    <a href="#galeria" class="text-slate-600 hover:text-green-600 font-bold transition">Galería</a>
+                    <a href="#impacto" class="text-slate-600 hover:text-green-600 font-bold transition">Impacto</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="inicio" class="bg-sky-recap pt-20 pb-40 relative">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center lg:text-left">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                
+                <div class="lg:w-1/2">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-green-200 text-green-700 text-xs font-black mb-6 uppercase tracking-widest shadow-sm">
+                        <i data-lucide="sparkles" class="w-4 h-4 fill-green-500 text-green-500"></i>
+                        Recapitulación Rally 2024
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 leading-[1.1]">
+                        ¡La Integridad en <span class="text-green-600 italic">Movimiento!</span>
+                    </h1>
+                    <p class="text-xl text-slate-700 mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        Revivamos cada reto, cada sonrisa y el gran compromiso de nuestras autoridades y ciudadanos. Un viaje por los valores que transforman a Puebla.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <a href="#galeria" class="px-8 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 transition-all flex items-center gap-2">
+                            Explorar Galería <i data-lucide="chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:w-1/2 relative flex justify-center items-center">
+                    <!-- Banderines Flotantes -->
+                    <div class="absolute -left-10 top-0 w-32 md:w-44 z-30 banderin-float">
+                        <img src="images/rally/banderin_1.png" alt="Banderín Rally" class="rounded-2xl">
+                    </div>
+
+                    <!-- Foto Principal del Presídium (Actualizada) -->
+                    <div class="photo-frame rounded-[2.5rem] overflow-hidden w-full max-w-lg aspect-video bg-slate-200">
+                        <img src="images/rally/f_01.jpg" alt="Presídium SESEA Puebla" class="w-full h-full object-cover">
+                    </div>
+
+                    <div class="absolute -right-10 bottom-0 w-32 md:w-44 z-30 banderin-float" style="animation-delay: -2s;">
+                        <img src="images/rally/banderin_2.png" alt="Banderín Integridad" class="rounded-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yellow-floor"></div>
+    </header>
+
+    <!-- NUEVA SECCIÓN: Pilares de Valores (Los 7 Banners) -->
+    <section id="pilares" class="py-24 bg-white relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 italic uppercase tracking-tighter">Nuestros Valores y Principios</h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto italic">Explora los pilares éticos que guiaron cada estación de este gran rally.</p>
+                <div class="flex justify-center gap-4 mt-8">
+                    <button onclick="scrollBanners('left')" class="p-3 rounded-full bg-slate-100 hover:bg-green-600 hover:text-white transition shadow-sm">
+                        <i data-lucide="chevron-left"></i>
+                    </button>
+                    <button onclick="scrollBanners('right')" class="p-3 rounded-full bg-slate-100 hover:bg-green-600 hover:text-white transition shadow-sm">
+                        <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Carousel de Banners Roll-up -->
+            <div id="banner-scroll" class="flex gap-10 overflow-x-auto hide-scrollbar py-12 px-8 scroll-smooth">
+                <!-- Banner 2: Honestidad -->
+                <div class="banner-roll-up">
+                    <img src="images/rally/banner_rally_01.jpg" class="rounded-2xl" alt="Banner Honestidad">
+                </div>
+                <!-- Banner 3: Transparencia -->
+                <div class="banner-roll-up">
+                    <img src="images/rally/banner_rally_02.jpg" class="rounded-2xl" alt="Banner Transparencia">
+                </div>
+                <!-- Banner 5 -->
+                <div class="banner-roll-up">
+                    <img src="images/rally/banner_rally_04.jpg" class="rounded-2xl" alt="Valor 5">
+                </div>
+                <!-- Banner 6 -->
+                <div class="banner-roll-up">
+                    <img src="images/rally/banner_rally_05.jpg" class="rounded-2xl" alt="Valor 6">
+                </div>
+                <!-- Banner 7 -->
+                <div class="banner-roll-up">
+                    <img src="images/rally/banner_rally_06.jpg" class="rounded-2xl" alt="Valor 7">
+                </div>
+            </div>
+            <p class="text-center mt-6 text-slate-400 text-xs font-bold uppercase tracking-[0.3em]">Desliza para explorar <i data-lucide="move-horizontal" class="inline w-4 h-4 ml-1"></i></p>
+        </div>
+    </section>
+
+    <!-- Sección de Galería Dinámica -->
+    <section id="galeria" class="py-24 bg-slate-50 relative z-10 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 italic uppercase tracking-tighter">Galería del Evento</h2>
+                <p class="text-slate-500 text-lg max-w-2xl mx-auto italic">Haz clic en cualquier imagen para verla en pantalla completa.</p>
+                <div class="flex justify-center gap-2 mt-6">
+                    <span class="w-16 h-2 bg-green-500 rounded-full"></span>
+                    <span class="w-4 h-2 bg-yellow-400 rounded-full"></span>
+                </div>
+            </div>
+
+            <!-- Contenedor de la Galería -->
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Foto 1 (Presídium 1) -->
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video">
+                    <img src="images/rally/f_01.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <!-- Foto 2 (Presídium 2) -->
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video">
+                    <img src="images/rally/f_02.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video">
+                    <img src="images/rally/f_03.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <!-- Foto 2 (Presídium 2) -->
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video">
+                    <img src="images/rally/f_04.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video">
+                    <img src="images/rally/f_05.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <!-- Foto 2 (Presídium 2) -->
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video">
+                    <img src="images/rally/f_06.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <!-- ... FOTOS INTERMEDIAS ... -->
+                
+                <!-- FOTOS OCULTAS (Del 7 al 27) -->
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video hidden-photo">
+                    <img src="images/rally/f_07.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+                <div class="photo-frame rounded-2xl overflow-hidden aspect-video hidden-photo">
+                    <img src="images/rally/f_08.jpg" onclick="openLightbox(this.src)" class="w-full h-full object-cover" alt="Momento Rally">
+                </div>
+            </div>
+
+            <!-- Botón Ver Más -->
+            <div class="mt-16 flex justify-center">
+                <button id="load-more-btn" onclick="toggleGallery()" class="px-10 py-4 bg-slate-900 text-white rounded-2xl font-bold shadow-xl hover:bg-slate-800 transition-all flex items-center gap-3">
+                    <i data-lucide="layout-grid" class="w-5 h-5 text-green-400"></i>
+                    <span id="btn-text">Ver todas las fotos (27)</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualizador de Fotos (Lightbox Modal) -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-10 right-10 text-white hover:text-green-400 transition">
+            <i data-lucide="x-circle" class="w-12 h-12"></i>
+        </button>
+        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] rounded-xl shadow-2xl border-4 border-white/20" alt="Vista Ampliada">
+    </div>
+
+    <!-- Impacto y Cifras -->
+    <section id="impacto" class="py-24 bg-green-900 text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+            <h2 class="text-4xl font-black mb-12 italic uppercase tracking-widest text-yellow-400">Nuestro Impacto</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="bg-white/5 backdrop-blur-md p-10 rounded-[40px] border border-white/10 shadow-2xl">
+                    <div class="text-6xl font-black text-white mb-4 tracking-tighter">+250</div>
+                    <p class="text-green-300 font-bold uppercase tracking-widest text-xs">Participantes</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-md p-10 rounded-[40px] border border-white/10 shadow-2xl">
+                    <div class="text-6xl font-black text-white mb-4 tracking-tighter">7</div>
+                    <p class="text-green-300 font-bold uppercase tracking-widest text-xs">Pilares de Valor</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-md p-10 rounded-[40px] border border-white/10 shadow-2xl">
+                    <div class="text-6xl font-black text-white mb-4 tracking-tighter">100%</div>
+                    <p class="text-green-300 font-bold uppercase tracking-widest text-xs">Integridad</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-16 text-center border-t border-green-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold uppercase tracking-tighter">SESEA PUEBLA</h3>
+            </div>
+            <p class="text-slate-500 italic text-sm mb-8">Sembrando hoy la honestidad del mañana.</p>
+            <div class="flex justify-center gap-6">
+                <a href="#" class="text-slate-600 hover:text-green-400 transition"><i data-lucide="facebook"></i></a>
+                <a href="#" class="text-slate-600 hover:text-green-400 transition"><i data-lucide="instagram"></i></a>
+                <a href="#" class="text-slate-600 hover:text-green-400 transition"><i data-lucide="globe"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Control de desplazamiento para los banners
+        function scrollBanners(direction) {
+            const container = document.getElementById('banner-scroll');
+            const scrollAmount = 300;
+            if (direction === 'left') {
+                container.scrollLeft -= scrollAmount;
+            } else {
+                container.scrollLeft += scrollAmount;
+            }
+        }
+
+        // Función para mostrar/ocultar todas las fotos
+        function toggleGallery() {
+            const hiddenPhotos = document.querySelectorAll('.hidden-photo');
+            const btnText = document.getElementById('btn-text');
+
+            hiddenPhotos.forEach(photo => {
+                photo.style.display = photo.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            btnText.innerText = btnText.innerText.includes("Ver todas") ? "Ver menos" : "Ver todas las fotos (27)";
+            lucide.createIcons();
+        }
+
+        // Funciones del Visualizador (Lightbox)
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Navbar dinámica
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-xl', 'h-16');
+                nav.classList.remove('h-20');
+            } else {
+                nav.classList.remove('shadow-xl', 'h-16');
+                nav.classList.add('h-20');
+            }
+        });
+    </script>
+</body>
+</html>

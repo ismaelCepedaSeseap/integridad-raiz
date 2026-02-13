@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Previa - Integridad desde la Raíz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/admin_preview.css">
+</head>
+<body class="bg-slate-100 min-h-screen">
+    
+    <div id="loading" class="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+            <p class="text-slate-500">Esperando datos del editor...</p>
+        </div>
+    </div>
+
+    <div id="preview-container" class="w-full min-h-screen">
+        <!-- El contenido se renderizará aquí -->
+    </div>
+
+    <script>
+        // Mapa de iconos SVG
+        const socialIcons = {
+            facebook: `<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>`,
+            twitter_x: `<path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768m2.464-2.464l6.768-6.768"/>`,
+            instagram: `<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>`,
+            tiktok: `<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>`,
+            youtube: `<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.11 1 12 1 12s0 3.89.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.89 23 12 23 12s0-3.89-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>`,
+            spotify: `<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5-1 4-1 4 1 4 1"/><path d="M7 11.5s2-1.5 5-1.5 5 1.5 5 1.5"/><path d="M6 9s2.5-2 6-2 6 2 6 2"/>`,
+            default: `<circle cx="12" cy="12" r="10"/>`
+        };
+
+        function isVideoSource(src) {
+            if (!src || typeof src !== 'string') return false;
+            const clean = src.split('?')[0].split('#')[0].toLowerCase();
+            return clean.endsWith('.mp4') || clean.endsWith('.webm') || clean.endsWith('.ogg');
+        }
+
+        function getVideoType(src) {
+            const clean = src.split('?')[0].split('#')[0].toLowerCase();
+            if (clean.endsWith('.webm')) return 'video/webm';
+            if (clean.endsWith('.ogg')) return 'video/ogg';
+            return 'video/mp4';
+        }
+
+        window.updatePreview = function(tab, data) {
+            const container = document.getElementById('preview-container');
+            const loading = document.getElementById('loading');
+            
+            if (loading) loading.style.display = 'none';
+            
+            let html = '';
+
+            if (tab === 'slider') {
+                html = '<div class="w-full bg-slate-50">';
+                data.forEach((slide, index) => {
+                    html += `
+                        <div class="relative w-full min-h-[600px] flex items-center justify-center border-b border-slate-200 overflow-hidden group">
+                            <div class="absolute top-4 left-4 bg-black/50 text-white text-xs px-2 py-1 rounded z-50">Slide #${index + 1}</div>
+                            ${slide.type === 'complex' 
+                                ? `<div class="absolute inset-0 bg-cover bg-center" style="background: ${slide.background}"></div>
+                                   <div class="relative z-10 text-center p-8 max-w-4xl mx-auto">
+                                        <span class="inline-block px-4 py-1 rounded-full bg-white/50 backdrop-blur-sm text-green-800 font-bold text-sm mb-6 shadow-sm border border-white/40 animate-fade-in">${slide.badge}</span>
+                                        <h1 class="text-5xl md:text-7xl font-bold text-slate-800 mb-6 leading-tight animate-fade-in">${slide.title}</h1>
+                                        <p class="text-xl md:text-2xl text-slate-600 mb-8 animate-fade-in">${slide.description}</p>
+                                        <div class="flex gap-4 justify-center animate-fade-in">
+                                            <button class="px-8 py-4 bg-green-600 text-white rounded-full font-bold shadow-lg shadow-green-600/30 text-lg hover:scale-105 transition-transform">Botón Principal</button>
+                                        </div>
+                                   </div>
+                                   <img src="${slide.image}" class="absolute bottom-0 right-0 w-1/3 object-contain opacity-80" style="max-height: 80%;">
+                                  `
+                                : (() => {
+                                    const bgSrc = slide.backgroundVideo || slide.backgroundImage || '';
+                                    if (isVideoSource(bgSrc)) {
+                                        return `
+                                            <div class="absolute inset-0 bg-black">
+                                                <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="metadata">
+                                                    <source src="${bgSrc}" type="${getVideoType(bgSrc)}">
+                                                </video>
+                                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                                <div class="absolute bottom-20 left-12 text-white max-w-2xl">
+                                                    <h2 class="text-5xl font-bold mb-4 drop-shadow-lg">Slide Simple</h2>
+                                                    <p class="text-xl opacity-90 drop-shadow-md">Este slide muestra un video de fondo.</p>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }
+                                    return `
+                                        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('${bgSrc}')">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                            <div class="absolute bottom-20 left-12 text-white max-w-2xl">
+                                                <h2 class="text-5xl font-bold mb-4 drop-shadow-lg">Slide Simple</h2>
+                                                <p class="text-xl opacity-90 drop-shadow-md">Este slide muestra solo la imagen de fondo.</p>
+                                            </div>
+                                       </div>
+                                    `;
+                                })()
+                            }
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            } else if (tab === 'states') {
+                 html = `
+                    <div class="py-24 px-6 bg-slate-50 text-center min-h-screen flex flex-col items-center justify-center">
+                        <div class="mb-12">
+                            <h2 class="text-3xl font-bold text-slate-800 mb-4">Nuestros Estados</h2>
+                            <p class="text-slate-500">Vista previa de las tarjetas de estados y sus redes sociales</p>
+                        </div>
+                        <div class="flex flex-wrap justify-center gap-8">
+                            ${data.map(state => `
+                                <div class="group flex flex-col items-center gap-3 flex-shrink-0 w-[240px]">
+                                    <div class="w-full h-32 bg-white rounded-xl flex items-center justify-center border border-slate-200 shadow-sm p-8 group-hover:border-green-600 group-hover:shadow-md transition-all duration-300 transform group-hover:-translate-y-1">
+                                        <img src="${state.logo}" class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300">
+                                    </div>
+                                    <div class="flex flex-col items-center gap-3">
+                                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] group-hover:text-green-800 transition-colors">${state.name}</span>
+                                        <div class="flex flex-wrap justify-center gap-4 transition-all duration-300">
+                                            ${state.socials.map(social => `
+                                                <div class="text-slate-400 hover:text-green-800 hover:scale-110 transition-all cursor-pointer" title="${social.name}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        ${socialIcons[social.icon] || socialIcons.default}
+                                                    </svg>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                 `;
+            } else if (tab === 'cine') {
+                // Cálculo de columnas idéntico a initCine en cine-logic.js
+                const count = data.length;
+                let gridClass = 'grid-cols-1 md:grid-cols-3';
+                if (count === 1) gridClass = 'grid-cols-1 place-items-center';
+                else if (count === 2) gridClass = 'grid-cols-1 md:grid-cols-2';
+                else if (count === 4) gridClass = 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+                else if (count >= 5) gridClass = 'grid-cols-1 md:grid-cols-3 lg:grid-cols-4';
+
+                html = `
+                    <div class="py-24 px-6 bg-slate-50 min-h-screen">
+                        <div class="max-w-7xl mx-auto px-6">
+                            <div class="text-center mb-16">
+                                <div class="inline-block p-3 bg-yellow-100 rounded-2xl text-yellow-600 mb-4"><i data-lucide="film" class="w-8 h-8"></i></div>
+                                <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 italic uppercase">Cine de la Integridad</h2>
+                                <p class="text-slate-500 text-lg max-w-2xl mx-auto">Nuestros guardianes tienen un mensaje especial para ti. ¡Dale play!</p>
+                            </div>
+                            <div class="grid ${gridClass} gap-12 lg:gap-24">
+                                ${data.map(item => `
+                                    <div class="text-center">
+                                        <div class="video-mobile-frame border-slate-700" style="height:80%;">
+                                            <video controls poster="${item.posterSrc}">
+                                                <source src="${item.videoSrc}" type="video/mp4">
+                                                Tu navegador no soporta el elemento de video.
+                                            </video>
+                                        </div>
+                                        <div class="cursor-pointer video-label border-b-4 border-slate-400">
+                                            <h3 class="text-2xl font-black ${item.titleColorClass || 'text-slate-900'} italic">${item.name}</h3>
+                                            <p class="text-green-600 font-bold text-xs uppercase tracking-widest mt-1">${item.slogan}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'event' || tab === 'events') {
+                const visibleEvent = data.find(e => e.visible) || data[0];
+                
+                if (!visibleEvent) {
+                    html = '<div class="min-h-screen flex items-center justify-center text-slate-400">No hay eventos visibles</div>';
+                } else {
+                    const pillars = Array.isArray(visibleEvent.pillars) ? visibleEvent.pillars : [];
+                    const banners = Array.isArray(visibleEvent.banners) ? visibleEvent.banners : [];
+                    const hasVideo = Boolean(visibleEvent.videoUrl);
+                    html = `
+                        <div class="py-24 px-6 bg-white min-h-screen flex items-center justify-center">
+                            <div class="w-full max-w-7xl">
+                                <div class="event-main-card">
+                                    <!-- Header del Evento -->
+                                    <div class="p-10 lg:p-16 flex flex-col lg:flex-row gap-12 items-center bg-gradient-to-br from-green-50 to-white">
+                                        <div class="lg:w-1/2">
+                                            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-green-200 text-green-700 text-xs font-black mb-6 uppercase tracking-widest shadow-sm">
+                                                <i data-lucide="sparkles" class="w-4 h-4 fill-green-500 text-green-500"></i> ${visibleEvent.badge}
+                                            </div>
+                                            <h2 class="text-4xl md:text-6xl font-black text-slate-900 mb-6 leading-tight italic">${visibleEvent.title}</h2>
+                                            <p class="text-lg text-slate-600 mb-8 leading-relaxed italic">${visibleEvent.description}</p>
+                                            <div class="flex flex-wrap gap-4 mb-8">
+                                                <div class="bg-slate-50 px-4 py-2 rounded-xl text-slate-500 font-bold text-xs flex items-center gap-2">
+                                                    <i data-lucide="map-pin" class="w-4 h-4"></i> ${visibleEvent.location}
+                                                </div>
+                                                <div class="bg-slate-50 px-4 py-2 rounded-xl text-slate-500 font-bold text-xs flex items-center gap-2">
+                                                    <i data-lucide="calendar" class="w-4 h-4"></i> ${visibleEvent.date}
+                                                </div>
+                                            </div>
+                                            ${visibleEvent.url && visibleEvent.url !== '#' ? `
+                                                <button class="bg-green-600 text-white px-8 py-4 rounded-2xl font-bold shadow-xl hover:bg-green-700 transition-all flex items-center gap-3">
+                                                    <i data-lucide="plus-circle"></i> Ver Detalles del Evento
+                                                </button>
+                                            ` : ''}
+                                        </div>
+
+                                        <div class="lg:w-1/2 relative">
+                                            ${visibleEvent.decorations && visibleEvent.decorations.topLeft ? `
+                                                <div class="absolute -left-6 -top-6 w-24 z-20 banderin-float"><img src="${visibleEvent.decorations.topLeft}" class="rounded-xl shadow-lg"></div>
+                                            ` : ''}
+                                            <div class="rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white aspect-video relative z-10 cursor-pointer">
+                                                <img src="${visibleEvent.mainImage}" class="w-full h-full object-cover">
+                                            </div>
+                                            ${visibleEvent.decorations && visibleEvent.decorations.bottomRight ? `
+                                                <div class="absolute -right-6 -bottom-6 w-24 z-20 banderin-float" style="animation-delay: -1.5s;"><img src="${visibleEvent.decorations.bottomRight}" class="rounded-xl shadow-lg"></div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+
+                                    <!-- Galería con Slider -->
+                                    ${visibleEvent.gallery && visibleEvent.gallery.length > 0 ? `
+                                        <div class="p-10 border-t border-slate-100 bg-white">
+                                            <div class="flex justify-between items-center mb-8">
+                                                <h3 class="text-xl font-black text-slate-900 uppercase italic">Galería de Momentos</h3>
+                                                <div class="flex gap-2">
+                                                    <button class="p-2 rounded-full bg-slate-100 hover:bg-green-600 hover:text-white transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                                    <button class="p-2 rounded-full bg-slate-100 hover:bg-green-600 hover:text-white transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                                                </div>
+                                            </div>
+
+                                            <div id="gallery-slider" class="flex gap-6 overflow-x-auto hide-scrollbar scroll-smooth mb-4 pb-4">
+                                                ${visibleEvent.gallery.map(img => `
+                                                    <div class="gallery-item"><img src="${img}" class="w-full h-full object-cover"></div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+
+                                    <div class="p-10 border-t border-slate-100 bg-slate-50">
+                                        <div class="flex flex-col gap-8">
+                                            <div>
+                                                <h3 class="text-2xl font-black text-slate-900 mb-2 italic">Detalle del Evento</h3>
+                                                <p class="text-slate-600">${visibleEvent.description || ''}</p>
+                                            </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex items-center gap-4">
+                                                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                                                        <i data-lucide="users" class="w-5 h-5"></i>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Impacto</p>
+                                                        <p class="text-lg font-bold text-slate-900">${visibleEvent.impact || 'N/A'}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex items-center gap-4">
+                                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                                                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Valores</p>
+                                                        <p class="text-lg font-bold text-slate-900">${visibleEvent.pillars_count || 'Varios'}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex items-center gap-4">
+                                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
+                                                        <i data-lucide="map-pin" class="w-5 h-5"></i>
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Estado</p>
+                                                        <p class="text-lg font-bold text-slate-900">${visibleEvent.state || 'Sin estado'}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            ${pillars.length > 0 ? `
+                                                <div>
+                                                    <h4 class="text-lg font-black text-slate-900 mb-4 italic">Pilares del Evento</h4>
+                                                    <div class="flex flex-wrap gap-2">
+                                                        ${pillars.map(pillar => `
+                                                            <span class="px-4 py-2 rounded-full bg-white border border-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest shadow-sm">${pillar}</span>
+                                                        `).join('')}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+
+                                            ${banners.length > 0 ? `
+                                                <div>
+                                                    <h4 class="text-lg font-black text-slate-900 mb-4 italic">Banners</h4>
+                                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                        ${banners.map(banner => `
+                                                            <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-white">
+                                                                <img src="${banner}" class="w-full h-40 object-cover">
+                                                            </div>
+                                                        `).join('')}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+
+                                            ${hasVideo ? `
+                                                <div>
+                                                    <h4 class="text-lg font-black text-slate-900 mb-4 italic">Video del Evento</h4>
+                                                    <div class="relative w-full overflow-hidden rounded-3xl border border-slate-100 shadow-sm bg-white" style="padding-top:56.25%;">
+                                                        <iframe src="${visibleEvent.videoUrl}" class="absolute inset-0 w-full h-full" allowfullscreen title="Video del evento"></iframe>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // Inicialización
+        window.addEventListener('load', () => {
+            if (window.opener && window.opener.getPreviewData) {
+                const { tab, data } = window.opener.getPreviewData();
+                updatePreview(tab, data);
+            }
+        });
+        
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'UPDATE_PREVIEW') {
+                updatePreview(event.data.tab, event.data.data);
+            }
+        });
+    </script>
+</body>
+</html>

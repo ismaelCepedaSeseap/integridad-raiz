@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historias con Valor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+        .font-kids { font-family: 'Comic Neue', cursive; }
+    </style>
+</head>
+<body class="bg-green-50 min-h-screen py-16 px-4">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-16">
+            <h1 class="text-5xl font-kids text-green-700 mb-4">Historias con Valor</h1>
+            <p class="text-xl text-green-800">Cuentos y guiones para reflexionar sobre lo que importa.</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-12">
+            <div class="lg:w-1/3 space-y-6" id="sidebar">
+                <h2 class="text-2xl font-kids text-green-800 px-2">Biblioteca de la Raíz</h2>
+                <div id="story-buttons" class="space-y-6"></div>
+            </div>
+
+            <div class="lg:w-2/3">
+                <div class="bg-white p-12 rounded-3xl shadow-2xl min-h-[600px] border-8 border-white flex flex-col">
+                    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <h2 id="reader-title" class="text-4xl font-kids text-green-700"></h2>
+                        <div class="flex gap-2">
+                            <button class="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold hover:bg-green-200 transition">
+                                <i data-lucide="speaker" class="w-5 h-5"></i> Escuchar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 mb-8" id="reader-characters"></div>
+
+                    <div id="reader-content" class="prose prose-xl max-w-none text-gray-700 leading-relaxed italic border-l-4 border-green-500 pl-8 py-4"></div>
+
+                    <div class="mt-auto pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="text-green-800 font-bold">¿Qué valor aprendimos hoy?</div>
+                        <div id="reader-value" class="bg-green-500 text-white px-6 py-2 rounded-full font-kids text-xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DATOS REALES SEGÚN TU EXPORT
+        const CHARACTERS = [
+            { id: 'honestio', name: 'Honestio', imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=honestio' },
+            { id: 'trampitas', name: 'Lic. Trampitas', imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=trampitas' },
+            { id: 'nitido', name: 'Nítido Pérez', imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=nitido' },
+            { id: 'armadillo', name: 'Detective Armadillo', imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=armadillo' },
+            { id: 'claridad', name: 'Doña Claridad', imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=claridad' }
+        ];
+
+        const STORIES = [
+            {
+                id: '1',
+                title: 'El Gran Pastel de la Honestidad',
+                summary: 'Honestio prepara un pastel gigante, pero el Lic. Trampitas intenta llevarse una rebanada antes de tiempo.',
+                content: `Había una vez en el pueblo de Valores Verdes, un chef llamado Honestio. Un día, decidió cocinar el "Pastel de la Transparencia". El Lic. Trampitas, pasando por ahí, quiso probarlo sin permiso. Pero al tocarlo, su mano se volvió de color azul brillante. Honestio le explicó que en este pueblo, las acciones se ven reflejadas en nuestra piel. Trampitas pidió disculpas y aprendió que pedir permiso es la base del respeto.`,
+                mainCharacters: ['honestio', 'trampitas']
+            },
+            {
+                id: '2',
+                title: 'El Misterio de la Lupa Perdida',
+                summary: 'El Lic. Nítido Pérez pierde su lupa y el Detective Armadillo debe encontrarla.',
+                content: `Alguien había movido la lupa de Nítido Pérez. El Detective Armadillo encontró huellas de papel... ¡eran del Lic. Papel! Resulta que Papel tenía miedo de que la lupa revelara que no había hecho su tarea. Armadillo le explicó que esconder la verdad solo hace el problema más grande. Juntos buscaron a Doña Claridad para que les ayudara a organizar sus ideas y ser honestos.`,
+                mainCharacters: ['nitido', 'armadillo', 'claridad']
+            }
+        ];
+
+        let selectedStory = STORIES[0];
+
+        function updateUI() {
+            const listContainer = document.getElementById('story-buttons');
+            listContainer.innerHTML = '';
+
+            // Dibujar lista lateral
+            STORIES.forEach(story => {
+                const isActive = selectedStory.id === story.id;
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-6 rounded-2xl transition-all border-b-4 ${
+                    isActive ? 'bg-green-600 text-white border-green-800 shadow-xl' : 'bg-white text-gray-700 border-gray-200 hover:bg-green-50'
+                }`;
+                btn.onclick = () => { selectedStory = story; updateUI(); };
+                
+                btn.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="book" class="w-6 h-6"></i>
+                            <span class="text-xl font-bold">${story.title}</span>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </div>
+                    <p class="mt-2 text-sm ${isActive ? 'text-green-100' : 'text-gray-500'}">${story.summary}</p>
+                `;
+                listContainer.appendChild(btn);
+            });
+
+            // Dibujar Lector Principal
+            document.getElementById('reader-title').innerText = selectedStory.title;
+            
+            // Valor dinámico (según tu código de React)
+            document.getElementById('reader-value').innerText = selectedStory.id === '1' ? 'Respeto y Honestidad' : 'Transparencia';
+
+            // Contenido con split
+            const contentDiv = document.getElementById('reader-content');
+            contentDiv.innerHTML = selectedStory.content.split('\n').map(p => `<p class="mb-6">${p}</p>`).join('');
+
+            // Personajes
+            const charDiv = document.getElementById('reader-characters');
+            let charHtml = '<span class="text-gray-500 font-bold self-center">Protagonistas:</span>';
+            selectedStory.mainCharacters.forEach(charId => {
+                const char = CHARACTERS.find(c => c.id === charId);
+                if(char) {
+                    charHtml += `
+                        <div class="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
+                            <img src="${char.imageUrl}" alt="${char.name}" class="w-8 h-8 rounded-full bg-white" />
+                            <span class="font-bold text-gray-700">${char.name}</span>
+                        </div>`;
+                }
+            });
+            charDiv.innerHTML = charHtml;
+
+            // Refrescar iconos Lucide
+            lucide.createIcons();
+        }
+
+        // Carga inicial
+        updateUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine de la Integridad - Integridad desde la Raíz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/cine.css">
+</head>
+<body class="bg-slate-50">
+
+  
+
+    <!-- Contenido Principal: CINE -->
+    <main class="py-24 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+                <div class="text-center md:text-left">
+                    <h2 class="text-5xl font-black text-slate-900 italic">Cine de la Integridad</h2>
+                    <p class="text-slate-500 text-lg mt-2">Explora contenidos educativos por estado.</p>
+                </div>
+                
+                <!-- Filtros Estilo Píldora -->
+                <div id="filters-container" class="flex flex-wrap justify-center gap-3 bg-white p-2 rounded-full shadow-sm border border-slate-100">
+                    <!-- Los filtros se cargarán dinámicamente desde JS -->
+                </div>
+            </div>
+
+            <!-- Contador de Videos -->
+            <div id="video-counter" class="text-right text-slate-400 text-sm font-bold mb-4 hidden">
+                Mostrando página <span id="current-page-num">1</span> de <span id="total-pages-num">1</span>
+            </div>
+
+            <!-- Grilla de Videos -->
+            <div class="video-container-grid" id="video-gallery">
+                <!-- Los videos se cargarán dinámicamente desde JS -->
+            </div>
+
+            <!-- Paginación -->
+            <div id="pagination" class="pagination-container hidden">
+                <!-- Botones generados dinámicamente -->
+            </div>
+
+            <!-- Estado Vacío (Próximamente) -->
+            <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 text-center">
+                <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm">
+                    <i data-lucide="film" class="w-10 h-10 text-slate-400"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-800 italic">Próximamente</h3>
+                <p class="text-slate-500 mt-2 max-w-md mx-auto">Estamos trabajando en nuevo contenido para esta sección. ¡Vuelve pronto!</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md" onclick="closeVideoModal()"></div>
+        <div id="modal-content" class="relative w-full max-w-5xl mx-4 bg-black rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+            <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-white hover:text-black transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="aspect-video w-full">
+                <iframe id="modal-iframe" class="w-full h-full" src="" title="Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/footer.js"></script>
+    <script src="js/menu.js"></script>
+    
+    <!-- Scripts dinámicos para Cine -->
+    <script src="js/cine-page-data.js"></script>
+    <script src="js/cine-page-logic.js"></script>
+    
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
