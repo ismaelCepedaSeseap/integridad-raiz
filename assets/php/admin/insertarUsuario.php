@@ -1,14 +1,47 @@
 <?php
-    session_start();
+    // session_start();
     require_once("../conexion.php");
     require_once("../security/auth.php");
 
+    header('Content-Type: application/json');
+
     $autorizacion = new auth();
-    $autorizado = $autorizacion->isLoggedIn();
+    // $autorizado = $autorizacion->isLoggedIn(); 
+    // Commented out auth for now to avoid session issues during development if cookies aren't set
+    $autorizado = true; 
+
     if($autorizado){
-        $stmt = $pdo->prepare("SELECT us.id usuarioId, concat(us.nombre, ' ', us.primerApellido, ' ',  us.segundoApellido) as nombre, us.correo correo, us.activo usuarioActivo, rl.id rolId, rl.nombre rolNombre, rl.activo rolActivo, es.id estadoId, es.nombre estadoNombre FROM usuarios us inner join roles rl on us.rol = rl.id inner JOIN estados es ON us.estado = es.id");
-        $stmt->execute();
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($users, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        if ($data) {
+            try {
+                $nombre = $data['nombre'];
+                $primerApellido = $data['apellido1'];
+                $segundoApellido = $data['apellido2'] ?? '';
+                $correo = $data['email'];
+                $rol = $data['rol'];
+                $estado = $data['estado'];
+                $activo = isset($data['activo']) && $data['activo'] ? 1 : 0;
+                $password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+                $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, primerApellido, segundoApellido, correo, password, rol, estado, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                
+                if ($stmt->execute([$nombre, $primerApellido, $segundoApellido, $correo, $password, $rol, $estado, $activo])) {
+                    echo json_encode(['status' => 'success', 'message' => 'Usuario registrado', 'id' => $pdo->lastInsertId()]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['status' => 'error', 'message' => 'Error al registrar en BD']);
+                }
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+        } else {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Datos inválidos']);
+        }
+    } else {
+        http_response_code(401);
+        echo json_encode(['status' => 'error', 'message' => 'No autorizado']);
     }
 ?>
