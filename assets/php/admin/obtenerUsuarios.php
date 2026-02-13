@@ -1,7 +1,7 @@
 <?php
     // session_start();
-    require_once("../conexion.php");
-    require_once("../security/auth.php");
+    require_once __DIR__ . "/../conexion.php";
+    require_once __DIR__ . "/../security/auth.php";
 
     $autorizacion = new auth();
     // $autorizado = $autorizacion->isLoggedIn();
