@@ -2,6 +2,13 @@
 header('Content-Type: application/json');
 
 $apiKey = "TU_API_KEY_AQUI";
+if (file_exists(__DIR__ . '/../../config/env.php')) {
+    $env = require __DIR__ . '/../../config/env.php';
+    if (isset($env['GROQ_API_KEY'])) {
+        $apiKey = $env['GROQ_API_KEY'];
+    }
+}
+
 //$texto = $_POST["texto"];
 $texto = "Compromiso:Me comprometo a ayudar a los niños de la calle para ponerlos a trabajar. Nombre: DoloresDelano. Estado: Puebla";
 $ch = curl_init("https://api.groq.com/openai/v1/chat/completions");

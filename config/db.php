@@ -1,10 +1,17 @@
 <?php
 header('Access-Control-Allow-Origin: *');
+
+// Load environment config if exists
+$env = [];
+if (file_exists(__DIR__ . '/env.php')) {
+    $env = require __DIR__ . '/env.php';
+}
+
 if (!function_exists('getenv')) {}
-$host = getenv('DB_HOST') ?: 'localhost';
-$db   = getenv('DB_NAME') ?: 'integridad';
-$user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: '12345';
+$host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');
+$db   = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'integridad');
+$user = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'root');
+$pass = getenv('DB_PASS') ?: ($env['DB_PASS'] ?? '12345');
 $charset = 'utf8mb4';
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

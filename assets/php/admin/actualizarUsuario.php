@@ -11,12 +11,30 @@
         $data = json_decode(file_get_contents('php://input'), true);
         if ($data && isset($data['id'])) {
             try {
-                // Por ahora solo actualizamos el nombre como ejemplo, pero se puede extender
+                $id = $data['id'];
                 $nombre = $data['nombre'];
+                $primerApellido = $data['apellido1'];
+                $segundoApellido = $data['apellido2'] ?? '';
+                $correo = $data['email'];
+                $rol = $data['rol'];
+                $estado = $data['estado'];
+                $activo = isset($data['activo']) && $data['activo'] ? 1 : 0;
                 
-                $stmt = $pdo->prepare("UPDATE usuarios SET nombre = ? WHERE id = ?");
+                // If password is provided and not empty, update it
+                $passwordUpdate = "";
+                $params = [$nombre, $primerApellido, $segundoApellido, $correo, $rol, $estado, $activo];
                 
-                if ($stmt->execute([$nombre, $data['id']])) {
+                if (!empty($data['password'])) {
+                    $passwordUpdate = ", password = ?";
+                    $params[] = password_hash($data['password'], PASSWORD_DEFAULT);
+                }
+                
+                $params[] = $id;
+
+                $sql = "UPDATE usuarios SET nombre = ?, primerApellido = ?, segundoApellido = ?, correo = ?, rol = ?, estado = ?, activo = ? $passwordUpdate WHERE id = ?";
+                $stmt = $pdo->prepare($sql);
+                
+                if ($stmt->execute($params)) {
                     echo json_encode(['status' => 'success']);
                 } else {
                     http_response_code(500);

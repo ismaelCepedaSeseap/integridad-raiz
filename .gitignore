@@ -13,3 +13,4 @@ Thumbs.db
 
 # Environment variables (if any)
 .env
+config/env.php

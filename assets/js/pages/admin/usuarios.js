@@ -53,10 +53,15 @@ async function renderUsuarios() {
     lucide.createIcons();
 }
 
-async function abrirModalUsuario() {
+async function abrirModalUsuario(usuario = null) {
+    const isEdit = !!usuario;
+    const title = isEdit ? 'Editar Usuario' : 'Registrar Nuevo Usuario';
+    const icon = isEdit ? 'edit-3' : 'user-plus';
+    const confirmBtnText = isEdit ? 'Guardar Cambios' : 'Confirmar Registro';
+    const endpoint = isEdit ? '../assets/php/admin/actualizarUsuario.php' : '../assets/php/admin/insertarUsuario.php';
 
     const { value: formValues } = await Swal.fire({
-        title: '<div class="flex items-center gap-3 justify-center pb-2 border-b border-slate-100 text-slate-800"><i data-lucide="user-plus" class="text-green-600"></i> Registrar Nuevo Usuario</div>',
+        title: `<div class="flex items-center gap-3 justify-center pb-2 border-b border-slate-100 text-slate-800"><i data-lucide="${icon}" class="text-green-600"></i> ${title}</div>`,
         html: `
             <div class="text-left mt-6 px-2 max-h-[75vh] overflow-y-auto hide-scrollbar">
                 
@@ -69,17 +74,17 @@ async function abrirModalUsuario() {
                             <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Nombre(s)</label>
                             <div class="relative">
                                 <i data-lucide="user" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
-                                <input id="swal-name" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="Ej. Juan">
+                                <input id="swal-name" value="${isEdit ? usuario.nombreReal : ''}" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="Ej. Juan">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Primer Apellido</label>
-                                <input id="swal-ap1" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="Pérez">
+                                <input id="swal-ap1" value="${isEdit ? usuario.primerApellido : ''}" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="Pérez">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Segundo Apellido</label>
-                                <input id="swal-ap2" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="García">
+                                <input id="swal-ap2" value="${isEdit ? usuario.segundoApellido : ''}" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="García">
                             </div>
                         </div>
                     </div>
@@ -94,11 +99,11 @@ async function abrirModalUsuario() {
                             <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Correo Electrónico</label>
                             <div class="relative">
                                 <i data-lucide="mail" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
-                                <input id="swal-email" type="email" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" placeholder="usuario@puebla.gob.mx">
+                                <input id="swal-email" type="email" value="${isEdit ? usuario.correo : ''}" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" placeholder="usuario@puebla.gob.mx">
                             </div>
                         </div>
                          <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Contraseña</label>
+                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Contraseña ${isEdit ? '<span class="text-xs font-normal text-slate-400">(Dejar en blanco para mantener actual)</span>' : ''}</label>
                             <div class="relative">
                                 <i data-lucide="key" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
                                 <input id="swal-password" type="password" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" placeholder="********">
@@ -139,8 +144,13 @@ async function abrirModalUsuario() {
         `,
         didOpen: () => {
             lucide.createIcons();
+            if (isEdit) {
+                document.getElementById('swal-state').value = usuario.estadoId;
+                document.getElementById('swal-role').value = usuario.rolId;
+                document.getElementById('swal-active').value = usuario.usuarioActivo == 1 ? 'true' : 'false';
+            }
         },
-        confirmButtonText: 'Confirmar Registro',
+        confirmButtonText: confirmBtnText,
         confirmButtonColor: '#16a34a',
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
@@ -156,12 +166,18 @@ async function abrirModalUsuario() {
             const email = document.getElementById('swal-email').value;
             const password = document.getElementById('swal-password').value;
 
-            if (!nombre || !ap1 || !email || !password) {
-                Swal.showValidationMessage('Los campos nombre, primer apellido, email y contraseña son obligatorios');
+            if (!nombre || !ap1 || !email) {
+                Swal.showValidationMessage('Los campos nombre, primer apellido y email son obligatorios');
+                return false;
+            }
+
+            if (!isEdit && !password) {
+                Swal.showValidationMessage('La contraseña es obligatoria para nuevos usuarios');
                 return false;
             }
 
             return {
+                id: isEdit ? usuario.usuarioId : null,
                 nombre: nombre,
                 apellido1: ap1,
                 apellido2: document.getElementById('swal-ap2').value,
@@ -177,7 +193,7 @@ async function abrirModalUsuario() {
     if (formValues) {
         // Enviar a la BD
         try {
-            const response = await fetch("../assets/php/admin/insertarUsuario.php", {
+            const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -199,7 +215,7 @@ async function abrirModalUsuario() {
                 });
                 Toast.fire({
                     icon: 'success',
-                    title: 'Usuario registrado exitosamente'
+                    title: isEdit ? 'Usuario actualizado exitosamente' : 'Usuario registrado exitosamente'
                 });
             } else {
                 Swal.fire('Error', result.message || 'Error al guardar', 'error');
@@ -246,44 +262,9 @@ async function eliminarUsuario(id) {
 }
 
 async function editarUsuario(id) {
-    // Buscar usuario en la lista local para precargar datos
     const user = usuarios.find(u => u.usuarioId == id);
     if (!user) return;
-
-    // Por ahora, usamos un input simple para nombre, pero idealmente sería un modal completo como el de registro
-    Swal.fire({
-        title: 'Editar Usuario',
-        text: `Modificando a: ${user.nombre}`,
-        input: 'text',
-        inputValue: user.nombre,
-        showCancelButton: true,
-        confirmButtonColor: '#16a34a',
-        inputValidator: (value) => {
-            if (!value) {
-                return 'El nombre es obligatorio'
-            }
-        }
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            try {
-                const response = await fetch("../assets/php/admin/actualizarUsuario.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: id, nombre: result.value })
-                });
-                const res = await response.json();
-                if(res.status === 'success') {
-                    renderUsuarios();
-                    Swal.fire('Actualizado', 'Información guardada', 'success');
-                } else {
-                    Swal.fire('Error', res.message || 'No se pudo actualizar', 'error');
-                }
-            } catch (error) {
-                console.error(error);
-                Swal.fire('Error', 'Error de conexión', 'error');
-            }
-        }
-    });
+    abrirModalUsuario(user);
 }
 
 // Inicialización
