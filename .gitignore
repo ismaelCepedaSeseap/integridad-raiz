@@ -13,4 +13,4 @@ Thumbs.db
 
 # Environment variables (if any)
 .env
-config/env.php
+# config/env.php  <-- Comentado para permitir subir la configuración por petición del usuario
