@@ -24,7 +24,7 @@
                 $activo = isset($data['activo']) && $data['activo'] ? 1 : 0;
                 $password = password_hash($data['password'], PASSWORD_DEFAULT);
 
-                $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, primerApellido, segundoApellido, correo, password, rol, estado, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, primerApellido, segundoApellido, correo, pass, rol, estado, activo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 
                 if ($stmt->execute([$nombre, $primerApellido, $segundoApellido, $correo, $password, $rol, $estado, $activo])) {
                     echo json_encode(['status' => 'success', 'message' => 'Usuario registrado', 'id' => $pdo->lastInsertId()]);

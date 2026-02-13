@@ -25,7 +25,7 @@
                 $params = [$nombre, $primerApellido, $segundoApellido, $correo, $rol, $estado, $activo];
                 
                 if (!empty($data['password'])) {
-                    $passwordUpdate = ", password = ?";
+                    $passwordUpdate = ", pass = ?";
                     $params[] = password_hash($data['password'], PASSWORD_DEFAULT);
                 }
                 
