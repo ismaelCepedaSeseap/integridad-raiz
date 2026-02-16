@@ -21,7 +21,7 @@ const cineData = [
     {
         "id": "tlaxcala",
         "name": "TLAXCALA",
-        "slogan": "\"transparencia para avanzar\"",
+        "slogan": "\"TRANSPARENCIA QUE DA CONFIANZA\"",
         "videoSrc": "images/Tlaxcala.mp4",
         "posterSrc": "images/Tlaxcala.jpeg",
         "url": "cine.html?estado=tlaxcala",

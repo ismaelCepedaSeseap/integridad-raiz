@@ -2,12 +2,12 @@ const EVENTS = [
     {
         id: 'rally-puebla-2025',
         visible: true,
-        badge: 'Último Rally',
+        badge: 'Último Rally Anticorrupción',
         title: 'Puebla en <span class="text-green-600">Movimiento 2025</span>',
-        description: 'Revivimos los mejores momentos del rally donde sembramos honestidad en cada rincón de nuestra comunidad. A través de juegos, dinámicas y la participación de nuestros personajes Honestio y el Sabueso, logramos transmitir que la honestidad empieza en la raíz de cada pequeña acción diaria.',
-        date: 'Febrero 2025',
+        description: 'Revivimos los mejores momentos del Rally Anticorrupción donde sembramos honestidad en cada rincón de nuestro país. A través de juegos, dinámicas y la participación de nuestros personajes Honestio y el Sabueso, logramos transmitir que la honestidad empieza en la raíz de cada pequeña acción diaria.',
+        date: '11 Diciembre 2025',
         state: 'Puebla',
-        location: 'Puebla, Centro Histórico',
+        location: 'Aquiles Serdán',
         url: 'detalle_evento.html?id=rally-puebla-2025',
         mainImage: 'images/rally/f_01.jpg',
         imageUrl: 'images/rally/f_08.jpg',
@@ -37,7 +37,7 @@ const EVENTS = [
         results: [
             { value: '100%', label: 'Compromiso Ciudadano' },
             { value: '24/7', label: 'Vigilancia Ética' },
-            { value: '+50', label: 'Escuelas Aliadas' }
+            { value: '+50', label: 'Instituciones educativas' }
         ],
         pillars: ['Honestidad', 'Respeto', 'Justicia', 'Responsabilidad', 'Solidaridad', 'Amistad', 'Juego Limpio'],
         banners: [

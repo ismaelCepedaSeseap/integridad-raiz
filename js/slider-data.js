@@ -4,7 +4,7 @@ const sliderData = [
         "id": 1,
         "type": "complex",
         "background": "linear-gradient(to bottom, #a5d8ff 0%, #f0f9ff 40%, #ffffff 100%)",
-        "badge": "SEA Puebla presenta",
+        "badge": "SESEA PUEBLA presenta",
         "title": "Sembrando <span class=\"text-green-600\">honestidad</span>, cosechamos <span class=\"text-green-600\">integridad.</span>",
         "description": "Cada acción cuenta para construir un país más justo y transparente.",
         "image": "images/logo.png",
@@ -37,9 +37,9 @@ const sliderData = [
         "backgroundImage": "images/banner2.png",
         "buttons": [
             {
-                "text": "Únete Ahora",
-                "url": "#",
-                "icon": "heart",
+                "text": "Muro de Compromisos",
+                "url": "#muro",
+                "icon": "pencil-line",
                 "style": "glass"
             }
         ]

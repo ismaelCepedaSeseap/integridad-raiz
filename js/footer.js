@@ -9,9 +9,9 @@ function cargarFooter() {
                 </div>
                 <div class="hidden lg:block h-16 w-[1px] bg-white/10 mx-4"></div>
                 <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-                    <div class="flex items-center gap-3"><img src="images/logo_puebla.png" alt="Puebla" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70" style="height: 164px;"></div>
-                    <div class="flex items-center gap-3"><img src="images/logo_hidalgo.png" alt="Hidalgo" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></div>
-                    <div class="flex items-center gap-3"><img src="images/logo_tlaxcala.png" alt="Tlaxcala" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></div>
+                    <div class="flex items-center gap-3"><a target="_blank" href="https://seseap.puebla.gob.mx/"><img src="images/logo_puebla.png" alt="Puebla" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70" style="height: 164px;"></a></div>
+                    <div class="flex items-center gap-3"><a target="_blank" href="https://sistemaanticorrupcion.hidalgo.gob.mx/"><img src="images/logo_hidalgo.png" alt="Hidalgo" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
+                    <div class="flex items-center gap-3"><a target="_blank" href="https://saetlax.org/"><img src="images/logo_tlaxcala.png" alt="Tlaxcala" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
                 </div>
             </div>
             <div class="w-full h-[1px] bg-white/5 mb-10"></div>
@@ -26,11 +26,7 @@ function cargarFooter() {
                 <div class="hidden md:block w-[1px] h-6 bg-white/10 mx-2"></div>
                 <p class="text-slate-500 italic text-sm">"Sembrando honestidad, cosechamos integridad"</p>
             </div>
-            <div class="flex justify-center gap-6 text-slate-500 mb-8">
-                <a href="#" class="hover:text-green-400 transition-colors"><i data-lucide="facebook"></i></a>
-                <a href="#" class="hover:text-green-400 transition-colors"><i data-lucide="twitter"></i></a>
-                <a href="#" class="hover:text-green-400 transition-colors"><i data-lucide="globe"></i></a>
-            </div>
+        
             <div class="pt-8 border-t border-white/5 text-slate-600 text-[10px] uppercase tracking-[0.3em]" style="font-weight: bold;">
                 © 2026 SESEA Puebla. Todos los derechos reservados.
             </div>

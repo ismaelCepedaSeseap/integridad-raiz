@@ -19,14 +19,5 @@ const videosPageData = [
         stateLabel: "Puebla",
         badgeClass: "bg-green-500/80",
         hashtag: "#RallyAnticorrupción"
-    },
-    {
-        id: "5s0rRk9sER0",
-        title: "Integridad desde la Raíz: Tlaxcala",
-        description: "Descubre cómo las raíces de la integridad florecen en Tlaxcala, fortaleciendo nuestros valores y comunidad.",
-        state: "tlaxcala",
-        stateLabel: "Tlaxcala",
-        badgeClass: "bg-red-500/80",
-        hashtag: "#PorAmorATlaxcala"
     }
 ];

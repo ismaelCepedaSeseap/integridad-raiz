@@ -133,7 +133,7 @@ function renderVideos(videos) {
                 </div>
                 <div class="p-6 flex-grow flex flex-col">
                     <h3 class="text-xl font-black text-slate-900 leading-tight mb-2">${video.title}</h3>
-                    <p class="text-slate-500 text-sm italic video-description-clamp flex-grow">${video.description}</p>
+                    <p class="text-slate-500 text-sm italic flex-grow">${video.description}</p>
                     ${tagHtml}
                 </div>
             </div>
@@ -196,10 +196,18 @@ function changePage(newPage) {
 // --- MODAL LOGIC ---
 let modal;
 let iframe;
+let modalTitle;
+let modalDesc;
+let modalBadge;
+let modalHashtag;
 
 function setupModal() {
     modal = document.getElementById('video-modal');
     iframe = document.getElementById('modal-iframe');
+    modalTitle = document.getElementById('modal-title');
+    modalDesc = document.getElementById('modal-description');
+    modalBadge = document.getElementById('modal-badge');
+    modalHashtag = document.getElementById('modal-hashtag');
     
     // Close on Escape key
     document.addEventListener('keydown', (e) => {
@@ -212,7 +220,30 @@ function setupModal() {
 // Exportar globalmente para onclick en HTML
 window.openVideoModal = function(videoId) {
     if(iframe && modal) {
+        const video = videosPageData.find(v => v.id === videoId);
+        
         iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        
+        if (video) {
+            if (modalTitle) modalTitle.textContent = video.title;
+            if (modalDesc) modalDesc.textContent = video.description;
+            
+            if (modalBadge) {
+                modalBadge.className = `px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white ${video.badgeClass || 'bg-slate-600'}`;
+                modalBadge.textContent = video.stateLabel || 'Video';
+                modalBadge.classList.remove('hidden');
+            }
+            
+            if (modalHashtag) {
+                if (video.hashtag) {
+                    modalHashtag.textContent = video.hashtag;
+                    modalHashtag.classList.remove('hidden');
+                } else {
+                    modalHashtag.classList.add('hidden');
+                }
+            }
+        }
+
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden'; 
     }

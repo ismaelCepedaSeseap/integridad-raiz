@@ -58,12 +58,16 @@
     <!-- Video Modal -->
     <div id="video-modal" class="fixed inset-0 z-[100] flex items-center justify-center hidden">
         <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-md" onclick="closeVideoModal()"></div>
-        <div id="modal-content" class="relative w-full max-w-5xl mx-4 bg-black rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+        <div id="modal-content" class="relative w-full max-w-5xl mx-4 bg-black rounded-3xl shadow-2xl ring-1 ring-white/10 flex flex-col max-h-[90vh] overflow-hidden">
             <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-white hover:text-black transition-colors">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
-            <div class="aspect-video w-full">
+            <div class="aspect-video w-full shrink-0">
                 <iframe id="modal-iframe" class="w-full h-full" src="" title="Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="p-6 md:p-8 overflow-y-auto bg-slate-900/95 backdrop-blur-sm border-t border-white/10 flex-1 min-h-0">
+                <h3 id="modal-title" class="text-2xl md:text-3xl font-black text-white mb-3 italic"></h3>
+                <p id="modal-description" class="text-slate-300 text-lg leading-relaxed"></p>
             </div>
         </div>
     </div>
