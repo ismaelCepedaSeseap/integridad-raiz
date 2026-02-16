@@ -13,14 +13,14 @@ let emptyState;
 let filtersContainer;
 
 // Función de inicialización
-function initCinePage() {
+async function initCinePage() {
     videoGallery = document.getElementById('video-gallery');
     paginationContainer = document.getElementById('pagination');
     videoCounter = document.getElementById('video-counter');
     emptyState = document.getElementById('empty-state');
     filtersContainer = document.getElementById('filters-container');
 
-    renderFilters();
+    await renderFilters(); // Esperar a que se rendericen los filtros
     setupModal();
     
     // Verificar parámetros URL
@@ -28,23 +28,51 @@ function initCinePage() {
     const estado = urlParams.get('estado');
     
     if (estado) {
-        filterVideos(estado);
+        // Asegurarse de que el estado esté en minúsculas para coincidir con el ID del filtro
+        filterVideos(estado.toLowerCase());
     } else {
         updateGallery();
     }
 }
 
 // Renderizar filtros dinámicamente
-function renderFilters() {
+async function renderFilters() {
     if (!filtersContainer) return;
-    
-    filtersContainer.innerHTML = filtersData.map(filter => `
-        <button onclick="filterVideos('${filter.id}')" 
-                class="filter-pill ${filter.id === 'todos' ? 'active' : ''}" 
-                id="filter-${filter.id}">
-            ${filter.label}
-        </button>
-    `).join('');
+
+    try {
+        const response = await fetch('assets/php/obtenerEstadosActivos.php');
+        if (!response.ok) throw new Error('Error al obtener estados');
+        const estados = await response.json();
+
+        // Construir la lista de filtros incluyendo "Todos"
+        const filters = [
+            { id: 'todos', label: 'Todos' },
+            ...estados.map(estado => ({
+                id: estado.nombre.toLowerCase(), // Normalizar a minúsculas para coincidir con los datos
+                label: estado.nombre
+            }))
+        ];
+
+        filtersContainer.innerHTML = filters.map(filter => `
+            <button onclick="filterVideos('${filter.id}')" 
+                    class="filter-pill ${filter.id === 'todos' ? 'active' : ''}" 
+                    id="filter-${filter.id}">
+                ${filter.label}
+            </button>
+        `).join('');
+    } catch (error) {
+        console.error('Error cargando filtros:', error);
+        // Fallback a datos estáticos si falla la API
+        if (typeof filtersData !== 'undefined') {
+             filtersContainer.innerHTML = filtersData.map(filter => `
+                <button onclick="filterVideos('${filter.id}')" 
+                        class="filter-pill ${filter.id === 'todos' ? 'active' : ''}" 
+                        id="filter-${filter.id}">
+                    ${filter.label}
+                </button>
+            `).join('');
+        }
+    }
 }
 
 // Lógica de filtrado
@@ -67,7 +95,7 @@ function filterVideos(state) {
 function updateGallery() {
     // 1. Filtrar videos
     const filteredVideos = videosPageData.filter(video => {
-        return currentFilter === 'todos' || video.state === currentFilter;
+        return currentFilter === 'todos' || video.state.toLowerCase() === currentFilter.toLowerCase();
     });
 
     // 2. Manejar estado vacío

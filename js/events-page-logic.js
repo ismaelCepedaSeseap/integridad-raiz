@@ -49,16 +49,43 @@ function initDOM() {
 }
 
 // Renderizar filtros dinámicamente
-function renderFilters() {
+async function renderFilters() {
     if (!filtersContainer) return;
-    
-    filtersContainer.innerHTML = filtersEventsData.map(filter => `
-        <button onclick="filterByState('${filter.id}')" 
-                class="filter-pill ${filter.id === 'todos' ? 'active' : ''}" 
-                id="filter-${filter.id}">
-            ${filter.label}
-        </button>
-    `).join('');
+
+    try {
+        const response = await fetch('assets/php/obtenerEstadosActivos.php');
+        if (!response.ok) throw new Error('Error al obtener estados');
+        const estados = await response.json();
+
+        // Construir la lista de filtros incluyendo "Todos"
+        const filters = [
+            { id: 'todos', label: 'Todos' },
+            ...estados.map(estado => ({
+                id: estado.nombre.toLowerCase(), // Normalizar a minúsculas para coincidir con los datos
+                label: estado.nombre
+            }))
+        ];
+
+        filtersContainer.innerHTML = filters.map(filter => `
+            <button onclick="filterByState('${filter.id}')" 
+                    class="filter-pill ${filter.id === 'todos' ? 'active' : ''}" 
+                    id="filter-${filter.id}">
+                ${filter.label}
+            </button>
+        `).join('');
+    } catch (error) {
+        console.error('Error cargando filtros:', error);
+        // Fallback a datos estáticos si falla la API
+        if (typeof filtersEventsData !== 'undefined') {
+             filtersContainer.innerHTML = filtersEventsData.map(filter => `
+                <button onclick="filterByState('${filter.id}')" 
+                        class="filter-pill ${filter.id === 'todos' ? 'active' : ''}" 
+                        id="filter-${filter.id}">
+                    ${filter.label}
+                </button>
+            `).join('');
+        }
+    }
 }
 
 // Renderizar galería de momentos
@@ -113,7 +140,7 @@ function renderEvents(manualFilter = false) {
     } 
     
     if (currentState !== 'todos') {
-        filtered = eventsPageData.filter(e => e.state === currentState);
+        filtered = eventsPageData.filter(e => e.state.toLowerCase() === currentState.toLowerCase());
     }
 
     // Manejo de estado vacío

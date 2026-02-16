@@ -63,34 +63,5 @@ const EVENTS = [
             'images/rally/f_11.jpg',
             'images/rally/f_12.jpg'
         ]
-    },
-    {
-        id: 'hidalgo-2025',
-        visible: false,
-        badge: 'Encuentro Regional',
-        title: 'Hidalgo: <span class="text-green-600">Raíces de Integridad</span>',
-        description: 'Un encuentro vibrante en el corazón de Hidalgo, donde la juventud y la tradición se unieron para celebrar los valores que nos definen. Talleres interactivos, arte urbano y diálogos abiertos formaron parte de esta jornada inolvidable.',
-        date: 'Marzo 2025',
-        state: 'Hidalgo',
-        location: 'Pachuca, Hidalgo',
-        url: 'detalle_evento.html?id=hidalgo-2025',
-        mainImage: 'https://images.unsplash.com/photo-1518133835878-5a93cc3f89e5?auto=format&fit=crop&q=80&w=1600',
-        imageUrl: 'https://images.unsplash.com/photo-1544531586-fde5298cdd40?auto=format&fit=crop&q=80&w=800',
-        decorations: {
-            topLeft: '',
-            bottomRight: ''
-        },
-        tags: ['Juventud', 'Tradición', 'Arte'],
-        impact: '150+ Participantes',
-        pillars_count: '5 Pilares',
-        pillars: ['Identidad', 'Compromiso', 'Transparencia', 'Diálogo', 'Inclusión'],
-        banners: [],
-        videoUrl: '',
-        gallery: [
-            'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=800',
-            'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800',
-            'https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800',
-            'https://images.unsplash.com/photo-1544642899-f0d6e5f6ed6f?auto=format&fit=crop&q=80&w=800'
-        ]
     }
 ];
