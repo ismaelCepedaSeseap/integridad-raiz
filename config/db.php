@@ -9,9 +9,9 @@ if (file_exists(__DIR__ . '/env.php')) {
 
 if (!function_exists('getenv')) {}
 $host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? 'localhost');
-$db   = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'integridad');
+$db   = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'integridadraiz');
 $user = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'root');
-$pass = getenv('DB_PASS') ?: ($env['DB_PASS'] ?? '12345');
+$pass = getenv('DB_PASS') ?: ($env['DB_PASS'] ?? null);
 $charset = 'utf8mb4';
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -25,8 +25,5 @@ try {
     $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    http_response_code(500);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['error' => 'db_connection_failed']);
-    exit;
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
