@@ -1,0 +1,33 @@
+GUÍA RÁPIDA DE GIT PARA EL PROYECTO
+
+================================================================================
+1. OBTENER CAMBIOS (Descargar lo nuevo de la nube)
+================================================================================
+Antes de empezar a trabajar, SIEMPRE descarga los últimos cambios para evitar conflictos.
+
+Ejecuta este comando en la terminal:
+    git pull origin main
+
+
+================================================================================
+2. SUBIR CAMBIOS (Guardar tu trabajo en la nube)
+================================================================================
+Cuando termines una tarea o avance, sigue estos 3 pasos en orden:
+
+PASO A: Preparar los archivos
+    git add .
+
+PASO B: Guardar con un mensaje (cambia el mensaje entre comillas)
+    git commit -m "Escribe aquí qué hiciste"
+
+PASO C: Enviar a GitHub
+    git push origin main
+
+
+================================================================================
+3. PRIMERA VEZ (Si tu compañero aún no tiene el proyecto)
+================================================================================
+Solo la primera vez, debe ejecutar:
+    git clone https://github.com/ismaelCepedaSeseap/integridad-raiz.git
+
+Nota: Asegurarse de tener XAMPP encendido y la base de datos importada.
