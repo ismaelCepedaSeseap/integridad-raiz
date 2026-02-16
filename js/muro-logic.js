@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const postsContainer = document.getElementById('posts-container');
     const paginationControls = document.getElementById('pagination-controls');
     const postsCounter = document.getElementById('posts-counter');
-
+    const postsData = await obtenerCompromisos();
     if (!postsContainer || !paginationControls || !postsCounter) return;
 
     let currentPage = 1;
@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalPosts = postsData.length;
     const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-    function renderPosts() {
+    async function renderPosts() {
+        
         postsContainer.innerHTML = '';
         const start = (currentPage - 1) * postsPerPage;
         const end = start + postsPerPage;
@@ -25,19 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-${avatarColor}-200 flex items-center justify-center text-slate-700 font-bold text-lg border-2 border-white shadow-sm">
-                    ${post.name.charAt(0).toUpperCase()}
+                    ${post.nombre.charAt(0).toUpperCase()}
                 </div>
                 <div class="flex-grow min-w-0">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2 min-w-0">
-                        <h4 class="font-bold text-slate-800 text-lg sm:text-xl break-words leading-tight min-w-0">${post.name}</h4>
+                        <h4 class="font-bold text-slate-800 text-lg sm:text-xl break-words leading-tight min-w-0">${post.nombre}</h4>
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="inline-flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wide max-w-full">
                                 <i data-lucide="map-pin" class="w-4 h-4"></i>
-                                <span class="break-words">${post.location}</span>
+                                <span class="break-words">${post.estado}</span>
                             </span>
                         </div>
                     </div>
-                    <p class="text-slate-600 italic text-sm sm:text-base break-words">"${post.text}"</p>
+                    <p class="text-slate-600 italic text-sm sm:text-base break-words">"${post.compromiso}"</p>
                 </div>
             `;
             postsContainer.appendChild(card);
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePaginationControls();
     }
 
-    function updatePaginationControls() {
+    async function updatePaginationControls() {
         paginationControls.innerHTML = `
             <button id="prev-page" class="px-4 py-2 bg-slate-200 rounded-lg hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed">&lt; Anterior</button>
             <span class="font-bold text-slate-600">Página ${currentPage} de ${totalPages}</span>
@@ -59,21 +60,28 @@ document.addEventListener('DOMContentLoaded', () => {
         prevButton.disabled = currentPage === 1;
         nextButton.disabled = currentPage === totalPages;
 
-        prevButton.addEventListener('click', () => {
+        prevButton.addEventListener('click', async () => {
             if (currentPage > 1) {
                 currentPage--;
-                renderPosts();
+                await renderPosts();
             }
         });
 
-        nextButton.addEventListener('click', () => {
+        nextButton.addEventListener('click', async () => {
             if (currentPage < totalPages) {
                 currentPage++;
-                renderPosts();
+                await renderPosts();
             }
         });
     }
     
     postsCounter.innerText = `${totalPosts} compromisos publicados`;
-    renderPosts();
+    await renderPosts();
 });
+
+async function obtenerCompromisos() {
+    const compromisos = await fetch("assets/php/obtenerCompromisos.php",{
+        method: "POST"
+    });
+    return await compromisos.json();
+}
