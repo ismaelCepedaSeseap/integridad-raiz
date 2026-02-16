@@ -19,5 +19,24 @@ const videosPageData = [
         stateLabel: "Puebla",
         badgeClass: "bg-green-500/80",
         hashtag: "#RallyAnticorrupción"
+    },
+    {
+        id: "cKaDuH1enbs",
+        title: "En Puebla no hay lugar para la corrupción",
+        description: "En Puebla no hay lugar para la corrupción. Únete a este esfuerzo conjunto para promover la integridad y la transparencia en nuestro estado.",
+        state: "puebla",
+        stateLabel: "Puebla",
+        badgeClass: "bg-green-500/80",
+        hashtag: "#PueblaSinCorrupción"
+    },
+    {
+        id: "T6CCSAJZr1o",
+        title: "Juntos contra la corrupción",
+        description: "Juntos contra la corrupción. Descubre cómo la colaboración ciudadana y el compromiso ético pueden transformar nuestra sociedad.",
+        state: "puebla",
+        stateLabel: "Puebla",
+        badgeClass: "bg-green-500/80",
+        hashtag: "#JuntosContraLaCorrupción"
     }
+    
 ];

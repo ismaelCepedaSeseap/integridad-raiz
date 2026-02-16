@@ -71,7 +71,9 @@ function renderEventDetail() {
                         <p class="text-green-600 font-bold text-sm uppercase tracking-widest mb-2">${event.chronicle.date}</p>
                         <p class="text-slate-400 text-xs font-semibold">${event.chronicle.location}</p>
                     </div>
-                    <div class="w-full md:w-2/3 border-l-0 md:border-l-4 border-green-500 pl-0 md:pl-12 space-y-6">
+                    <div class="w-full md:w-2/3 border-l-0 md:border-l-4 border-green-500 pl-0 md:pl-12 space-y-6 max-h-[600px] overflow-y-auto pr-4" id="chronicle-scroll">
+
+
                         <p class="text-xl text-slate-700 leading-relaxed font-serif italic font-medium">
                             ${event.chronicle.quote} <br>
                             <span class="text-sm not-italic text-slate-400 font-sans font-bold uppercase mt-2 block">${event.chronicle.quoteAuthor}</span>
@@ -147,10 +149,18 @@ function renderEventDetail() {
                 </div>
             </div>
 
-            <div class="thumb-strip hide-scrollbar mt-8" id="thumb-strip">
-                ${event.gallery.map((img, index) => `
-                    <div class="thumb-item ${index === 0 ? 'active' : ''}" onclick="jumpToVisorSlide(${index})"><img src="${img}" class="w-full h-full object-cover"></div>
-                `).join('')}
+            <div class="relative">
+                <button onclick="scrollThumbs('left')" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur shadow-lg p-2 rounded-full hover:bg-white transition-all text-slate-800 border border-slate-100 hidden md:flex">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <div class="thumb-strip hide-scrollbar mt-8" id="thumb-strip">
+                    ${event.gallery.map((img, index) => `
+                        <div class="thumb-item ${index === 0 ? 'active' : ''}" onclick="jumpToVisorSlide(${index})"><img src="${img}" class="w-full h-full object-cover"></div>
+                    `).join('')}
+                </div>
+                <button onclick="scrollThumbs('right')" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur shadow-lg p-2 rounded-full hover:bg-white transition-all text-slate-800 border border-slate-100 hidden md:flex">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
             </div>
         </div>
     `;
@@ -190,9 +200,9 @@ function renderEventDetail() {
             <!-- Intro Section -->
             <div class="grid lg:grid-cols-2 gap-10 lg:gap-20 items-start mb-16 sm:mb-24">
                 <div class="space-y-6 sm:space-y-8">
-                    <h3 class="text-3xl sm:text-4xl font-kids text-slate-800 italic">${event.slogan || '¡La Integridad en Acción!'}</h3>
-                    <p class="text-base sm:text-xl text-slate-600 leading-relaxed font-medium">${event.description}</p>
-                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-2 sm:pt-4">
+                        <h3 class="text-3xl sm:text-4xl font-kids text-slate-800 italic">${event.slogan || '¡La Integridad en Acción!'}</h3>
+                        <p class="text-base sm:text-xl text-slate-600 leading-relaxed font-medium">${event.description}</p>
+                        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-2 sm:pt-4">
                         <div class="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg border border-slate-50 flex items-center gap-4 flex-1 min-w-0">
                             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0">
                                 <i data-lucide="users"></i>
@@ -247,6 +257,13 @@ function renderEventDetail() {
 
 window.scrollBanners = function(dir) {
     const container = document.getElementById('banner-scroll');
+    if (container) {
+        container.scrollLeft += (dir === 'left' ? -300 : 300); 
+    }
+}
+
+window.scrollThumbs = function(dir) {
+    const container = document.getElementById('thumb-strip');
     if (container) {
         container.scrollLeft += (dir === 'left' ? -300 : 300); 
     }

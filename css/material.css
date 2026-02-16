@@ -5,6 +5,14 @@
     background-position: center;
 }
 
+/* Safari & iOS Fixes */
+.animate-fade-in-up, .filter-pill, .resource-card, .download-icon {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
 .animate-fade-in-up {
     animation: fadeInUp 0.5s ease-out forwards;
 }

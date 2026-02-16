@@ -40,7 +40,7 @@ const sliderData = [
                 "text": "Muro de Compromisos",
                 "url": "#muro",
                 "icon": "pencil-line",
-                "style": "glass"
+                "style": "primary"
             }
         ]
     }

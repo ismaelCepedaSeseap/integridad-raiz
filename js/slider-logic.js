@@ -93,6 +93,30 @@ window.closeSliderVideoModal = function() {
 
 // Función para generar el HTML de un slide
 function createSlideHTML(slide) {
+    // Mapa de estilos disponibles
+    const btnStyles = {
+        'primary': 'bg-green-600 text-white hover:bg-green-700 shadow-xl border border-transparent',
+        'glass': 'bg-white/20 backdrop-blur-md border border-white/50 text-white hover:bg-white/30 hover:scale-105',
+        'outline': 'bg-transparent border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white',
+        'white': 'bg-white text-slate-900 hover:bg-slate-100 shadow-xl border border-white'
+    };
+
+    // Clases base compartidas por todos los botones
+    const baseBtnClasses = 'px-8 py-4 rounded-2xl font-bold transition-all flex items-center gap-2';
+
+    const getBtnClasses = (styleName, isComplex) => {
+        // Seleccionar estilo o fallback
+        let specificClasses = btnStyles[styleName] || btnStyles['primary'];
+        
+        // Ajustes específicos por contexto si es necesario
+        // Por ejemplo, los botones en slides simples solían ser text-xl
+        if (!isComplex) {
+            specificClasses += ' text-xl';
+        }
+        
+        return `${baseBtnClasses} ${specificClasses}`;
+    };
+
     const getBtnStyle = (btn) => {
         if (btn.position) {
             return `position: absolute; left: ${btn.position.left || 'auto'}; top: ${btn.position.top || 'auto'}; right: ${btn.position.right || 'auto'}; bottom: ${btn.position.bottom || 'auto'}; z-index: 50;`;
@@ -112,11 +136,11 @@ function createSlideHTML(slide) {
                         <div class="flex flex-wrap gap-4 relative">
                             ${slide.buttons.map(btn => `
                                 ${btn.videoSrc ? `
-                                    <button type="button" onclick="openSliderVideoModal('${btn.videoSrc}')" style="${getBtnStyle(btn)}" class="px-8 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 transition-all flex items-center gap-2">
+                                    <button type="button" onclick="openSliderVideoModal('${btn.videoSrc}')" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, true)}">
                                         <i data-lucide="${btn.icon}"></i> ${btn.text}
                                     </button>
                                 ` : `
-                                    <a href="${btn.url}" style="${getBtnStyle(btn)}" class="px-8 py-4 bg-green-600 text-white rounded-2xl font-bold shadow-xl hover:bg-green-700 transition-all flex items-center gap-2">
+                                    <a href="${btn.url}" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, true)}">
                                         <i data-lucide="${btn.icon}"></i> ${btn.text}
                                     </a>
                                 `}
@@ -149,11 +173,11 @@ function createSlideHTML(slide) {
                 <div class="absolute inset-0 flex items-center justify-center">
                     ${slide.buttons.map(btn => `
                         ${btn.videoSrc ? `
-                            <button type="button" onclick="openSliderVideoModal('${btn.videoSrc}')" style="${getBtnStyle(btn)}" class="px-8 py-4 bg-white/20 backdrop-blur-md border border-white/50 text-white rounded-2xl font-bold shadow-xl hover:bg-white/30 hover:scale-105 transition-all flex items-center gap-2 text-xl">
+                            <button type="button" onclick="openSliderVideoModal('${btn.videoSrc}')" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, false)}">
                                 <i data-lucide="${btn.icon}"></i> ${btn.text}
                             </button>
                         ` : `
-                            <a href="${btn.url}" style="${getBtnStyle(btn)}" class="px-8 py-4 bg-white/20 backdrop-blur-md border border-white/50 text-white rounded-2xl font-bold shadow-xl hover:bg-white/30 hover:scale-105 transition-all flex items-center gap-2 text-xl">
+                            <a href="${btn.url}" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, false)}">
                                 <i data-lucide="${btn.icon}"></i> ${btn.text}
                             </a>
                         `}

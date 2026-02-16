@@ -5,6 +5,18 @@
     background-position: center;
 }
 
+/* Safari & iOS Fixes */
+#event-modal, .hide-scrollbar {
+    -webkit-overflow-scrolling: touch;
+}
+
+.animate-fade-in, .animate-zoom-in, .modal-card, .banner-roll-up, .banderin-float, .filter-pill, .photo-frame-polaroid, .pagination-btn {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
 .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
 }

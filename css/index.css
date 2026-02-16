@@ -6,6 +6,19 @@
 body {
     font-family: 'Quicksand', sans-serif;
     scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+}
+
+/* Safari & iOS Fixes */
+.hide-scrollbar, .thumb-strip, #slider-track {
+    -webkit-overflow-scrolling: touch;
+}
+
+.video-mobile-frame, .photo-frame, .banner-roll-up, .seed-pulse, .banderin-float, .animate-fade-in-up, .event-main-card, .gallery-item, .impact-card {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 /* ============================================================
@@ -81,6 +94,7 @@ body {
 .seed-pulse {
     animation: pulse-seed 8s infinite;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 @keyframes pulse-seed {

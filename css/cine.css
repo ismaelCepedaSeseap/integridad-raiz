@@ -2,6 +2,18 @@ body {
     overflow-x: hidden;
 }
 
+/* Safari & iOS Fixes */
+.video-description-clamp {
+    -webkit-overflow-scrolling: touch;
+}
+
+.video-showcase-card, .pagination-btn, .video-thumb-container, .video-overlay-play, .play-icon-circle, #video-modal, #modal-content, .state-badge {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
 .filter-pill {
     padding: 10px 24px;
     border-radius: 100px;

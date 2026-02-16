@@ -6,3 +6,28 @@ body {
 .font-kids {
     font-weight: 700;
 }
+
+/* Global Safari & iOS Fixes */
+@supports (height: 100dvh) {
+    .min-h-screen {
+        min-height: 100dvh !important;
+    }
+    .h-screen {
+        height: 100dvh !important;
+    }
+    .max-h-screen {
+        max-height: 100dvh !important;
+    }
+}
+
+/* Fix for clickable elements on iOS */
+button, a, [role="button"], .cursor-pointer {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; /* Improves tap response */
+}
+
+/* Prevent text size adjustment on orientation change */
+html {
+    -webkit-text-size-adjust: 100%;
+}

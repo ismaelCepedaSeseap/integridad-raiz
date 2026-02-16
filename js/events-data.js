@@ -43,6 +43,7 @@ const EVENTS = [
         banners: [
             'images/rally/banner_rally_01.jpg',
             'images/rally/banner_rally_02.jpg',
+            'images/rally/banner_rally_03.jpg',
             'images/rally/banner_rally_04.jpg',
             'images/rally/banner_rally_05.jpg',
             'images/rally/banner_rally_06.jpg'
