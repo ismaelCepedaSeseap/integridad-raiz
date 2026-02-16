@@ -2,12 +2,12 @@ const statesData = [
     {
         id: 'region-golfo-istmo',
         name: 'Región Centro Golfo Istmo',
-        mainImage: 'images/golfoitsmo.png',
+        mainImage: 'assets/images/golfoitsmo.png',
         states: [
             { 
                 name: 'Puebla', 
                 url: 'https://seseap.puebla.gob.mx/',
-                logo: 'images/SeseapPuebla.png',
+                logo: 'assets/images/SeseapPuebla.png',
                 social: {
                     facebook: 'https://www.facebook.com/SEAPUEBLA1?mibextid=ZbWKwL',
                     twitter: 'https://x.com/seapuebla/',
@@ -20,7 +20,7 @@ const statesData = [
             { 
                 name: 'Hidalgo', 
                 url: 'https://sistemaanticorrupcion.hidalgo.gob.mx/',
-                logo: 'images/logo_hidalgo.png',
+                logo: 'assets/images/logo_hidalgo.png',
                 social: {
                     facebook: 'https://www.facebook.com/people/Secretar%C3%ADa-T%C3%A9cnica-del-Sistema-Estatal-Anticorrupci%C3%B3n-de-Hidalgo/100069229988952/?rdid=67CJr7dNFRz4ZqOP&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DioWw8dQA%2F',
                     
@@ -29,7 +29,7 @@ const statesData = [
             { 
                 name: 'Tlaxcala', 
                 url: 'https://saetlax.org/',
-                logo: 'images/logo_tlaxcala.png',
+                logo: 'assets/images/logo_tlaxcala.png',
                 social: {
                     facebook: 'https://www.facebook.com/SAETLAX/',
                     youtube: 'https://www.youtube.com/@sesaet9073'

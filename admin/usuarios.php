@@ -19,7 +19,7 @@
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-100 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static">
             <div class="p-8">
                 <div class="flex items-center gap-4 mb-10">
-                    <img src="../images/logo.png" alt="Logo" class="w-12 h-12 rounded-full border-2 border-green-500 shadow-sm">
+                    <img src="../assets/images/logo.png" alt="Logo" class="w-12 h-12 rounded-full border-2 border-green-500 shadow-sm">
                     <div>
                         <h2 class="font-bold text-green-900 leading-tight">Super Admin</h2>
                         <span class="state-badge" style="font-size: 8px;">Puebla (Sede)</span>

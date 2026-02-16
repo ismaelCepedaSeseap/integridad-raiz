@@ -218,11 +218,11 @@ function renderEventDetail() {
                     </div>
                 </div>
                 <div class="relative group max-w-xl lg:max-w-none mx-auto w-full">
-                    <div class="hidden sm:block absolute -left-4 sm:-left-10 -top-4 sm:-top-10 w-28 sm:w-40 banderin-float z-20"><img src="images/rally/banderin_1.png" class="rounded-3xl shadow-2xl" onerror="this.src='https://via.placeholder.com/150'"></div>
+                    <div class="hidden sm:block absolute -left-4 sm:-left-10 -top-4 sm:-top-10 w-28 sm:w-40 banderin-float z-20"><img src="assets/images/rally/banderin_1.png" class="rounded-3xl shadow-2xl" onerror="this.src='https://via.placeholder.com/150'"></div>
                     <div class="photo-frame-polaroid rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden w-full aspect-[4/3] bg-slate-200 sm:rotate-2 group-hover:rotate-0 transition-transform duration-700">
                         <img src="${event.gallery && event.gallery.length > 0 ? event.gallery[0] : event.imageUrl}" class="w-full h-full object-cover">
                     </div>
-                    <div class="hidden sm:block absolute -right-4 sm:-right-10 -bottom-4 sm:-bottom-10 w-28 sm:w-40 banderin-float z-20" style="animation-delay:-2s"><img src="images/rally/banderin_2.png" class="rounded-3xl shadow-2xl" onerror="this.src='https://via.placeholder.com/150'"></div>
+                    <div class="hidden sm:block absolute -right-4 sm:-right-10 -bottom-4 sm:-bottom-10 w-28 sm:w-40 banderin-float z-20" style="animation-delay:-2s"><img src="assets/images/rally/banderin_2.png" class="rounded-3xl shadow-2xl" onerror="this.src='https://via.placeholder.com/150'"></div>
                 </div>
             </div>
 

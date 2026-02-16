@@ -7,7 +7,7 @@ const sliderData = [
         "badge": "SESEA PUEBLA presenta",
         "title": "Sembrando <span class=\"text-green-600\">honestidad</span>, cosechamos <span class=\"text-green-600\">integridad.</span>",
         "description": "Cada acción cuenta para construir un país más justo y transparente.",
-        "image": "images/logo.png",
+        "image": "assets/images/logo.png",
         "buttons": [
             {
                 "text": "Explorar el Árbol",
@@ -20,21 +20,21 @@ const sliderData = [
     {
         "id": 2,
         "type": "simple",
-        "backgroundImage": "images/uploads/base_piramides.jpeg",
+        "backgroundImage": "assets/images/uploads/base_piramides.jpeg",
         "buttons": [
             {
                 "text": "Ver Video",
                 "url": "#",
                 "icon": "play-circle",
                 "style": "glass",
-                "videoSrc": "images/Video_Infantil_Sobre_Integridad.mp4"
+                "videoSrc": "assets/images/Video_Infantil_Sobre_Integridad.mp4"
             }
         ]
     },
     {
         "id": 3,
         "type": "simple",
-        "backgroundImage": "images/banner2.png",
+        "backgroundImage": "assets/images/banner2.png",
         "buttons": [
             {
                 "text": "Muro de Compromisos",

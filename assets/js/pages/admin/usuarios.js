@@ -1,300 +1,308 @@
+// Lógica de Administración de Usuarios
+// Depende de users-data.js (USERS, ROLES, ESTADOS)
 
-lucide.createIcons();
+document.addEventListener('DOMContentLoaded', () => {
+    initUserAdmin();
+});
 
-let usuarios = []; // Variable global para almacenar usuarios
+// State
+let usersList = [...USERS]; // Copia local para manipulación
+let currentFilter = 'all';
+let currentSearch = '';
 
-async function renderUsuarios() {
-    try {
-        usuarios = await obtenerUsuarios();
-    } catch (e) {
-        console.error("Error al obtener usuarios:", e);
-        return;
+function initUserAdmin() {
+    // Inicializar Sidebar Toggle (Mobile)
+    const btnToggle = document.getElementById('btn-toggle-sidebar');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    if (btnToggle) {
+        btnToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('is-open');
+            overlay.classList.toggle('is-visible');
+        });
     }
 
-    const tbody = document.getElementById('user-table-body');
-    if (!usuarios || usuarios.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No hay usuarios registrados</td></tr>';
-        return;
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('is-open');
+            overlay.classList.remove('is-visible');
+        });
     }
 
-    tbody.innerHTML = usuarios.map(u => `
-                <tr class="hover:bg-slate-50/50 transition-colors">
-                    <td class="px-8 py-4">
-                        <div class="flex items-center gap-3">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(u.nombre)}" class="w-10 h-10 rounded-xl bg-slate-100">
-                            <div>
-                                <p class="font-bold text-slate-900">${u.nombre}</p>
-                                <p class="text-xs text-slate-400">${u.correo}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-8 py-4">
-                        <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[11px] font-bold uppercase tracking-wider">${u.rolNombre}</span>
-                    </td>
-                    <td class="px-8 py-4 font-medium text-slate-600">${u.estadoNombre}</td>
-                    <td class="px-8 py-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 rounded-full ${u.usuarioActivo == 1 ? 'bg-green-500' : 'bg-red-500'}"></div>
-                            <span class="text-xs font-bold ${u.usuarioActivo == 1 ? 'text-green-600' : 'text-red-600'}">${u.usuarioActivo == 1 ? 'Activo' : 'Inactivo'}</span>
-                        </div>
-                    </td>
-                    <td class="px-8 py-4">
-                        <div class="flex justify-center gap-2">
-                            <button onclick="editarUsuario(${u.usuarioId})" class="btn-action p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white">
-                                <i data-lucide="edit-3" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="eliminarUsuario(${u.usuarioId})" class="btn-action p-2 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+    // Cargar filtros de roles
+    populateRoleFilter();
+
+    // Renderizar lista inicial
+    renderUsers();
+
+    // Event Listeners
+    setupEventListeners();
+    
     lucide.createIcons();
 }
 
-async function abrirModalUsuario(usuario = null) {
-    const isEdit = !!usuario;
-    const title = isEdit ? 'Editar Usuario' : 'Registrar Nuevo Usuario';
-    const icon = isEdit ? 'edit-3' : 'user-plus';
-    const confirmBtnText = isEdit ? 'Guardar Cambios' : 'Confirmar Registro';
-    const endpoint = isEdit ? '../assets/php/admin/actualizarUsuario.php' : '../assets/php/admin/insertarUsuario.php';
+function populateRoleFilter() {
+    const filterSelect = document.getElementById('filter-role');
+    if (!filterSelect) return;
+    
+    ROLES.forEach(role => {
+        const option = document.createElement('option');
+        option.value = role.id;
+        option.textContent = role.nombre;
+        filterSelect.appendChild(option);
+    });
+}
 
-    const { value: formValues } = await Swal.fire({
-        title: `<div class="flex items-center gap-3 justify-center pb-2 border-b border-slate-100 text-slate-800"><i data-lucide="${icon}" class="text-green-600"></i> ${title}</div>`,
-        html: `
-            <div class="text-left mt-6 px-2 max-h-[75vh] overflow-y-auto hide-scrollbar">
-                
-                <div class="mb-6">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-green-600 mb-4 flex items-center gap-2">
-                        <i data-lucide="info" class="w-3 h-3"></i> Información Personal
-                    </p>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Nombre(s)</label>
-                            <div class="relative">
-                                <i data-lucide="user" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
-                                <input id="swal-name" value="${isEdit ? usuario.nombreReal : ''}" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="Ej. Juan">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Primer Apellido</label>
-                                <input id="swal-ap1" value="${isEdit ? usuario.primerApellido : ''}" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="Pérez">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Segundo Apellido</label>
-                                <input id="swal-ap2" value="${isEdit ? usuario.segundoApellido : ''}" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-all text-sm" placeholder="García">
-                            </div>
-                        </div>
-                    </div>
+function setupEventListeners() {
+    // Búsqueda
+    const searchInput = document.getElementById('search-users');
+    searchInput.addEventListener('input', (e) => {
+        currentSearch = e.target.value.toLowerCase();
+        renderUsers();
+    });
+
+    // Filtro
+    const filterSelect = document.getElementById('filter-role');
+    filterSelect.addEventListener('change', (e) => {
+        currentFilter = e.target.value;
+        renderUsers();
+    });
+
+    // Botón Nuevo Usuario
+    const btnAdd = document.getElementById('btn-add-user');
+    btnAdd.addEventListener('click', () => {
+        openModal();
+    });
+
+    // Botones Modal
+    document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+    document.getElementById('btn-cancel-modal').addEventListener('click', closeModal);
+    document.getElementById('btn-save-user').addEventListener('click', saveUser);
+}
+
+function renderUsers() {
+    const container = document.getElementById('users-list');
+    if (!container) return;
+
+    // Filtrar
+    let filtered = usersList.filter(user => {
+        const matchesSearch = 
+            user.nombre.toLowerCase().includes(currentSearch) || 
+            user.primerApellido.toLowerCase().includes(currentSearch) ||
+            user.correo.toLowerCase().includes(currentSearch);
+            
+        const matchesFilter = currentFilter === 'all' || user.rol == currentFilter;
+        
+        return matchesSearch && matchesFilter;
+    });
+
+    // Actualizar contadores
+    document.getElementById('showing-count').textContent = filtered.length;
+    document.getElementById('total-count').textContent = usersList.length;
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i data-lucide="users" class="empty-icon"></i>
+                <p>No se encontraron usuarios.</p>
+            </div>
+        `;
+        lucide.createIcons();
+        return;
+    }
+
+    // Generar HTML
+    container.innerHTML = filtered.map(user => {
+        const roleName = getRoleName(user.rol);
+        const stateName = getStateName(user.estado);
+        const fullName = `${user.nombre} ${user.primerApellido} ${user.segundoApellido || ''}`.trim();
+        const statusClass = user.activo ? 'status-active' : 'status-inactive';
+        const statusText = user.activo ? 'Activo' : 'Inactivo';
+
+        return `
+            <div class="item-table__row users-grid">
+                <div class="col font-mono text-xs text-slate-400">#${user.id}</div>
+                <div class="col font-bold text-slate-700">${fullName}</div>
+                <div class="col text-sm text-slate-600">${user.correo}</div>
+                <div class="col">
+                    <span class="badge badge-role">${roleName}</span>
                 </div>
-
-                <div class="mb-6">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-4 flex items-center gap-2">
-                        <i data-lucide="lock" class="w-3 h-3"></i> Credenciales y Acceso
-                    </p>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Correo Electrónico</label>
-                            <div class="relative">
-                                <i data-lucide="mail" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
-                                <input id="swal-email" type="email" value="${isEdit ? usuario.correo : ''}" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" placeholder="usuario@puebla.gob.mx">
-                            </div>
-                        </div>
-                         <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Contraseña ${isEdit ? '<span class="text-xs font-normal text-slate-400">(Dejar en blanco para mantener actual)</span>' : ''}</label>
-                            <div class="relative">
-                                <i data-lucide="key" class="absolute left-3 top-3 w-4 h-4 text-slate-400"></i>
-                                <input id="swal-password" type="password" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all text-sm" placeholder="********">
-                            </div>
-                        </div>
-                    </div>
+                <div class="col text-sm text-slate-500">${stateName}</div>
+                <div class="col">
+                    <span class="status-indicator ${statusClass}">${statusText}</span>
                 </div>
-
-                <div class="mb-2">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-purple-600 mb-4 flex items-center gap-2">
-                        <i data-lucide="settings-2" class="w-3 h-3"></i> Atribuciones del Perfil
-                    </p>
-                    <div class="grid grid-cols-1 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Estado Regional</label>
-                            <select id="swal-state" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm appearance-none cursor-pointer">
-                                ${await optionCatalogo("estados")}
-                            </select>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Rol de Usuario</label>
-                                <select id="swal-role" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm cursor-pointer">
-                                    ${await optionCatalogo("roles")}
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">Estatus</label>
-                                <select id="swal-active" class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm cursor-pointer">
-                                    <option value="true">Activo ✅</option>
-                                    <option value="false">Inactivo ❌</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col col-actions">
+                    <button class="btn-icon-sm" onclick="editUser(${user.id})" title="Editar">
+                        <i data-lucide="edit-2"></i>
+                    </button>
+                    <button class="btn-icon-sm text-red-500" onclick="deleteUser(${user.id})" title="Eliminar">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
             </div>
-        `,
-        didOpen: () => {
-            lucide.createIcons();
-            if (isEdit) {
-                document.getElementById('swal-state').value = usuario.estadoId;
-                document.getElementById('swal-role').value = usuario.rolId;
-                document.getElementById('swal-active').value = usuario.usuarioActivo == 1 ? 'true' : 'false';
-            }
-        },
-        confirmButtonText: confirmBtnText,
-        confirmButtonColor: '#16a34a',
-        showCancelButton: true,
-        cancelButtonText: 'Cancelar',
-        buttonsStyling: true,
-        customClass: {
-            popup: 'rounded-[30px] border-0 shadow-2xl',
-            confirmButton: 'rounded-2xl px-6 py-3 font-bold text-sm',
-            cancelButton: 'rounded-2xl px-6 py-3 font-bold text-sm bg-slate-100 text-slate-500 hover:bg-slate-200 border-0'
-        },
-        preConfirm: () => {
-            const nombre = document.getElementById('swal-name').value;
-            const ap1 = document.getElementById('swal-ap1').value;
-            const email = document.getElementById('swal-email').value;
-            const password = document.getElementById('swal-password').value;
+        `;
+    }).join('');
 
-            if (!nombre || !ap1 || !email) {
-                Swal.showValidationMessage('Los campos nombre, primer apellido y email son obligatorios');
-                return false;
-            }
+    lucide.createIcons();
+}
 
-            if (!isEdit && !password) {
-                Swal.showValidationMessage('La contraseña es obligatoria para nuevos usuarios');
-                return false;
-            }
+// --- MODAL & FORM LOGIC ---
 
-            return {
-                id: isEdit ? usuario.usuarioId : null,
-                nombre: nombre,
-                apellido1: ap1,
-                apellido2: document.getElementById('swal-ap2').value,
-                email: email,
-                password: password,
-                estado: document.getElementById('swal-state').value,
-                rol: document.getElementById('swal-role').value,
-                activo: document.getElementById('swal-active').value === 'true'
-            }
+let editingUserId = null;
+
+window.openModal = function(userId = null) {
+    const modal = document.getElementById('modal-user');
+    const title = document.getElementById('modal-title');
+    const form = document.getElementById('user-form');
+    
+    editingUserId = userId;
+    
+    if (userId) {
+        title.textContent = 'Editar Usuario';
+        const user = usersList.find(u => u.id === userId);
+        renderFormFields(user);
+    } else {
+        title.textContent = 'Nuevo Usuario';
+        renderFormFields();
+    }
+    
+    modal.classList.remove('hidden');
+    // Animación simple
+    setTimeout(() => modal.querySelector('.modal').classList.add('scale-100'), 10);
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal-user');
+    modal.classList.add('hidden');
+    editingUserId = null;
+}
+
+window.editUser = function(userId) {
+    openModal(userId);
+}
+
+window.deleteUser = function(userId) {
+    if (confirm('¿Estás seguro de eliminar este usuario?')) {
+        usersList = usersList.filter(u => u.id !== userId);
+        renderUsers();
+    }
+}
+
+function renderFormFields(user = {}) {
+    const form = document.getElementById('user-form');
+    
+    // Generar opciones de Roles
+    const roleOptions = ROLES.map(r => 
+        `<option value="${r.id}" ${user.rol == r.id ? 'selected' : ''}>${r.nombre}</option>`
+    ).join('');
+
+    // Generar opciones de Estados
+    const stateOptions = ESTADOS.map(s => 
+        `<option value="${s.id}" ${user.estado == s.id ? 'selected' : ''}>${s.nombre}</option>`
+    ).join('');
+
+    const html = `
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Nombre *</label>
+                <input type="text" class="form-control" name="nombre" value="${user.nombre || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Primer Apellido *</label>
+                <input type="text" class="form-control" name="primerApellido" value="${user.primerApellido || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Segundo Apellido</label>
+                <input type="text" class="form-control" name="segundoApellido" value="${user.segundoApellido || ''}">
+            </div>
+            <div class="form-group">
+                <label>Correo Electrónico *</label>
+                <input type="email" class="form-control" name="correo" value="${user.correo || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña ${user.id ? '(Dejar vacío para no cambiar)' : '*'}</label>
+                <input type="password" class="form-control" name="pass" placeholder="********">
+            </div>
+            <div class="form-group">
+                <label>Rol</label>
+                <select class="form-control" name="rol">
+                    ${roleOptions}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <select class="form-control" name="estado">
+                    ${stateOptions}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Estatus</label>
+                <div class="checkbox-wrapper">
+                    <label>
+                        <input type="checkbox" name="activo" ${user.activo !== false ? 'checked' : ''}>
+                        Usuario Activo
+                    </label>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    form.innerHTML = html;
+}
+
+function saveUser() {
+    const form = document.getElementById('user-form');
+    const formData = new FormData(form);
+    
+    // Validación básica
+    const nombre = formData.get('nombre');
+    const primerApellido = formData.get('primerApellido');
+    const correo = formData.get('correo');
+    
+    if (!nombre || !primerApellido || !correo) {
+        alert('Por favor completa los campos obligatorios (*).');
+        return;
+    }
+
+    const userData = {
+        nombre: nombre,
+        primerApellido: primerApellido,
+        segundoApellido: formData.get('segundoApellido'),
+        correo: correo,
+        rol: parseInt(formData.get('rol')),
+        estado: parseInt(formData.get('estado')),
+        activo: formData.get('activo') === 'on'
+    };
+
+    // Manejo de contraseña (simulado)
+    const pass = formData.get('pass');
+    if (pass) {
+        userData.pass = pass; // En real sería hash
+    } else if (editingUserId) {
+        // Mantener pass anterior
+        const existing = usersList.find(u => u.id === editingUserId);
+        userData.pass = existing.pass;
+    } else {
+        alert('La contraseña es obligatoria para nuevos usuarios.');
+        return;
+    }
+
+    if (editingUserId) {
+        // Actualizar
+        const index = usersList.findIndex(u => u.id === editingUserId);
+        if (index !== -1) {
+            usersList[index] = { ...usersList[index], ...userData };
         }
-    });
-
-    if (formValues) {
-        // Enviar a la BD
-        try {
-            const response = await fetch(endpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formValues)
-            });
-
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                renderUsuarios(); // Recargar lista
-                
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-                Toast.fire({
-                    icon: 'success',
-                    title: isEdit ? 'Usuario actualizado exitosamente' : 'Usuario registrado exitosamente'
-                });
-            } else {
-                Swal.fire('Error', result.message || 'Error al guardar', 'error');
-            }
-        } catch (error) {
-            console.error(error);
-            Swal.fire('Error', 'Error de conexión', 'error');
-        }
+    } else {
+        // Crear nuevo
+        const newId = Math.max(...usersList.map(u => u.id), 0) + 1;
+        usersList.push({ id: newId, ...userData });
     }
-}
 
-
-async function eliminarUsuario(id) {
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Esta acción eliminará el usuario permanentemente.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ef4444',
-        cancelButtonColor: '#94a3b8',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-            try {
-                const response = await fetch("../assets/php/admin/eliminarUsuario.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: id })
-                });
-                const res = await response.json();
-                if(res.status === 'success') {
-                    renderUsuarios();
-                    Swal.fire('Eliminado', 'El usuario ha sido eliminado.', 'success');
-                } else {
-                    Swal.fire('Error', res.message || 'No se pudo eliminar', 'error');
-                }
-            } catch (error) {
-                console.error(error);
-                Swal.fire('Error', 'Error de conexión', 'error');
-            }
-        }
-    });
-}
-
-async function editarUsuario(id) {
-    const user = usuarios.find(u => u.usuarioId == id);
-    if (!user) return;
-    abrirModalUsuario(user);
-}
-
-// Inicialización
-document.addEventListener('DOMContentLoaded', renderUsuarios);
-
-async function obtenerUsuarios() {
-    try {
-        const respuesta = await fetch("../assets/php/admin/obtenerUsuarios.php", {
-            method: "POST", // Aunque sea obtener, a veces se usa POST por seguridad o costumbre en este proyecto
-        });
-        return await respuesta.json();
-    }
-    catch (error) {
-        console.error("Error fetching users:", error);
-        return [];
-    }
-}
-
-async function optionCatalogo(tipo) {
-    let url = "";
-    if (tipo === "estados") url = "../assets/php/catalogos/obtenerEstados.php";
-    else if (tipo === "roles") url = "../assets/php/catalogos/obtenerRoles.php";
-    else return "";
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data.map(item => `<option value="${item.id}">${item.nombre}</option>`).join('');
-    } catch (e) {
-        console.error(`Error loading ${tipo}:`, e);
-        return `<option value="">Error cargando ${tipo}</option>`;
-    }
+    closeModal();
+    renderUsers();
+    
+    // Opcional: Mostrar feedback de guardado (en consola por ahora)
+    console.log('Usuarios guardados (simulado):', usersList);
 }

@@ -26,23 +26,23 @@ const filtersEventsData = [
 // Galería de Momentos Inolvidables
 const momentsGalleryData = [
     {
-        image: "images/rally/f_02.jpg",
+        image: "assets/images/rally/f_02.jpg",
         title: "Diversión y Aprendizaje",
         year: "Puebla 2025"
     },
     {
-        image: "images/rally/f_03.jpg",
+        image: "assets/images/rally/f_03.jpg",
         title: "Trabajo en Equipo",
         year: "Puebla 2025",
         marginTop: true
     },
     {
-        image: "images/rally/f_04.jpg",
+        image: "assets/images/rally/f_04.jpg",
         title: "Valores en Movimiento",
         year: "Puebla 2025"
     },
     {
-        image: "images/rally/f_05.jpg",
+        image: "assets/images/rally/f_05.jpg",
         title: "Comunidad Unida",
         year: "Puebla 2025",
         marginTop: true

@@ -7,7 +7,7 @@ function cargarMenu() {
                 <!-- Logo -->
                 <div class="flex items-center gap-4">
                     <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <img src="images/logo.png" alt="Logo SEA" class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-green-500">
+                        <img src="assets/images/logo.png" alt="Logo SEA" class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-green-500">
                         <span class="font-bold text-lg md:text-2xl text-green-900 leading-tight truncate max-w-[200px] md:max-w-none">Integridad desde la Raíz</span>
                     </a>
                 </div>

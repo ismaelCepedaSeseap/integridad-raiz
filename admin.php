@@ -7,8 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/shared.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="assets/css/pages/shared.css">
+    <link rel="stylesheet" href="assets/css/pages/admin.css">
 </head>
 <body class="bg-slate-100 h-screen flex overflow-hidden">
 
@@ -79,11 +79,11 @@
     </main>
 
     <!-- Scripts -->
-    <script src="js/slider-data.js"></script>
-    <script src="js/states-data.js"></script>
-    <script src="js/cine-data.js"></script>
-    <script src="js/events-data.js"></script>
-    <script src="js/event-data.js"></script>
+    <script src="assets/js/data/slider-data.js"></script>
+    <script src="assets/js/data/states-data.js"></script>
+    <script src="assets/js/data/cine-data.js"></script>
+    <script src="assets/js/data/events-data.js"></script>
+    <script src="assets/js/data/event-data.js"></script>
 
     <script>
         // Global State

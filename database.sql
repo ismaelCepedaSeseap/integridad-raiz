@@ -168,7 +168,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `primerApellido`, `segundoApellido`, `estado`, `rol`, `correo`, `pass`, `activo`) VALUES
-(1, 'Rodrigo', 'Carranza', 'Juárez', 21, 1, 'roy.wmun@gmail.com', '$2y$10$JF.6BsgjZsoAhUmEttLwy./N70gQ/qBDOtfsfXV4I84TaC2TIIpHa', b'1');
+(1, 'Rodrigo', 'Carranza', 'Juárez', 21, 1, 'roy.wmun@gmail.com', '$2y$10$JF.6BsgjZsoAhUmEttLwy./N70gQ/qBDOtfsfXV4I84TaC2TIIpHa', b'1'),
+(2, 'Ismael', 'Cepeda', '', 21, 1, 'icepeda@gmail.com', '$2y$10$EgXpB0acNM5PJgLlpccPNut6bSqT1bdff60CgJEYrNhvIO4kg5pXS', b'1');
 
 --
 -- Índices para tablas volcadas

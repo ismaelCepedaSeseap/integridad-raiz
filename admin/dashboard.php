@@ -16,7 +16,7 @@
 <body class="text-slate-800">
     <div class="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-100">
         <div class="flex items-center gap-3">
-            <img src="../images/logo.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
+            <img src="../assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
             <span class="font-bold text-lg text-green-900">SEA Puebla</span>
         </div>
         <button onclick="toggleSidebar()" class="p-2 text-slate-600">

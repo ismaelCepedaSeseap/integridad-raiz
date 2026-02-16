@@ -9,11 +9,11 @@ const EVENTS = [
         state: 'Puebla',
         location: 'Aquiles Serdán',
         url: 'detalle_evento.html?id=rally-puebla-2025',
-        mainImage: 'images/rally/f_01.jpg',
-        imageUrl: 'images/rally/f_08.jpg',
+        mainImage: 'assets/images/rally/f_01.jpg',
+        imageUrl: 'assets/images/rally/f_08.jpg',
         decorations: {
-            topLeft: 'images/rally/banderin_1.png',
-            bottomRight: 'images/rally/banderin_2.png'
+            topLeft: 'assets/images/rally/banderin_1.png',
+            bottomRight: 'assets/images/rally/banderin_2.png'
         },
         tags: ['Comunidad', 'Integridad', 'Rally'],
         impact: '200+ Personas',
@@ -41,27 +41,27 @@ const EVENTS = [
         ],
         pillars: ['Honestidad', 'Respeto', 'Justicia', 'Responsabilidad', 'Solidaridad', 'Amistad', 'Juego Limpio'],
         banners: [
-            'images/rally/banner_rally_01.jpg',
-            'images/rally/banner_rally_02.jpg',
-            'images/rally/banner_rally_03.jpg',
-            'images/rally/banner_rally_04.jpg',
-            'images/rally/banner_rally_05.jpg',
-            'images/rally/banner_rally_06.jpg'
+            'assets/images/rally/banner_rally_01.jpg',
+            'assets/images/rally/banner_rally_02.jpg',
+            'assets/images/rally/banner_rally_03.jpg',
+            'assets/images/rally/banner_rally_04.jpg',
+            'assets/images/rally/banner_rally_05.jpg',
+            'assets/images/rally/banner_rally_06.jpg'
         ],
         videoUrl: 'https://www.youtube.com/embed/V8Hvr99LLFk',
         gallery: [
-            'images/rally/f_01.jpg',
-            'images/rally/f_02.jpg',
-            'images/rally/f_03.jpg',
-            'images/rally/f_04.jpg',
-            'images/rally/f_05.jpg',
-            'images/rally/f_06.jpg',
-            'images/rally/f_07.jpg',
-            'images/rally/f_08.jpg',
-            'images/rally/f_09.jpg',
-            'images/rally/f_10.jpg',
-            'images/rally/f_11.jpg',
-            'images/rally/f_12.jpg'
+            'assets/images/rally/f_01.jpg',
+            'assets/images/rally/f_02.jpg',
+            'assets/images/rally/f_03.jpg',
+            'assets/images/rally/f_04.jpg',
+            'assets/images/rally/f_05.jpg',
+            'assets/images/rally/f_06.jpg',
+            'assets/images/rally/f_07.jpg',
+            'assets/images/rally/f_08.jpg',
+            'assets/images/rally/f_09.jpg',
+            'assets/images/rally/f_10.jpg',
+            'assets/images/rally/f_11.jpg',
+            'assets/images/rally/f_12.jpg'
         ]
     }
 ];

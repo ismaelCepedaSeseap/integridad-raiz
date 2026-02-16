@@ -14,7 +14,7 @@ if (!isset($_FILES['image'])) {
     exit;
 }
 
-$target_dir = "../images/uploads/";
+$target_dir = "../assets/images/uploads/";
 if (!file_exists($target_dir)) {
     mkdir($target_dir, 0777, true);
 }
@@ -38,7 +38,7 @@ if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg
 }
 
 if (move_uploaded_file($file['tmp_name'], $target_file)) {
-    echo json_encode(['success' => true, 'path' => 'images/uploads/' . $filename]);
+    echo json_encode(['success' => true, 'path' => 'assets/images/uploads/' . $filename]);
 } else {
     http_response_code(500);
     echo json_encode(['error' => 'Sorry, there was an error uploading your file.']);
