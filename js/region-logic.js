@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const regionSection = document.createElement('section');
             regionSection.className = 'py-12 md:py-20 bg-slate-50 border-b border-slate-200';
 
-            const statesHTML = region.states.map(state => {
+            // Mostrar máximo 6 elementos por región
+            const statesToShow = Array.isArray(region.states) ? region.states.slice(0, 6) : [];
+
+            const statesHTML = statesToShow.map(state => {
                 let socialLinksHTML = '';
                 if (state.social) {
                     socialLinksHTML = Object.entries(state.social).map(([key, url]) => {
@@ -30,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 return `
-                    <div class="group flex flex-col items-center gap-3 w-full sm:w-64">
+                    <div class="group flex flex-col items-center gap-3 w-full sm:w-52 md:w-52 lg:w-52">
                         <a href="${state.url}" target="_blank" class="w-full max-w-[240px] h-32 bg-white rounded-xl flex items-center justify-center border border-slate-200 shadow-sm p-8 group-hover:border-green-600 group-hover:shadow-md transition-all duration-300">
                             <img src="${state.logo}" alt="SEA ${state.name}" class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300">
                         </a>
@@ -47,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="mb-8">
                         <img src="${region.mainImage}" alt="${region.name}" class="max-w-[400px] w-full mx-auto drop-shadow-sm opacity-80">
                     </div>
-                    <div class="flex flex-wrap gap-6 sm:gap-8 items-start justify-center">
+                    <div class="flex flex-wrap gap-6 sm:gap-8 items-center justify-center">
                         ${statesHTML}
                     </div>
                 </div>

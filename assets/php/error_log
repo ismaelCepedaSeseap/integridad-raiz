@@ -1,0 +1,264 @@
+[16-Feb-2026 23:25:23 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:33:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:34:12 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:34:16 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:34:44 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:34:52 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:35:21 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:35:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:47:09 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:49:48 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:50:26 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:53:02 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:53:08 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:55:58 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:57:42 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[16-Feb-2026 23:58:03 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 15:14:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 15:25:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 15:25:11 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 15:25:16 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 16:19:39 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 16:21:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 16:23:33 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 16:23:48 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerEstadosActivos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 16:31:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 23:50:56 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[17-Feb-2026 23:58:15 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:32:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:32:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:44:29 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:55:35 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:55:43 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:56:28 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 15:56:28 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: YES) in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php:28
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/conexion.php(3): require_once()
+#1 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(2): require_once('/home/seapuebl/...')
+#2 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/config/db.php on line 28
+[18-Feb-2026 16:25:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php on line 4
+[18-Feb-2026 16:25:50 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/public_html/ms/IntegridadesDeLaRaiz/assets/php/obtenerCompromisos.php on line 4
+[25-Feb-2026 23:55:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[25-Feb-2026 23:55:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 00:39:38 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 01:04:38 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 01:06:27 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 01:12:28 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 01:32:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 02:18:39 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[26-Feb-2026 02:45:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'seapuebl_integridadRaiz.muro' doesn't exist in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php:4
+Stack trace:
+#0 /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php(4): PDO->prepare()
+#1 {main}
+  thrown in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/obtenerCompromisos.php on line 4
+[03-Mar-2026 21:43:28 UTC] PHP Warning:  Undefined variable $apiKey in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/gemini.php on line 73
+[03-Mar-2026 21:43:39 UTC] PHP Warning:  Undefined variable $apiKey in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/gemini.php on line 73
+[03-Mar-2026 21:45:20 UTC] PHP Warning:  Undefined variable $apiKey in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/gemini.php on line 73
+[03-Mar-2026 21:45:29 UTC] PHP Warning:  Undefined variable $apiKey in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/gemini.php on line 73
+[03-Mar-2026 21:49:00 UTC] PHP Warning:  Undefined variable $apiKey in /home/seapuebl/integridaddesdelaraiz.org.mx/assets/php/gemini.php on line 72

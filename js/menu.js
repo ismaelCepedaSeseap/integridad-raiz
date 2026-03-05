@@ -18,7 +18,7 @@ function cargarMenu() {
                     <a href="cine.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Cine</a>
                     <a href="eventos.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Eventos</a>
                     <a href="index.html#muro" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Muro</a>
-                    <a href="material.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Material</a>
+                    <!--<a href="material.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Material</a>-->
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -38,7 +38,7 @@ function cargarMenu() {
                 <a href="cine.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Cine</a>
                 <a href="eventos.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Eventos</a>
                 <a href="index.html#muro" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Muro</a>
-                <a href="material.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Material</a>
+                <!--<a href="material.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Material</a>-->
             </div>
         </div>
     </nav>

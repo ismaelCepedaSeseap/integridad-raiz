@@ -34,6 +34,16 @@ const statesData = [
                     facebook: 'https://www.facebook.com/SAETLAX/',
                     youtube: 'https://www.youtube.com/@sesaet9073'
                 }
+            },
+            { 
+                name: 'Veracruz', 
+                url: 'https://seseav.veracruz.gob.mx/',
+                logo: 'images/logo_SEA_Veracruz.png',
+                social: {
+                    facebook: 'https://www.facebook.com/SESEAVEROficial',
+                    instagram: 'https://www.instagram.com/se.seaver?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
+                    twitter: 'https://x.com/SESEAVOficial',
+                }
             }
         ]
     }

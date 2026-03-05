@@ -1,3 +1,9 @@
+
+RewriteEngine on
 DirectoryIndex index.html index.php
 
 Options -MultiViews
+RewriteCond %{HTTP_HOST} ^integridaddesdelaraiz\.org\.mx$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.integridaddesdelaraiz\.org\.mx$
+RewriteRule ^integridaddesdelaraiz\.org\.mx$ "https\:\/\/integridaddesdelaraiz\.org\.mx\/" [R=301,L]
+

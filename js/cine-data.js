@@ -26,5 +26,14 @@ const cineData = [
         "posterSrc": "images/Tlaxcala.jpeg",
         "url": "cine.html?estado=tlaxcala",
         "titleColorClass": "text-slate-900"
+    },
+    {
+        "id": "veracruz",
+        "name": "VERACRUZ",
+        "slogan": "\"Voz valiente, justicia presente.\"",
+        "videoSrc": "images/Veracruz.mp4",
+        "posterSrc": "images/Veracruz.png",
+        "url": "cine.html?estado=veracruz",
+        "titleColorClass": "text-slate-900"
     }
 ];

@@ -4,7 +4,43 @@ require_once "insertarCompromiso.php";
 if (file_exists('../../config/env.php')) {
     $env = require '../../config/env.php';
 }
-$apiKey = getenv('API_KEY') ?: ($env['API_KEY'] ?? 'none');
+/*$apiKey_1 = getenv('API_KEY_1') ?: ($env['API_KEY_1'] ?? 'none');
+$apiKey_2 = getenv('API_KEY_2') ?: ($env['API_KEY_2'] ?? 'none');
+$apiKey_3 = getenv('API_KEY_3') ?: ($env['API_KEY_3'] ?? 'none');
+$apiKey_4 = getenv('API_KEY_4') ?: ($env['API_KEY_4'] ?? 'none');
+$apiKey_5 = getenv('API_KEY_5') ?: ($env['API_KEY_5'] ?? 'none');*/
+
+$apiKeys = [
+    getenv('API_KEY_1') ?: ($env['API_KEY_1'] ?? 'none'),
+    getenv('API_KEY_2') ?: ($env['API_KEY_2'] ?? 'none'),
+    getenv('API_KEY_3') ?: ($env['API_KEY_3'] ?? 'none'),
+    getenv('API_KEY_4') ?: ($env['API_KEY_4'] ?? 'none'),
+    getenv('API_KEY_5') ?: ($env['API_KEY_5'] ?? 'none'),
+];
+//$apiKey = $apiKeys[array_rand($apiKeys)];
+$indexFile = __DIR__ . '/api_index.txt';
+
+// Abrir archivo en modo lectura/escritura
+$fp = fopen($indexFile, 'c+');
+
+// Bloquear el archivo (exclusivo)
+if (flock($fp, LOCK_EX)) {
+    $currentIndex = (int)fread($fp, filesize($indexFile) ?: 1);
+    $apiKey = $apiKeys[$currentIndex];
+
+    // Calcular nuevo índice
+    $currentIndex = ($currentIndex + 1) % count($apiKeys);
+
+    // Reescribir archivo desde el inicio
+    ftruncate($fp, 0);
+    rewind($fp);
+    fwrite($fp, (string)$currentIndex);
+
+    // Liberar bloqueo
+    flock($fp, LOCK_UN);
+}
+fclose($fp);
+
 //$apiKey = "AIzaSyDude8yZ80Y8jbEhh4sMYfGVhRoN7nvmSM"; 
 /*$nombre = "Rosa Fernández";
 $estado = "Durango";

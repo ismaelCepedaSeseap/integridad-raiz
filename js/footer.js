@@ -12,6 +12,7 @@ function cargarFooter() {
                     <div class="flex items-center gap-3"><a target="_blank" href="https://seseap.puebla.gob.mx/"><img src="images/logo_puebla.png" alt="Puebla" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70" style="height: 164px;"></a></div>
                     <div class="flex items-center gap-3"><a target="_blank" href="https://sistemaanticorrupcion.hidalgo.gob.mx/"><img src="images/logo_hidalgo.png" alt="Hidalgo" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
                     <div class="flex items-center gap-3"><a target="_blank" href="https://saetlax.org/"><img src="images/logo_tlaxcala.png" alt="Tlaxcala" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
+                    <div class="flex items-center gap-3"><a target="_blank" href="https://seseav.veracruz.gob.mx/"><img src="images/logo_SEA_Veracruz.png" alt="Veracruz" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
                 </div>
             </div>
             <div class="w-full h-[1px] bg-white/5 mb-10"></div>
