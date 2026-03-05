@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Integridad desde la Raíz</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -113,7 +114,7 @@
     <div class="login-card p-8 md:p-12" id="card">
         <div class="text-center mb-10">
             <div class="inline-block p-1 rounded-full border-4 border-green-500/20 mb-4">
-                <img src="images/logo.png" alt="Logo SEA" class="w-20 h-20 rounded-full shadow-inner" onerror="this.src='https://via.placeholder.com/80?text=SEA'">
+                <img src="assets/images/logo.png" alt="Logo SEA" class="w-20 h-20 rounded-full shadow-inner" onerror="this.src='https://via.placeholder.com/80?text=SEA'">
             </div>
             <h1 class="text-2xl font-bold text-slate-900">Acceso al Sistema</h1>
             <p class="text-slate-500 text-sm mt-2 font-medium italic">"Sembrando honestidad, cosechamos integridad"</p>
@@ -159,9 +160,9 @@
         </form>
 
         <div class="mt-8 pt-8 border-t border-slate-100 flex justify-center gap-4 grayscale opacity-40">
-            <img src="images/logo_puebla.png" alt="Puebla" class="h-6" onerror="this.style.display='none'">
-            <img src="images/logo_hidalgo.jpeg" alt="Hidalgo" class="h-6" onerror="this.style.display='none'">
-            <img src="images/logo_tlaxcala.png" alt="Tlaxcala" class="h-6" onerror="this.style.display='none'">
+            <img src="assets/images/logo_puebla.png" alt="Puebla" class="h-6" onerror="this.style.display='none'">
+            <img src="assets/images/logo_hidalgo.jpeg" alt="Hidalgo" class="h-6" onerror="this.style.display='none'">
+            <img src="assets/images/logo_tlaxcala.png" alt="Tlaxcala" class="h-6" onerror="this.style.display='none'">
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integridad desde la Raíz - SESEA PUEBLA</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="css/shared.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="assets/css/pages/shared.css">
+    <link rel="stylesheet" href="assets/css/pages/index.css">
 </head>
 
 <body class="bg-slate-50">
@@ -46,7 +47,7 @@
                 <div class="lg:w-1/2">
                     <h2 class="text-4xl font-bold mb-6">El Árbol de la Integridad</h2>
                     <p class="text-green-100 text-lg mb-10">Haz clic en los frutos dorados para descubrir consejos y
-                        acciones positivas.</p>
+                        acciones positivas cada semana.</p>
                     <div id="tip-display"
                         class="bg-white/10 backdrop-blur-md p-10 rounded-[40px] border border-white/20 min-h-[200px] flex items-center justify-center text-center italic text-xl transition-all duration-500">
                         "¡Selecciona una semilla del árbol para comenzar!"
@@ -55,19 +56,13 @@
                 <div class="lg:w-1/2 flex justify-center">
                     <div class="relative w-full max-w-sm aspect-square">
                         <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-2xl">
+                            <!-- Tronco y Follaje Estático -->
                             <path d="M100 180 Q100 140 100 100" stroke="#523015" stroke-width="12"
                                 stroke-linecap="round" />
                             <circle cx="100" cy="80" r="50" fill="#15803d" />
                             <circle cx="70" cy="100" r="40" fill="#166534" />
                             <circle cx="130" cy="100" r="40" fill="#166534" />
-                            <circle onclick="showTip('honestidad')" cx="80" cy="75" r="8" fill="#facc15"
-                                class="seed-pulse" />
-                            <circle onclick="showTip('respeto')" cx="120" cy="85" r="8" fill="#facc15"
-                                class="seed-pulse" />
-                            <circle onclick="showTip('justicia')" cx="100" cy="110" r="8" fill="#facc15"
-                                class="seed-pulse" />
-                            <circle onclick="showTip('responsabilidad')" cx="100" cy="55" r="8" fill="#facc15"
-                                class="seed-pulse" />
+                            <!-- Los frutos se generarán dinámicamente desde assets/js/pages/tree-logic.js -->
                         </svg>
                     </div>
                 </div>
@@ -87,6 +82,11 @@
             </div>
             <div id="cine-container" class="grid gap-12 lg:gap-24">
                 <!-- El contenido se cargará dinámicamente desde js/cine-data.js -->
+            </div>
+
+            <!-- Paginación para Cine -->
+            <div id="cine-pagination" class="flex justify-center gap-2 mt-12">
+                <!-- Botones generados dinámicamente -->
             </div>
         </div>
     </section>
@@ -185,21 +185,22 @@
             alt="Vista Ampliada">
     </div>
 
-    <script src="js/footer.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/states-data.js"></script>
-    <script src="js/region-logic.js"></script>
-    <script src="js/slider-data.js"></script>
-    <script src="js/slider-logic.js"></script>
-    <script src="js/cine-data.js"></script>
-    <script src="js/cine-logic.js"></script>
-    <script src="js/events-data.js"></script>
-    <script src="js/event-data.js"></script>
-    <script src="js/event-logic.js"></script>
-    <script src="js/form-states-data.js"></script>
-    <script src="js/form-states-logic.js"></script>
-    <!--<script src="js/muro-data.js"></script>-->
-    <script src="js/muro-logic.js"></script>
+    <script src="assets/js/pages/footer.js"></script>
+    <script src="assets/js/pages/menu.js"></script>
+    <script src="assets/js/data/states-data.js"></script>
+    <script src="assets/js/pages/region-logic.js"></script>
+    <script src="assets/js/pages/tree-logic.js"></script>
+    <script src="assets/js/data/slider-data.js"></script>
+    <script src="assets/js/pages/slider-logic.js"></script>
+    <script src="assets/js/data/cine-data.js"></script>
+    <script src="assets/js/pages/cine-logic.js"></script>
+    <script src="assets/js/data/events-data.js"></script>
+    <script src="assets/js/data/event-data.js"></script>
+    <script src="assets/js/pages/event-logic.js"></script>
+    <script src="assets/js/data/form-states-data.js"></script>
+    <script src="assets/js/pages/form-states-logic.js"></script>
+    <!--<script src="assets/js/data/muro-data.js"></script>-->
+    <script src="assets/js/pages/muro-logic.js"></script>
     <script src="assets/js/generales/captcha.js"></script>
     <script>
         lucide.createIcons();

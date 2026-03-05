@@ -1,11 +1,10 @@
 <?php
-    // session_start();
     require_once __DIR__ . "/../conexion.php";
     require_once __DIR__ . "/../security/auth.php";
     header('Content-Type: application/json');
 
-    $autorizacion = new auth();
-    $autorizado = true; // $autorizacion->isLoggedIn();
+    $autorizacion = new Auth();
+    $autorizado = $autorizacion->isLoggedIn();
 
     if($autorizado){
         $data = json_decode(file_get_contents('php://input'), true);
@@ -18,23 +17,43 @@
                 $correo = $data['email'];
                 $rol = $data['rol'];
                 $estado = $data['estado'];
-                $activo = isset($data['activo']) && $data['activo'] ? 1 : 0;
+                // Ensure activo is strictly 0 or 1
+                $activoRaw = $data['activo'] ?? 0;
+                if ($activoRaw === 'true' || $activoRaw === true || $activoRaw === 1 || $activoRaw === '1') {
+                    $activo = 1;
+                } else {
+                    $activo = 0;
+                }
                 
                 // If password is provided and not empty, update it
                 $passwordUpdate = "";
-                $params = [$nombre, $primerApellido, $segundoApellido, $correo, $rol, $estado, $activo];
+                $params = []; // Unused with bindParam
                 
                 if (!empty($data['password'])) {
                     $passwordUpdate = ", pass = ?";
-                    $params[] = password_hash($data['password'], PASSWORD_DEFAULT);
                 }
                 
-                $params[] = $id;
-
                 $sql = "UPDATE usuarios SET nombre = ?, primerApellido = ?, segundoApellido = ?, correo = ?, rol = ?, estado = ?, activo = ? $passwordUpdate WHERE id = ?";
                 $stmt = $pdo->prepare($sql);
                 
-                if ($stmt->execute($params)) {
+                $stmt->bindParam(1, $nombre);
+                $stmt->bindParam(2, $primerApellido);
+                $stmt->bindParam(3, $segundoApellido);
+                $stmt->bindParam(4, $correo);
+                $stmt->bindParam(5, $rol);
+                $stmt->bindParam(6, $estado);
+                $stmt->bindValue(7, (int)$activo, PDO::PARAM_INT); // Force integer
+
+                $paramIndex = 8;
+                if (!empty($data['password'])) {
+                    $passHash = password_hash($data['password'], PASSWORD_DEFAULT);
+                    $stmt->bindParam($paramIndex, $passHash);
+                    $paramIndex++;
+                }
+
+                $stmt->bindParam($paramIndex, $id);
+                
+                if ($stmt->execute()) {
                     echo json_encode(['status' => 'success']);
                 } else {
                     http_response_code(500);

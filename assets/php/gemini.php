@@ -41,7 +41,7 @@ if (flock($fp, LOCK_EX)) {
 }
 fclose($fp);
 
-//$apiKey = "AIzaSyDude8yZ80Y8jbEhh4sMYfGVhRoN7nvmSM"; 
+//$apiKey = "API_KEY_AQUI"; 
 /*$nombre = "Rosa Fernández";
 $estado = "Durango";
 $compromiso = "Me comprometo a no tirar chicles en la banqueta de mi colonia";*/
@@ -119,12 +119,7 @@ if ($httpCode !== 200) {
 $output = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
 
 if ($output) {
-    $veredictoFinal = json_decode($output, true);
-    if($veredictoFinal["veredicto_final"] != "RECHAZADO"){
-        insertarMuro($nombre, $estado, $compromiso, $pdo);
-    }
     echo json_encode(["output" => $result],JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    
 } else {
     echo json_encode(["error" => "La API no devolvió contenido"]);
 }

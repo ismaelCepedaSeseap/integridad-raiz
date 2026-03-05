@@ -1,13 +1,11 @@
-if (typeof lucide !== 'undefined') lucide.createIcons();
+lucide.createIcons();
 
         let currentCaptcha = "";
 
         // Generar Captcha en el Frontend
         function generateCaptcha() {
             const canvas = document.getElementById('captchaCanvas');
-            if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            if (!ctx) return;
             const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
             currentCaptcha = "";
             
@@ -83,4 +81,4 @@ if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         // Inicializar el primer captcha al cargar
-        window.addEventListener('load', generateCaptcha);
+        window.onload = generateCaptcha;

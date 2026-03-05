@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Integridad desde la Raíz</title>
+    <link rel="stylesheet" href="../assets/css/pages/admin.css">
     <link rel="stylesheet" href="../assets/css/admin/dashboard.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +17,7 @@
 <body class="text-slate-800">
     <div class="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-100">
         <div class="flex items-center gap-3">
-            <img src="../images/logo.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
+            <img src="../assets/images/logo.png" alt="Logo" class="w-10 h-10 rounded-full border-2 border-green-500">
             <span class="font-bold text-lg text-green-900">SEA Puebla</span>
         </div>
         <button onclick="toggleSidebar()" class="p-2 text-slate-600">
@@ -88,6 +89,7 @@
                 <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
                     <i data-lucide="layout-grid" class="w-5 h-5 text-green-600"></i> Módulos Disponibles
                 </h2>
+                <span id="state-filter-status" class="text-[10px] text-green-600 font-bold uppercase tracking-widest">Nivel Nacional</span>
                 <!-- Switcher para propósitos de DEMO -->
                 <div class="flex gap-2 p-1 bg-slate-100 rounded-xl text-[10px] font-black uppercase">
                     <button onclick="setUserRole('SUPER')" class="px-2 py-1 rounded-lg hover:bg-white transition-all">Super</button>

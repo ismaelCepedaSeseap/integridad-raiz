@@ -1,5 +1,13 @@
 <?php 
- $apiKey = "AIzaSyDude8yZ80Y8jbEhh4sMYfGVhRoN7nvmSM";  
+ if (file_exists('../config/env.php')) {
+     $env = require '../config/env.php';
+ }
+ $apiKey = getenv('API_KEY_1') ?: ($env['API_KEY_1'] ?? '');
+ if ($apiKey === '') {
+     http_response_code(500);
+     echo json_encode(["error" => "API key no configurada"]);
+     exit;
+ }
  /*$nombre = "Rosa Melcacho"; 
  $estado = "Durango"; 
  $compromiso = "Me comprometo a no tirar chicles en la banqueta de mi colonia";*/ 
