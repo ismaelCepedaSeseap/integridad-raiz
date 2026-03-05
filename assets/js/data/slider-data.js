@@ -27,7 +27,7 @@ const sliderData = [
                 "url": "#",
                 "icon": "play-circle",
                 "style": "glass",
-                "videoSrc": "assets/images/Video_Infantil_Sobre_Integridad.mp4"
+                "videoSrc": "assets/images/Integridad Publico.mp4"
             }
         ]
     },

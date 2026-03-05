@@ -12,7 +12,7 @@ if (isset($_GET['generar_pdf']) && $_GET['generar_pdf'] == '1') {
     // Extender la clase TCPDF para crear encabezados y pies de página personalizados
     class PDF_Branded extends TCPDF {
         public function Header() {
-            $image_file = __DIR__ . '/../images/logo.png';
+            $image_file = __DIR__ . '/../assets/images/logo.png';
             $image_x = 15;
             $image_y = 10;
             $image_w = 40;
@@ -44,7 +44,7 @@ if (isset($_GET['generar_pdf']) && $_GET['generar_pdf'] == '1') {
         }
 
         public function getHeaderMargin() {
-            $image_file = __DIR__ . '/../images/logo.png';
+            $image_file = __DIR__ . '/../assets/images/logo.png';
             $image_y = 10;
             $image_w = 40;
             
@@ -100,144 +100,88 @@ if (isset($_GET['generar_pdf']) && $_GET['generar_pdf'] == '1') {
                 $this->SetFillColor(255, 255, 255);
             }
 
-            // Draw the cells
+            // Draw cells
             for ($i = 0; $i < count($data); $i++) {
-                $this->MultiCell(
-                    $widths[$i], 
-                    $row_height, 
-                    $data[$i], 
-                    1, // border
-                    isset($aligns[$i]) ? $aligns[$i] : 'C', 
-                    true, // fill
-                    0, // ln -> stay at same line, move to right
-                    $current_x, 
-                    $start_y, 
-                    true, // reseth
-                    0, // stretch
-                    false, // ishtml
-                    true, // autopadding
-                    $row_height, // maxh
-                    'M' // valign
-                );
+                $this->SetXY($current_x, $start_y);
+                $this->MultiCell($widths[$i], $row_height, $data[$i], 1, $aligns[$i], true, 1, '', '', true, 0, false, true, $row_height, 'M');
                 $current_x += $widths[$i];
             }
 
-            // Move the cursor to the next line
-            $this->Ln($row_height);
+            $this->SetY($start_y + $row_height);
         }
     }
 
-    // --- INICIO DEL PROCESO ---
     $pdf = new PDF_Branded(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-    $pdf->SetCreator(PDF_CREATOR);
+
+    // Metadata
+    $pdf->SetCreator('SEA Puebla');
     $pdf->SetAuthor('Integridad desde la Raíz');
     $pdf->SetTitle('Guía de Marca y Contenido');
-    $pdf->SetMargins(PDF_MARGIN_LEFT, $pdf->getHeaderMargin(), PDF_MARGIN_RIGHT);
-    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+    // Headers/Footers
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+    $pdf->setHeaderFont(Array('helvetica', '', 10));
+    $pdf->setFooterFont(Array('helvetica', '', 8));
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+    // Margins
+    $pdf->SetMargins(15, $pdf->getHeaderMargin(), 15);
+    $pdf->SetHeaderMargin(10);
+    $pdf->SetFooterMargin(15);
+
+    // Page breaks
+    $pdf->SetAutoPageBreak(TRUE, 20);
+
+    // Font subsets
+    $pdf->setFontSubsetting(true);
 
     // --- PORTADA ---
     $pdf->AddPage();
-    $pdf->SetY(80);
+    $pdf->Ln(20);
     $pdf->SetFont('helvetica', 'B', 28);
-    $pdf->SetTextColor(22, 101, 52);
-    $pdf->Cell(0, 20, 'Guía de Marca y Contenido', 0, 1, 'C');
-    $pdf->SetFont('helvetica', '', 14);
+    $pdf->SetTextColor(21, 128, 61);
+    $pdf->Cell(0, 20, 'Sistema de Gestión', 0, 1, 'C');
+    $pdf->SetFont('helvetica', '', 16);
     $pdf->SetTextColor(100, 116, 139);
-    $pdf->Cell(0, 10, 'Especificaciones para la gestión del sitio web', 0, 1, 'C');
-    $pdf->Image(__DIR__ . '/../images/web_integridad-raiz.png', 60, 120, 90, '', 'PNG', '', 'T', false, 300, 'C');
+    $pdf->Cell(0, 10, 'Manual de Operación de Datos', 0, 1, 'C');
+    
+    $pdf->Ln(40);
+    $image_hero = __DIR__ . '/../assets/images/web_integridad-raiz.png';
+    if (file_exists($image_hero)) {
+        $pdf->Image($image_hero, 20, $pdf->GetY(), 170, 0, 'PNG', '', 'T', false, 300, 'C');
+    }
 
-    // --- CONTENIDO DEL MARKDOWN ---
+    // --- TABLA DE CONTENIDOS / INTRO ---
     $pdf->AddPage();
-    $markdown_content = file_get_contents(__DIR__ . '/../DOCUMENTACION_SITIO.md');
+    $pdf->SetFont('helvetica', 'B', 20);
+    $pdf->SetTextColor(22, 101, 52);
+    $pdf->Cell(0, 12, 'Introducción', 0, 1, 'L');
+    $pdf->Ln(5);
+    $pdf->SetFont('helvetica', '', 11);
+    $pdf->SetTextColor(51, 65, 85);
+    $pdf->MultiCell(0, 10, "Este sistema permite actualizar dinámicamente el contenido del portal 'Integridad desde la Raíz' sin necesidad de modificar el código fuente. Los datos se almacenan en archivos JavaScript estructurados que son consumidos por el front-end.", 0, 'L');
+    
+    // --- ESTRUCTURA DE DATOS ---
+    $pdf->Ln(10);
+    $pdf->SetFont('helvetica', 'B', 16);
+    $pdf->SetTextColor(22, 101, 52);
+    $pdf->Cell(0, 12, 'Estructura de Archivos de Datos', 0, 1, 'L');
+    $pdf->Ln(5);
 
-    if ($markdown_content === false) {
-        $pdf->Write(5, "Error: No se pudo leer el archivo DOCUMENTACION_SITIO.md");
-    } else {
-        $lines = explode("\n", $markdown_content);
-        $is_table = false;
-        $table_col_count = 0;
-        $table_widths = [];
-        $table_aligns_header = [];
-        $table_aligns_body = [];
-        $margins = $pdf->getMargins();
-        $available_table_width = $pdf->getPageWidth() - ($margins['left'] ?? PDF_MARGIN_LEFT) - ($margins['right'] ?? PDF_MARGIN_RIGHT);
+    $header = array('Tipo de Contenido', 'Archivo Destino', 'Variable JS');
+    $data_rows = array(
+        array('Slider Principal', 'assets/js/data/slider-data.js', 'sliderData'),
+        array('Estados y Redes', 'assets/js/data/states-data.js', 'statesData'),
+        array('Cine de Integridad', 'assets/js/data/cine-data.js', 'cineData'),
+        array('Videos de Cine (Pág)', 'assets/js/data/cine-page-data.js', 'videosPageData'),
+        array('Eventos y Rally', 'assets/js/data/events-data.js', 'EVENTS')
+    );
 
-        $build_table_widths = function(int $col_count) use ($available_table_width) {
-            if ($col_count <= 0) return [];
-            $width = $available_table_width / $col_count;
-            return array_fill(0, $col_count, $width);
-        };
-
-        foreach ($lines as $line) {
-            $line = trim($line);
-
-            if (preg_match('/^# (.*)/', $line, $matches)) {
-                $is_table = false;
-                $table_col_count = 0;
-                $table_widths = [];
-                $pdf->SetFont('helvetica', 'B', 20);
-                $pdf->SetTextColor(22, 101, 52);
-                $pdf->Ln(10);
-                $pdf->Cell(0, 12, $matches[1], 0, 1, 'L');
-                $pdf->Ln(4);
-            } elseif (preg_match('/^## (.*)/', $line, $matches)) {
-                $is_table = false;
-                $table_col_count = 0;
-                $table_widths = [];
-                $pdf->SetFont('helvetica', 'B', 16);
-                $pdf->SetTextColor(21, 128, 61);
-                $pdf->Ln(8);
-                $pdf->Cell(0, 10, $matches[1], 0, 1, 'L');
-                $pdf->Ln(2);
-            } elseif (preg_match('/^### (.*)/', $line, $matches)) {
-                $is_table = false;
-                $table_col_count = 0;
-                $table_widths = [];
-                $pdf->SetFont('helvetica', 'B', 12);
-                $pdf->SetTextColor(30, 64, 175);
-                $pdf->Ln(6);
-                $pdf->Cell(0, 8, $matches[1], 0, 1, 'L');
-            }
-            elseif (strpos($line, '|') !== false && strlen($line) > 1) {
-                if (preg_match('/^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/', $line)) {
-                    continue;
-                }
-                $cells = array_map('trim', explode('|', trim($line, '|')));
-                
-                if (!$is_table) {
-                    // This is the header row
-                    $is_table = true;
-                    $table_col_count = count($cells);
-                    $table_widths = $build_table_widths($table_col_count);
-                    $table_aligns_header = array_fill(0, $table_col_count, 'C');
-                    $table_aligns_body = array_fill(0, $table_col_count, 'L');
-                    $pdf->DrawTableRow($cells, $table_widths, $table_aligns_header, true); // Draw header
-                } else {
-                    // This is a data row
-                    if ($table_col_count > 0 && count($cells) !== $table_col_count) {
-                        while (count($cells) < $table_col_count) {
-                            $cells[] = '';
-                        }
-                        if (count($cells) > $table_col_count) {
-                            $cells = array_slice($cells, 0, $table_col_count);
-                        }
-                    }
-                    $pdf->DrawTableRow($cells, $table_widths, $table_aligns_body, false); // Draw row
-                }
-            } else {
-                if (preg_match('/^\|[:\-\s|]+/', $line)) continue; // Ignorar línea de separación de tabla
-                $is_table = false;
-                $table_col_count = 0;
-                $table_widths = [];
-                $pdf->SetFont('helvetica', '', 10);
-                $pdf->SetTextColor(51, 65, 85);
-                if (strpos($line, '```') !== false) {
-                    // Ignorar bloques de código
-                } else {
-                    $pdf->WriteHTML('<p>'.$line.'</p>', true, false, true, false, '');
-                }
-            }
-        }
+    $widths = array(50, 80, 50);
+    $aligns = array('L', 'L', 'L');
+    $pdf->DrawTableRow($header, $widths, $aligns, true);
+    foreach($data_rows as $row) {
+        $pdf->DrawTableRow($row, $widths, $aligns);
     }
 
     // --- DIAGRAMA DE BASE DE DATOS ---
@@ -246,13 +190,13 @@ if (isset($_GET['generar_pdf']) && $_GET['generar_pdf'] == '1') {
     $pdf->SetTextColor(22, 101, 52);
     $pdf->Cell(0, 12, 'Diagrama de Base de Datos', 0, 1, 'L');
     $pdf->Ln(10);
-    $image_db = __DIR__ . '/../images/diagrama_db.png';
+    $image_db = __DIR__ . '/../assets/images/diagrama_db.png';
     if (file_exists($image_db)) {
         $pdf->Image($image_db, 15, $pdf->GetY(), 180, 0, 'PNG', '', 'T', false, 300, 'C');
     } else {
         $pdf->SetFont('helvetica', '', 10);
         $pdf->SetTextColor(255, 0, 0);
-        $pdf->Write(5, "Error: No se encontró el archivo 'diagrama_db.png' en la carpeta 'images'.");
+        $pdf->Write(5, "Error: No se encontró el archivo 'diagrama_db.png' en la carpeta 'assets/images'.");
     }
 
     // --- MAPA DEL SITIO ---
@@ -261,13 +205,13 @@ if (isset($_GET['generar_pdf']) && $_GET['generar_pdf'] == '1') {
     $pdf->SetTextColor(22, 101, 52);
     $pdf->Cell(0, 12, 'Mapa del Sitio', 0, 1, 'L');
     $pdf->Ln(10);
-    $image_mapa = __DIR__ . '/../images/mapa_sitio.png';
+    $image_mapa = __DIR__ . '/../assets/images/mapa_sitio.png';
     if (file_exists($image_mapa)) {
         $pdf->Image($image_mapa, 15, $pdf->GetY(), 180, 0, 'PNG', '', 'T', false, 300, 'C');
     } else {
         $pdf->SetFont('helvetica', '', 10);
         $pdf->SetTextColor(255, 0, 0);
-        $pdf->Write(5, "Error: No se encontró el archivo 'mapa_sitio.png' en la carpeta 'images'.");
+        $pdf->Write(5, "Error: No se encontró el archivo 'mapa_sitio.png' en la carpeta 'assets/images'.");
     }
 
     // --- GENERAR PDF ---
@@ -298,6 +242,10 @@ if (!isset($input['type']) || !isset($input['data'])) {
 
 $type = $input['type'];
 $data = $input['data'];
+
+// Depuración: registrar si recibimos datos
+// file_put_contents('debug.log', "Type: $type, Data count: " . count($data) . "\n", FILE_APPEND);
+
 $json_data = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 $file_path = '';
@@ -305,24 +253,28 @@ $variable_name = '';
 
 switch ($type) {
     case 'slider':
-        $file_path = '../js/slider-data.js';
+        $file_path = __DIR__ . '/../assets/js/data/slider-data.js';
         $variable_name = 'sliderData';
         break;
     case 'states':
-        $file_path = '../js/states-data.js';
+        $file_path = __DIR__ . '/../assets/js/data/states-data.js';
         $variable_name = 'statesData';
         break;
     case 'cine':
-        $file_path = '../js/cine-data.js';
+        $file_path = __DIR__ . '/../assets/js/data/cine-data.js';
         $variable_name = 'cineData';
         break;
+    case 'cine_videos':
+        $file_path = __DIR__ . '/../assets/js/data/cine-page-data.js';
+        $variable_name = 'videosPageData';
+        break;
     case 'event':
-        $file_path = '../js/event-data.js';
-        $variable_name = 'eventsList';
+        $file_path = __DIR__ . '/../assets/js/data/events-data.js';
+        $variable_name = 'EVENTS';
         break;
     default:
         http_response_code(400);
-        echo json_encode(['error' => 'Invalid type']);
+        echo json_encode(['error' => 'Invalid type: ' . $type]);
         exit;
 }
 
@@ -345,9 +297,20 @@ if ($type === 'states') {
 } elseif ($type === 'cine') {
     $content = "// Datos de la sección Cine de la Integridad\n";
     $content .= "const cineData = " . $json_data . ";\n";
+} elseif ($type === 'cine_videos') {
+    $content = "// Datos para la página cine.html\n";
+    $content .= "// Filtros disponibles (estáticos por ahora, podrían ser dinámicos)\n";
+    $content .= "const filtersData = [\n";
+    $content .= "    { id: 'todos', label: 'Todos' },\n";
+    $content .= "    { id: 'puebla', label: 'Puebla' },\n";
+    $content .= "    { id: 'hidalgo', label: 'Hidalgo' },\n";
+    $content .= "    { id: 'tlaxcala', label: 'Tlaxcala' }\n";
+    $content .= "];\n\n";
+    $content .= "// Lista de videos\n";
+    $content .= "const videosPageData = " . $json_data . ";\n";
 } elseif ($type === 'event') {
     $content = "// Datos de Eventos\n";
-    $content .= "const eventsList = " . $json_data . ";\n";
+    $content .= "const EVENTS = " . $json_data . ";\n";
 } elseif ($type === 'slider') {
     $content = "// Configuración de los Slides del Header\n";
     $content .= "const sliderData = " . $json_data . ";\n";

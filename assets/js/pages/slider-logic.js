@@ -2,9 +2,10 @@
 
 // Variables de estado
 let currentSlide = 0;
-const totalSlides = sliderData.length;
+let totalSlides = 0; // Se actualizará dinámicamente
 let slideInterval;
 let transitionTimeout;
+let workingSliderData = []; // Los datos activos (DB o Fallback)
 
 // Elementos del DOM
 const track = document.getElementById('slider-track');
@@ -109,7 +110,6 @@ function createSlideHTML(slide) {
         let specificClasses = btnStyles[styleName] || btnStyles['primary'];
         
         // Ajustes específicos por contexto si es necesario
-        // Por ejemplo, los botones en slides simples solían ser text-xl
         if (!isComplex) {
             specificClasses += ' text-xl';
         }
@@ -117,34 +117,77 @@ function createSlideHTML(slide) {
         return `${baseBtnClasses} ${specificClasses}`;
     };
 
+    const formatUnit = (val) => {
+        if (!val) return null;
+        val = val.toString().trim();
+        if (!val) return null;
+        // Si ya tiene una unidad (px, %, rem, em, vh, vw), la dejamos así
+        if (/[a-zA-Z%]$/.test(val)) return val;
+        // Si es solo un número, le agregamos px
+        if (!isNaN(val)) return `${val}px`;
+        return val;
+    };
+
     const getBtnStyle = (btn) => {
-        if (btn.position) {
-            return `position: absolute; left: ${btn.position.left || 'auto'}; top: ${btn.position.top || 'auto'}; right: ${btn.position.right || 'auto'}; bottom: ${btn.position.bottom || 'auto'}; z-index: 50;`;
+        let styleStr = '';
+        const top = formatUnit(btn.position_top);
+        const left = formatUnit(btn.position_left);
+        const right = formatUnit(btn.position_right);
+        const bottom = formatUnit(btn.position_bottom);
+
+        if (top || left || right || bottom) {
+            styleStr += 'position: absolute; ';
+            if (top) styleStr += `top: ${top}; `;
+            if (left) styleStr += `left: ${left}; `;
+            if (right) styleStr += `right: ${right}; `;
+            if (bottom) styleStr += `bottom: ${bottom}; `;
+            styleStr += 'z-index: 50; ';
         }
-        return '';
+        return styleStr;
+    };
+
+    const isPositioned = (btn) => {
+        return btn.position_top || btn.position_left || btn.position_right || btn.position_bottom;
+    };
+
+    const renderButton = (btn, isComplex) => {
+        const videoPath = btn.videoSrc || btn.video_src;
+        const classes = getBtnClasses(btn.style, isComplex);
+        const style = getBtnStyle(btn);
+        
+        if (videoPath) {
+            return `
+                <button type="button" onclick="openSliderVideoModal('${videoPath}')" style="${style}" class="${classes}">
+                    <i data-lucide="${btn.icon}"></i> ${btn.text}
+                </button>
+            `;
+        } else {
+            return `
+                <a href="${btn.url}" target="_blank" rel="noopener noreferrer" style="${style}" class="${classes}">
+                    <i data-lucide="${btn.icon}"></i> ${btn.text}
+                </a>
+            `;
+        }
     };
 
     if (slide.type === 'complex') {
+        const flowButtons = slide.buttons.filter(b => !isPositioned(b));
+        const absoluteButtons = slide.buttons.filter(b => isPositioned(b));
+
         return `
             <div class="w-full flex-shrink-0 pt-16 pb-24 relative overflow-hidden" style="background: ${slide.background};">
                 <div class="absolute -bottom-[10%] -left-[10%] -right-[10%] h-[60%] bg-[#ffcc00] rounded-[100%_100%_0_0] opacity-90 -z-0 pointer-events-none"></div>
+                
+                <!-- Botones con posición absoluta relativa al SLIDE -->
+                ${absoluteButtons.map(btn => renderButton(btn, true)).join('')}
+
                 <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 relative z-10">
                     <div class="md:w-1/2">
                         <span class="inline-block px-4 py-1 rounded-full bg-green-200 text-green-800 text-[10px] font-black mb-6 uppercase tracking-widest">${slide.badge}</span>
                         <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-8 leading-[1.1]">${slide.title}</h1>
                         <p class="text-xl text-slate-600 mb-10 max-w-lg leading-relaxed">${slide.description}</p>
                         <div class="flex flex-wrap gap-4 relative">
-                            ${slide.buttons.map(btn => `
-                                ${btn.videoSrc ? `
-                                    <button type="button" onclick="openSliderVideoModal('${btn.videoSrc}')" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, true)}">
-                                        <i data-lucide="${btn.icon}"></i> ${btn.text}
-                                    </button>
-                                ` : `
-                                    <a href="${btn.url}" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, true)}">
-                                        <i data-lucide="${btn.icon}"></i> ${btn.text}
-                                    </a>
-                                `}
-                            `).join('')}
+                            ${flowButtons.map(btn => renderButton(btn, true)).join('')}
                         </div>
                     </div>
                     <div class="md:w-1/2 flex justify-center relative">
@@ -162,6 +205,9 @@ function createSlideHTML(slide) {
         const bgStyleAttr = !isVideo && bgSrc ? ` style="background-image: url('${bgSrc}');"` : '';
         const containerClasses = `w-full flex-shrink-0 relative pt-16 pb-24 overflow-hidden ${isVideo ? 'bg-black' : 'bg-cover bg-center'}`;
 
+        const flowButtons = slide.buttons.filter(b => !isPositioned(b));
+        const absoluteButtons = slide.buttons.filter(b => isPositioned(b));
+
         return `
             <div class="${containerClasses}"${bgStyleAttr}>
                 ${isVideo ? `
@@ -170,18 +216,14 @@ function createSlideHTML(slide) {
                     </video>
                     <div class="absolute inset-0 bg-black/20"></div>
                 ` : ''}
+
+                <!-- Botones con posición absoluta relativa al SLIDE -->
+                ${absoluteButtons.map(btn => renderButton(btn, false)).join('')}
+
                 <div class="absolute inset-0 flex items-center justify-center">
-                    ${slide.buttons.map(btn => `
-                        ${btn.videoSrc ? `
-                            <button type="button" onclick="openSliderVideoModal('${btn.videoSrc}')" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, false)}">
-                                <i data-lucide="${btn.icon}"></i> ${btn.text}
-                            </button>
-                        ` : `
-                            <a href="${btn.url}" style="${getBtnStyle(btn)}" class="${getBtnClasses(btn.style, false)}">
-                                <i data-lucide="${btn.icon}"></i> ${btn.text}
-                            </a>
-                        `}
-                    `).join('')}
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        ${flowButtons.map(btn => renderButton(btn, false)).join('')}
+                    </div>
                 </div>
             </div>
         `;
@@ -206,31 +248,42 @@ function syncSlideVideos() {
     });
 }
 
-// Inicializar Slider
-function initSlider() {
+// Inicializar Slider con datos de la DB
+async function initSlider() {
     if (!track) return;
 
+    try {
+        const response = await fetch(`assets/php/obtenerSlidersPublic.php?t=${Date.now()}`);
+        if (!response.ok) throw new Error('Error al cargar sliders de la DB');
+        
+        const dbSliders = await response.json();
+        if (dbSliders && dbSliders.length > 0) {
+            workingSliderData = dbSliders;
+            console.log('Sliders cargados desde la base de datos');
+        } else {
+            throw new Error('No hay sliders activos en la DB');
+        }
+    } catch (error) {
+        console.warn('Usando slider-data.js como respaldo:', error);
+        workingSliderData = typeof sliderData !== 'undefined' ? sliderData : [];
+    }
+
+    if (workingSliderData.length === 0) return;
+
+    totalSlides = workingSliderData.length;
+
     // 1. Generar HTML de los slides
-    let slidesHTML = sliderData.map(slide => createSlideHTML(slide)).join('');
+    let slidesHTML = workingSliderData.map(slide => createSlideHTML(slide)).join('');
     
     // 2. Agregar el clon del primer slide al final para el efecto infinito
-    slidesHTML += createSlideHTML(sliderData[0]);
+    slidesHTML += createSlideHTML(workingSliderData[0]);
 
     // 3. Insertar en el track
     track.innerHTML = slidesHTML;
 
     // 4. Configurar anchos
-    // El track debe medir (totalSlides + 1) * 100%
     track.style.width = `${(totalSlides + 1) * 100}%`;
     
-    // Cada slide debe medir 100% / (totalSlides + 1) de ancho relativo al track?
-    // NO, en el CSS original: track width=400% (para 4 slides), slide width=1/4 (25%).
-    // Aquí, si tenemos N slides + 1 clon, el width es (N+1)*100%.
-    // Y cada hijo debe tener width: 100% / (N+1).
-    // O mejor, usamos flexbox y dejamos que cada hijo sea flex-1 o width exacto.
-    // El CSS original usaba style="width: 400%" en el track y class="w-1/4" en los hijos.
-    
-    // Vamos a ajustar el ancho de los hijos dinámicamente
     const children = track.children;
     const slideWidthPercentage = 100 / (totalSlides + 1);
     
@@ -240,7 +293,7 @@ function initSlider() {
 
     // 5. Generar Dots
     if (dotsContainer) {
-        dotsContainer.innerHTML = sliderData.map((_, index) => `
+        dotsContainer.innerHTML = workingSliderData.map((_, index) => `
             <button onclick="goToSlide(${index})" class="w-3 h-3 rounded-full bg-green-600/20 dot hover:bg-green-600 hover:scale-125 transition-all cursor-pointer" id="dot-${index}"></button>
         `).join('');
     }
@@ -250,7 +303,6 @@ function initSlider() {
     startTimer();
     syncSlideVideos();
     
-    // Refrescar iconos Lucide
     if (window.lucide) {
         lucide.createIcons();
     }

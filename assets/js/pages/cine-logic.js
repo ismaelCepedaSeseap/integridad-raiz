@@ -1,11 +1,51 @@
 // Lógica para renderizar la sección Cine de la Integridad
 
-function initCine() {
+let allGuardianesData = [];
+let currentCinePage = 1;
+const itemsPerCinePage = 8;
+
+async function initCine() {
     const container = document.getElementById('cine-container');
     if (!container) return;
 
+    try {
+        const response = await fetch('assets/php/obtenerGuardianes.php?v=' + Date.now());
+        if (response.ok) {
+            allGuardianesData = await response.json();
+        } else {
+            console.warn('Error al cargar guardianes desde DB, status:', response.status);
+        }
+    } catch (error) {
+        console.warn('Error fetching guardianes:', error);
+    }
+
+    // Fallback si no hay datos de DB, intentar usar cineData global si existe
+    if (allGuardianesData.length === 0 && typeof cineData !== 'undefined') {
+        allGuardianesData = cineData;
+    }
+
+    if (allGuardianesData.length === 0) return;
+
+    renderCineGallery();
+}
+
+function renderCineGallery() {
+    const container = document.getElementById('cine-container');
+    const pagination = document.getElementById('cine-pagination');
+    if (!container) return;
+
+    const totalPages = Math.ceil(allGuardianesData.length / itemsPerCinePage);
+    
+    // Validar página actual
+    if (currentCinePage > totalPages) currentCinePage = totalPages;
+    if (currentCinePage < 1) currentCinePage = 1;
+
+    const startIndex = (currentCinePage - 1) * itemsPerCinePage;
+    const endIndex = startIndex + itemsPerCinePage;
+    const dataToUse = allGuardianesData.slice(startIndex, endIndex);
+
     // Lógica para ajustar columnas según la cantidad de elementos
-    const count = cineData.length;
+    const count = dataToUse.length;
     let gridClass = 'grid-cols-1 md:grid-cols-3'; // Por defecto 3 columnas
 
     if (count === 1) {
@@ -21,7 +61,7 @@ function initCine() {
     // Aplicar clases al contenedor
     container.className = `grid ${gridClass} gap-12 lg:gap-24`;
 
-    const html = cineData.map(item => `
+    const html = dataToUse.map(item => `
         <div class="text-center">
             <div class="video-mobile-frame border-slate-700" style="height:80%;">
                 <video controls poster="${item.posterSrc}">
@@ -37,6 +77,38 @@ function initCine() {
     `).join('');
 
     container.innerHTML = html;
+    
+    renderCinePagination(totalPages, pagination);
+}
+
+function renderCinePagination(totalPages, container) {
+    if (!container) return;
+    
+    if (totalPages <= 1) {
+        container.innerHTML = '';
+        return;
+    }
+
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+        html += `
+            <button onclick="changeCinePage(${i})" 
+                class="w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all
+                ${i === currentCinePage 
+                    ? 'bg-green-600 text-white shadow-lg' 
+                    : 'bg-white text-slate-400 hover:bg-slate-100 border border-slate-200'}">
+                ${i}
+            </button>
+        `;
+    }
+    container.innerHTML = html;
+}
+
+function changeCinePage(page) {
+    currentCinePage = page;
+    renderCineGallery();
+    // Scroll suave hasta el contenedor de cine
+    document.getElementById('cine').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Inicializar cuando el DOM esté listo

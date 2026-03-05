@@ -91,21 +91,17 @@ body {
    5. ANIMACIONES
    ============================================================ */
 .seed-pulse {
-    animation: pulse-seed 8s infinite;
+    animation: pulse-seed 2.2s ease-in-out infinite;
     cursor: pointer;
     touch-action: manipulation;
 }
 
 @keyframes pulse-seed {
-    0%,
-    100% {
+    0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 0 2px #facc15);
     }
-
     50% {
-        transform: scale(1.1);
-        filter: drop-shadow(0 0 10px #facc15);
+        transform: scale(1.25);
     }
 }
 

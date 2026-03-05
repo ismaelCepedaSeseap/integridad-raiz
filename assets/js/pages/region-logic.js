@@ -1,8 +1,41 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const statesContainer = document.getElementById('states-container');
+document.addEventListener('DOMContentLoaded', async () => {
+    // FUNCIÓN DE CARGA PRINCIPAL
+    async function loadStates() {
+        console.log('--- INICIO CARGA ESTADOS ---');
+        const statesContainer = document.getElementById('states-container');
+        
+        if (!statesContainer) {
+            console.error('CRÍTICO: No se encontró #states-container');
+            return;
+        }
 
-    if (statesContainer && typeof statesData !== 'undefined') {
-        // Limpiamos el contenedor por si acaso
+        statesContainer.innerHTML = '<div class="py-10 text-slate-400 italic">Cargando estados...</div>';
+
+        let dataToUse = [];
+        try {
+            console.log('Llamando a obtenerEstados.php...');
+            const response = await fetch('assets/php/obtenerEstados.php?v=' + Date.now());
+            console.log('Respuesta recibida:', response.status);
+            
+            if (response.ok) {
+                dataToUse = await response.json();
+                console.log('Datos procesados:', dataToUse);
+            } else {
+                throw new Error('Status: ' + response.status);
+            }
+        } catch (error) {
+            console.warn('Error en fetch, usando fallback:', error);
+            if (typeof statesData !== 'undefined') {
+                dataToUse = statesData;
+            }
+        }
+
+        if (dataToUse.length === 0) {
+            statesContainer.innerHTML = '';
+            return;
+        }
+
+        // Limpiar para renderizar
         statesContainer.innerHTML = '';
 
         const socialIcons = {
@@ -14,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spotify: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5-1 4-1 4 1 4 1"/><path d="M7 11.5s2-1.5 5-1.5 5 1.5 5 1.5"/><path d="M6 9s2.5-2 6-2 6 2 6 2"/></svg>'
         };
 
-        statesData.forEach(region => {
+        dataToUse.forEach(region => {
             const regionSection = document.createElement('section');
             regionSection.className = 'py-12 md:py-20 bg-slate-50 border-b border-slate-200';
 
@@ -30,24 +63,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 return `
-                    <div class="group flex flex-col items-center gap-3 w-full sm:w-64">
-                        <a href="${state.url}" target="_blank" class="w-full max-w-[240px] h-32 bg-white rounded-xl flex items-center justify-center border border-slate-200 shadow-sm p-8 group-hover:border-green-600 group-hover:shadow-md transition-all duration-300">
+                    <div class="group flex flex-col items-center gap-3 w-40 sm:w-44">
+                        <a href="${state.url}" target="_blank" class="w-full h-32 bg-white rounded-xl flex items-center justify-center border border-slate-200 shadow-sm p-4 group-hover:border-green-600 group-hover:shadow-md transition-all duration-300">
                             <img src="${state.logo}" alt="SEA ${state.name}" class="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300">
                         </a>
                         <div class="flex flex-col items-center gap-3">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] group-hover:text-green-800 transition-colors">${state.name}</span>
-                            ${socialLinksHTML ? `<div class="flex flex-wrap justify-center gap-4 transition-all duration-300">${socialLinksHTML}</div>` : ''}
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] group-hover:text-green-800 transition-colors text-center leading-tight">${state.name}</span>
+                            ${socialLinksHTML ? `<div class="flex flex-wrap justify-center gap-3 transition-all duration-300">${socialLinksHTML}</div>` : ''}
                         </div>
                     </div>
                 `;
             }).join('');
 
             regionSection.innerHTML = `
-                <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 text-center">
+                <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 text-center">
                     <div class="mb-8">
                         <img src="${region.mainImage}" alt="${region.name}" class="max-w-[400px] w-full mx-auto drop-shadow-sm opacity-80">
                     </div>
-                    <div class="flex flex-wrap gap-6 sm:gap-8 items-start justify-center">
+                    <div class="flex flex-wrap gap-6 justify-center">
                         ${statesHTML}
                     </div>
                 </div>
@@ -55,4 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             statesContainer.appendChild(regionSection);
         });
     }
+
+    // EJECUCIÓN INICIAL
+    await loadStates();
 });

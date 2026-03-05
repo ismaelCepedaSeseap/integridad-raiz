@@ -13,4 +13,15 @@ Thumbs.db
 
 # Environment variables (if any)
 .env
-# config/env.php  <-- Comentado para permitir subir la configuración por petición del usuario
+config/env.php
+config/db.php
+
+# Local/Dev files (Do not upload)
+recreate_db.php
+test_*.php
+RespaldoHtml/
+*.sql
+assets/js/data/db
+*.md
+*.txt
+admin_preview.html

@@ -18,7 +18,7 @@ function cargarMenu() {
                     <a href="cine.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Cine</a>
                     <a href="eventos.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Eventos</a>
                     <a href="index.html#muro" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Muro</a>
-                    <a href="material.html" class="text-slate-600 hover:text-green-600 font-bold transition-colors text-sm uppercase tracking-wide">Material</a>
+                    
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -38,7 +38,7 @@ function cargarMenu() {
                 <a href="cine.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Cine</a>
                 <a href="eventos.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Eventos</a>
                 <a href="index.html#muro" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Muro</a>
-                <a href="material.html" class="block w-full text-center px-4 py-4 rounded-2xl text-xl font-bold text-slate-700 hover:text-green-600 hover:bg-green-50 transition-all border border-transparent hover:border-green-100">Material</a>
+                
             </div>
         </div>
     </nav>
@@ -59,16 +59,30 @@ function cargarMenu() {
     const closeIcon = document.getElementById('menu-icon-close');
 
     if (btn && menu) {
-        btn.addEventListener('click', (e) => {
+        // Usar tanto click como touchend para asegurar compatibilidad en móviles
+        const toggleMenu = (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            menu.classList.toggle('hidden');
             
-            // Toggle icons
-            if (openIcon && closeIcon) {
-                openIcon.classList.toggle('hidden');
-                closeIcon.classList.toggle('hidden');
+            const isHidden = menu.classList.contains('hidden');
+            
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                if (openIcon) openIcon.classList.add('hidden');
+                if (closeIcon) closeIcon.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                if (openIcon) openIcon.classList.remove('hidden');
+                if (closeIcon) closeIcon.classList.add('hidden');
             }
-        });
+            
+            // Recrear iconos para asegurar que Lucide los renderice
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        };
+
+        btn.addEventListener('click', toggleMenu);
         
         // Cerrar menú al hacer click en un enlace
         menu.querySelectorAll('a').forEach(link => {
@@ -83,20 +97,22 @@ function cargarMenu() {
 
         // Cerrar al hacer click fuera
         document.addEventListener('click', (e) => {
-            if (!menu.contains(e.target) && !btn.contains(e.target) && !menu.classList.contains('hidden')) {
-                menu.classList.add('hidden');
-                if (openIcon && closeIcon) {
-                    openIcon.classList.remove('hidden');
-                    closeIcon.classList.add('hidden');
+            if (menu && !menu.classList.contains('hidden')) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                    menu.classList.add('hidden');
+                    if (openIcon && closeIcon) {
+                        openIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                    }
                 }
             }
         });
     }
 }
 
-// Ejecutar la función cuando cargue la página
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', cargarMenu);
-} else {
+// Ejecutar la función inmediatamente si es posible, o en DOMContentLoaded
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
     cargarMenu();
+} else {
+    document.addEventListener('DOMContentLoaded', cargarMenu);
 }

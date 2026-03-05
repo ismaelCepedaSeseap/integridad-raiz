@@ -1,11 +1,9 @@
 <?php
-    session_start();
-    require_once("../conexion.php");
-    require_once("../security/auth.php");
+require_once("../conexion.php");
+require_once("../security/auth.php");
 
-    $autorizacion = new auth();
-    // $autorizado = $autorizacion->isLoggedIn();
-    $autorizado = true;
+$autorizacion = new Auth();
+$autorizado = $autorizacion->isLoggedIn();
     if($autorizado){
         $stmt = $pdo->prepare("SELECT id, nombre from estados where activo = 1");
         $stmt->execute();

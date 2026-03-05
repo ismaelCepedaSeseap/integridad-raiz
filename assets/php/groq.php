@@ -1,16 +1,21 @@
 <?php
 header('Content-Type: application/json');
 
-$apiKey = "TU_API_KEY_AQUI";
-if (file_exists(__DIR__ . '/../../config/env.php')) {
-    $env = require __DIR__ . '/../../config/env.php';
-    if (isset($env['GROQ_API_KEY'])) {
-        $apiKey = $env['GROQ_API_KEY'];
-    }
+$apiKey = getenv('GROQ_API_KEY');
+$texto = isset($_POST['texto']) ? trim((string)$_POST['texto']) : '';
+
+if (!$apiKey) {
+    http_response_code(500);
+    echo json_encode(['error' => 'GROQ_API_KEY no configurada']);
+    exit;
 }
 
-//$texto = $_POST["texto"];
-$texto = "Compromiso:Me comprometo a ayudar a los niños de la calle para ponerlos a trabajar. Nombre: DoloresDelano. Estado: Puebla";
+if ($texto === '') {
+    http_response_code(400);
+    echo json_encode(['error' => 'texto es requerido']);
+    exit;
+}
+
 $ch = curl_init("https://api.groq.com/openai/v1/chat/completions");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -45,9 +50,13 @@ $data = [
 
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 $response = curl_exec($ch);
+if ($response === false) {
+    http_response_code(502);
+    echo json_encode(['error' => 'Error en solicitud a Groq']);
+    curl_close($ch);
+    exit;
+}
 curl_close($ch);
-$data = json_decode($response, true);
-//$content = $data['choices'][0]['message']['content'];
 echo $response;
 
 

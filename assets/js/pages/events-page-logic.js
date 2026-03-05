@@ -92,15 +92,32 @@ async function renderFilters() {
 function renderMomentsGallery() {
     if (!momentsGallery) return;
 
-    momentsGallery.innerHTML = momentsGalleryData.map(moment => `
+    momentsGallery.innerHTML = momentsGalleryData.map(moment => {
+        if (moment.isPlaceholder) {
+            return `
+                <div class="moment-card relative overflow-hidden rounded-[2.5rem] h-72 group shadow-lg ${moment.marginTop ? 'md:mt-12' : ''} bg-slate-100 flex flex-col items-center justify-center border-2 border-dashed border-slate-300 transition-all hover:bg-slate-200">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm text-slate-400 group-hover:text-green-600 group-hover:scale-110 transition-all duration-300">
+                         <i data-lucide="clock" class="w-8 h-8"></i>
+                    </div>
+                    <p class="text-slate-600 font-bold text-lg">${moment.title}</p>
+                    <span class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">${moment.year}</span>
+                </div>
+            `;
+        }
+
+        return `
         <div class="moment-card relative overflow-hidden rounded-[2.5rem] h-72 group shadow-lg ${moment.marginTop ? 'md:mt-12' : ''}">
             <img src="${moment.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="${moment.title}">
             <div class="absolute inset-0 bg-gradient-to-t from-green-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-                <p class="text-white font-bold text-lg">${moment.title}</p>
+                <p class="text-white font-bold text-lg line-clamp-2">${moment.title}</p>
                 <span class="text-yellow-400 text-xs font-bold uppercase tracking-widest">${moment.year}</span>
             </div>
         </div>
-    `).join('');
+    `}).join('');
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
 // Lógica de filtrado

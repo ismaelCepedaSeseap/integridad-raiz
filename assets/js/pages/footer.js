@@ -1,5 +1,41 @@
 // Función para cargar el footer en cualquier página
-function cargarFooter() {
+async function cargarFooter() {
+    let statesHtml = '';
+    
+    try {
+        // Intentar cargar estados desde la base de datos
+        // Asegurar que la ruta es correcta incluso desde subcarpetas
+        const basePath = window.location.pathname.includes('/pages/') ? '../../' : '';
+        const response = await fetch(`${basePath}assets/php/obtenerEstados.php?v=` + Date.now());
+        if (response.ok) {
+            const data = await response.json();
+            // La respuesta es un array de regiones, tomamos la primera y sus estados
+            const states = data[0].states;
+            
+            // Filtrar y generar HTML para cada estado
+            statesHtml = states.map(state => {
+                const styleAttr = state.logo_style ? `style="${state.logo_style}"` : '';
+                return `
+                <div class="flex items-center gap-3">
+                    <a target="_blank" href="${state.url}" title="${state.name}">
+                        <img src="${state.logo}" alt="${state.name}" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" ${styleAttr}>
+                    </a>
+                </div>
+            `}).join('');
+        } else {
+             throw new Error('Error fetching states');
+        }
+    } catch (error) {
+        console.warn('Error cargando estados para el footer, usando fallback estático', error);
+        // Fallback en caso de error: mantener los logos estáticos originales si falla la carga
+        statesHtml = `
+            <div class="flex items-center gap-3"><a target="_blank" href="https://seseap.puebla.gob.mx/"><img src="assets/images/logo_puebla.png" alt="Puebla" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70" style="height: 164px;"></a></div>
+            <div class="flex items-center gap-3"><a target="_blank" href="https://sistemaanticorrupcion.hidalgo.gob.mx/"><img src="assets/images/logo_hidalgo.png" alt="Hidalgo" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
+            <div class="flex items-center gap-3"><a target="_blank" href="https://saetlax.org/"><img src="assets/images/logo_tlaxcala.png" alt="Tlaxcala" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
+            <div class="flex items-center gap-3"><a target="_blank" href="http://seseav.veracruz.gob.mx/"><img src="assets/images/logo.png" alt="Veracruz" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
+        `;
+    }
+
     const footerHTML = `
     <footer class="bg-slate-900 text-white py-12 text-center border-t border-green-800/30">
         <div class="max-w-7xl mx-auto px-6">
@@ -8,10 +44,8 @@ function cargarFooter() {
                     <img src="assets/images/golfoitsmo.png" alt="Logo Región" class="h-24 md:h-32 w-auto brightness-0 invert opacity-90 drop-shadow-sm">
                 </div>
                 <div class="hidden lg:block h-16 w-[1px] bg-white/10 mx-4"></div>
-                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-                    <div class="flex items-center gap-3"><a target="_blank" href="https://seseap.puebla.gob.mx/"><img src="assets/images/logo_puebla.png" alt="Puebla" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70" style="height: 164px;"></a></div>
-                    <div class="flex items-center gap-3"><a target="_blank" href="https://sistemaanticorrupcion.hidalgo.gob.mx/"><img src="assets/images/logo_hidalgo.png" alt="Hidalgo" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
-                    <div class="flex items-center gap-3"><a target="_blank" href="https://saetlax.org/"><img src="assets/images/logo_tlaxcala.png" alt="Tlaxcala" class="h-10 md:h-12 w-auto brightness-0 invert opacity-70"></a></div>
+                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12" id="footer-states-container">
+                    ${statesHtml}
                 </div>
             </div>
             <div class="w-full h-[1px] bg-white/5 mb-10"></div>

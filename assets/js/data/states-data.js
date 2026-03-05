@@ -7,7 +7,7 @@ const statesData = [
             { 
                 name: 'Puebla', 
                 url: 'https://seseap.puebla.gob.mx/',
-                logo: 'assets/images/SeseapPuebla.png',
+                logo: 'assets/images/logo_puebla.png',
                 social: {
                     facebook: 'https://www.facebook.com/SEAPUEBLA1?mibextid=ZbWKwL',
                     twitter: 'https://x.com/seapuebla/',
@@ -34,6 +34,12 @@ const statesData = [
                     facebook: 'https://www.facebook.com/SAETLAX/',
                     youtube: 'https://www.youtube.com/@sesaet9073'
                 }
+            },
+            {
+                name: 'Veracruz',
+                url: 'http://seseav.veracruz.gob.mx/',
+                logo: 'assets/images/logo.png',
+                social: {}
             }
         ]
     }

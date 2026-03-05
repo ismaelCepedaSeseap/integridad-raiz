@@ -3,7 +3,7 @@
 // Estado de la aplicación
 let currentFilter = 'todos';
 let currentPage = 1;
-const itemsPerPage = 6;
+const itemsPerPage = 8;
 
 // Elementos del DOM (se inicializan al cargar)
 let videoGallery;

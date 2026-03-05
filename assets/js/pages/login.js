@@ -23,7 +23,14 @@ async function verificarUsuario() {
             body: formData,
             credentials: "include"
         });
-        return await respuesta.json();
+
+        const text = await respuesta.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            console.error("Respuesta no es JSON:", text);
+            return { success: false, error: "Error en la respuesta del servidor" };
+        }
     }
     catch (error) {
         console.error(error);

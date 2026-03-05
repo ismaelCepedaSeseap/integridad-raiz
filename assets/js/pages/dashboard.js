@@ -1,21 +1,21 @@
 var btnCerrarSession = document.getElementById("cerrarSesion");
-btnCerrarSession.addEventListener("click", async function () {
-    Swal.fire({
-        title: "¿Está seguro de cerrar sesión?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, ¡estoy seguro!",
-        cancelButtonText: "No"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            cerrarSesion();
-
-        }
+if (btnCerrarSession) {
+    btnCerrarSession.addEventListener("click", async function () {
+        Swal.fire({
+            title: "¿Está seguro de cerrar sesión?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, ¡estoy seguro!",
+            cancelButtonText: "No"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                cerrarSesion();
+            }
+        });
     });
-
-});
+}
 lucide.createIcons();
 
 // Configuración de Roles y Estados
@@ -51,10 +51,19 @@ function setUserRole(roleKey) {
 }
 
 function updateDashboardUI() {
-    // Actualizar textos de estado
-    document.getElementById('sidebar-user-role').innerText = currentRole.name;
-    document.getElementById('header-user-name').innerText = `Admin ${currentRole.state.split(' ')[0]}`;
-    document.getElementById('user-name-display').innerText = currentRole.isSuper ? "Super Admin" : currentRole.state;
+    const sidebarUserRole = document.getElementById('sidebar-user-role');
+    const headerUserName = document.getElementById('header-user-name');
+    const userNameDisplay = document.getElementById('user-name-display');
+    const stateDisplaySidebar = document.getElementById('state-display-sidebar');
+    const stateFilterStatus = document.getElementById('state-filter-status');
+    const userAvatar = document.getElementById('user-avatar');
+    const moduleUsers = document.getElementById('module-users');
+    const navUsers = document.getElementById('nav-users');
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    if (sidebarUserRole) sidebarUserRole.innerText = currentRole.name;
+    if (headerUserName) headerUserName.innerText = `Admin ${currentRole.state.split(' ')[0]}`;
+    if (userNameDisplay) userNameDisplay.innerText = currentRole.isSuper ? "Super Admin" : currentRole.state;
 
     const badges = document.querySelectorAll('.state-badge');
     badges.forEach(b => {
@@ -65,24 +74,23 @@ function updateDashboardUI() {
     const stateTexts = document.querySelectorAll('.state-text');
     stateTexts.forEach(t => t.innerText = currentRole.isSuper ? "Nacional" : currentRole.state);
 
-    document.getElementById('state-display-sidebar').innerHTML = `<span class="state-badge" style="font-size: 8px;">${currentRole.state}</span>`;
-    document.getElementById('state-filter-status').innerText = currentRole.isSuper ? "Nivel Nacional" : `Solo ${currentRole.state}`;
+    if (stateDisplaySidebar) stateDisplaySidebar.innerHTML = `<span class="state-badge" style="font-size: 8px;">${currentRole.state}</span>`;
+    if (stateFilterStatus) stateFilterStatus.innerText = currentRole.isSuper ? "Nivel Nacional" : `Solo ${currentRole.state}`;
 
-    document.getElementById('user-avatar').src = currentRole.avatar;
+    if (userAvatar) userAvatar.src = currentRole.avatar;
 
-    // Restricción de módulos: Solo Super Admin ve gestión de otros usuarios
-    const moduleUsers = document.getElementById('module-users');
-    const navUsers = document.getElementById('nav-users');
-    if (!currentRole.isSuper) {
+    if (!currentRole.isSuper && moduleUsers) {
         moduleUsers.style.opacity = "0.5";
         moduleUsers.style.pointerEvents = "none";
-        navUsers.classList.add('hidden');
-        document.getElementById('welcome-message').innerText = `Gestionando la integridad en el estado de ${currentRole.state}`;
+        if (navUsers) navUsers.classList.add('hidden');
+        if (welcomeMessage) welcomeMessage.innerText = `Gestionando la integridad en el estado de ${currentRole.state}`;
     } else {
-        moduleUsers.style.opacity = "1";
-        moduleUsers.style.pointerEvents = "auto";
-        navUsers.classList.remove('hidden');
-        document.getElementById('welcome-message').innerText = "Gestión global de la plataforma";
+        if (moduleUsers) {
+            moduleUsers.style.opacity = "1";
+            moduleUsers.style.pointerEvents = "auto";
+        }
+        if (navUsers) navUsers.classList.remove('hidden');
+        if (welcomeMessage) welcomeMessage.innerText = "Gestión global de la plataforma";
     }
 
     renderTable();
@@ -93,11 +101,18 @@ function renderTable() {
         { user: "Juan Pérez", state: "Puebla", text: "Me comprometo a la honestidad.", date: "12 Feb 2026" },
         { user: "María García", state: "Hidalgo", text: "Respeto total a las reglas.", date: "11 Feb 2026" },
         { user: "Carlos Ruiz", state: "Tlaxcala", text: "Transparencia ante todo.", date: "10 Feb 2026" },
-        { user: "Elena Solis", state: "Puebla", text: "Justicia para mi comunidad.", date: "09 Feb 2026" }
+        { user: "Elena Solis", state: "Puebla", text: "Justicia para mi comunidad.", date: "09 Feb 2026" },
+        { user: "Pedro Infante", state: "Puebla", text: "Ayudar a quien lo necesite.", date: "08 Feb 2026" },
+        { user: "Ana Bárbara", state: "Hidalgo", text: "Cuidar los espacios públicos.", date: "08 Feb 2026" },
+        { user: "Luis Miguel", state: "Tlaxcala", text: "No copiar en los exámenes.", date: "07 Feb 2026" },
+        { user: "Carmen Salinas", state: "Puebla", text: "Reportar actos de corrupción.", date: "06 Feb 2026" },
+        { user: "Roberto Gómez", state: "Hidalgo", text: "Ser puntual en mis citas.", date: "05 Feb 2026" },
+        { user: "Florinda Meza", state: "Tlaxcala", text: "Respetar las filas.", date: "04 Feb 2026" }
     ];
 
     const filtered = currentRole.isSuper ? data : data.filter(d => d.state === currentRole.state);
     const tbody = document.getElementById('table-body');
+    if (!tbody) return;
     tbody.innerHTML = filtered.map(item => `
                 <tr>
                     <td class="px-8 py-4 font-bold">${item.user}</td>
@@ -113,7 +128,7 @@ function renderTable() {
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('-translate-x-full');
+    if (sidebar) sidebar.classList.toggle('-translate-x-full');
 }
 
 async function cerrarSesion() {

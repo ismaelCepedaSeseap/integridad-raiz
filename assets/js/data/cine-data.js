@@ -26,5 +26,14 @@ const cineData = [
         "posterSrc": "assets/images/Tlaxcala.jpeg",
         "url": "cine.html?estado=tlaxcala",
         "titleColorClass": "text-slate-900"
+    },
+    {
+        "id": "veracruz",
+        "name": "VERACRUZ",
+        "slogan": "\"Compromiso Jarocho\"",
+        "videoSrc": "assets/images/Puebla.mp4",
+        "posterSrc": "assets/images/Puebla.jpeg",
+        "url": "cine.html?estado=veracruz",
+        "titleColorClass": "text-slate-900"
     }
 ];

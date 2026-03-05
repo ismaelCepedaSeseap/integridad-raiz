@@ -24,27 +24,24 @@ const filtersEventsData = [
 ];
 
 // Galería de Momentos Inolvidables
-const momentsGalleryData = [
-    {
-        image: "assets/images/rally/f_02.jpg",
-        title: "Diversión y Aprendizaje",
-        year: "Puebla 2025"
-    },
-    {
-        image: "assets/images/rally/f_03.jpg",
-        title: "Trabajo en Equipo",
-        year: "Puebla 2025",
-        marginTop: true
-    },
-    {
-        image: "assets/images/rally/f_04.jpg",
-        title: "Valores en Movimiento",
-        year: "Puebla 2025"
-    },
-    {
-        image: "assets/images/rally/f_05.jpg",
-        title: "Comunidad Unida",
-        year: "Puebla 2025",
-        marginTop: true
-    }
-];
+const momentsGalleryData = sourceEvents.map((event, index) => {
+    // Extract year from date string "11 Diciembre 2025"
+    const yearMatch = event.date ? event.date.match(/\d{4}/) : null;
+    const year = yearMatch ? yearMatch[0] : '';
+    const cleanTitle = event.title ? event.title.replace(/<[^>]*>?/gm, '') : 'Evento';
+
+    return {
+        image: event.imageUrl || event.mainImage || (event.gallery && event.gallery[0]) || '',
+        title: cleanTitle,
+        year: `${event.state || ''} ${year}`.trim(),
+        marginTop: index % 2 !== 0 // Stagger effect
+    };
+});
+
+// Add "Próximamente" card
+momentsGalleryData.push({
+    isPlaceholder: true,
+    title: "Próximamente",
+    year: "",
+    marginTop: momentsGalleryData.length % 2 !== 0
+});

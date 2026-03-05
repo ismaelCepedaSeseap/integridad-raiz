@@ -1,11 +1,10 @@
 <?php
-    // session_start();
     require_once __DIR__ . "/../conexion.php";
     require_once __DIR__ . "/../security/auth.php";
     header('Content-Type: application/json');
 
-    $autorizacion = new auth();
-    $autorizado = true; // $autorizacion->isLoggedIn();
+    $autorizacion = new Auth();
+    $autorizado = $autorizacion->isLoggedIn();
 
     if($autorizado){
         $data = json_decode(file_get_contents('php://input'), true);

@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Integridad desde la Raíz</title>
+    <link rel="stylesheet" href="../assets/css/pages/admin.css">
     <link rel="stylesheet" href="../assets/css/admin/dashboard.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,6 +89,7 @@
                 <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
                     <i data-lucide="layout-grid" class="w-5 h-5 text-green-600"></i> Módulos Disponibles
                 </h2>
+                <span id="state-filter-status" class="text-[10px] text-green-600 font-bold uppercase tracking-widest">Nivel Nacional</span>
                 <!-- Switcher para propósitos de DEMO -->
                 <div class="flex gap-2 p-1 bg-slate-100 rounded-xl text-[10px] font-black uppercase">
                     <button onclick="setUserRole('SUPER')" class="px-2 py-1 rounded-lg hover:bg-white transition-all">Super</button>
